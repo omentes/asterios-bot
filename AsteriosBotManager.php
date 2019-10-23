@@ -41,7 +41,7 @@ class AsteriosBotManager
         $selectStatement = $pdo->select(['title', 'description', 'timestamp'])
             ->from('new_raids')
             ->where('server', '=', $server)
-            ->orderBy('created_at', 'desc')
+            ->orderBy('timestamp', 'desc')
             ->limit($limit, 0);
 
         $stmt = $selectStatement->execute();
@@ -84,8 +84,8 @@ class AsteriosBotManager
                 ]);
             $insertId = $insertStatement->execute(false);
             $channel = $this->getChannel($raid, $server);
-            $text = $date->format('Y-m-d H:i:s') . ' ' . $raid['title'] . $raid['description'];
-            //echo $this->send_msg($text, $channel) . PHP_EOL;
+            $text = $date->format('Y-m-d H:i:s') . ' ' . $raid['description'];
+            echo $this->send_msg($text, $channel) . PHP_EOL;
         } catch (\Throwable $e) {
             $error = $e->getMessage();
             echo "ERROR! $error";
