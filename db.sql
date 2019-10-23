@@ -11,5 +11,5 @@ CREATE TABLE `new_raids` (
                              PRIMARY KEY (`id`),
                              UNIQUE KEY `new_raids_server_title_timestamp_uindex` (`server`,`title`,`timestamp`),
                              KEY `new_raids_created_at_index` (`created_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=166 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
