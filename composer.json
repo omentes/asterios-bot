@@ -3,6 +3,7 @@
         "paquettg/php-html-parser": "^2.1",
       "ext-json": "*",
         "slim/pdo": "^1.10",
-        "vlucas/phpdotenv": "^3.6"
+        "vlucas/phpdotenv": "^3.6",
+        "dg/rss-php": "^1.4"
     }
 }
