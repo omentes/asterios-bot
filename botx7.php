@@ -16,7 +16,7 @@ $pwd = getenv('DB_PASSWORD');
 $pdo = new \Slim\PDO\Database($dsn, $usr, $pwd);
 
 $selectStatement = $pdo->select(['text'])
-    ->from('raids')
+    ->from('raids_x7')
     ->orderBy('id', 'desc')
     ->limit(10, 0);
 
@@ -24,7 +24,7 @@ $stmt = $selectStatement->execute();
 $data = $stmt->fetchAll();
 
 $dom = new Dom;
-$dom->loadFromUrl('https://asterios.tm/index.php?cmd=rss&serv=0&filter=keyboss');
+$dom->loadFromUrl('https://asterios.tm/index.php?cmd=rss&serv=8&filter=keyboss');
 $contents = $dom->find('td');
 
 $remote = [];
@@ -47,10 +47,10 @@ echo '[log] parse done, diff count ' . count($newRaids) . PHP_EOL;
 foreach ($newRaids as $raid) {
     try {
         $insertStatement = $pdo->insert(['text'])
-            ->into('raids')
+            ->into('raids_x7')
             ->values([$raid]);
         $insertId = $insertStatement->execute(false);
-        $channel = isSubclassRb((string)$raid) ? '@asteriosx5rb' : '@asteriosX5keyRB';
+        $channel = isSubclassRb((string)$raid) ? '@asteriosx7rb' : '@asteriosX7keyRB';
         echo send_msg((string)$raid, $channel) . PHP_EOL;
     } catch (\Throwable $e) {
         $error = $e->getMessage();
