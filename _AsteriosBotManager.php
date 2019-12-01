@@ -48,6 +48,19 @@ class AsteriosBotManager
         return $stmt->fetchAll();
     }
 
+    public function getDataPDOid(\Slim\PDO\Database $pdo, int $server, int $limit = 20)
+    {
+        $selectStatement = $pdo->select(['id', 'title', 'description', 'timestamp'])
+            ->from('new_raids')
+            ->where('server', '=', $server)
+            ->orderBy('timestamp', 'desc')
+            ->limit($limit, 0);
+
+        $stmt = $selectStatement->execute();
+        return $stmt->fetchAll();
+    }
+
+
     public function getRSSData(string $url, int $limit = 20)
     {
         $rss = Feed::loadRss($url);
@@ -144,12 +157,60 @@ class AsteriosBotManager
         $raids = array_reverse($raids);
 	
 	foreach ($raids as $raid) {
-		if ($this->isSubclassRb($raid['title'])) {
-			$raid['timestamp'] = time() - $raid['timestamp'] - 97200;
+		$fix = 60*60*21; //97200 is 27 hours
+	//	if ($this->isSubclassRb($raid['title'])) {
+			$raid['timestamp'] = time() - $raid['timestamp'] - 18*60*60 ;//- $fix;// $fix;
+			$raid['name'] = explode(' was', $raid['title'])[0] ?? '';
 			$result[md5($raid['title'])] = $raid;
-	    }
+			
+	   // }
 	}
 
 	return $result;
+    }
+
+    public function checkRespawnTime(int $time)
+    {
+	if ($time >= 32400) {
+            return 1;
+	} elseif ($time >= 34200) {
+	return 2;
+	}
+	return 0;
+    }
+
+    public function alarm(\Slim\PDO\Database $pdo, array $record, int $mode)
+    {
+	 $selectStatement = $pdo->select(['id', 'title', 'server', 'alarm'])
+            ->from('new_raids')
+            ->where('id', '=', $record['id']);
+        $stmt = $selectStatement->execute();
+        $result = $stmt->fetchAll();
+	$recordMode = $result[0]['alarm'] ?? 0;
+	if ($recordMode === $mode) {
+	    return $result;
+	}
+	if ($mode === 1 && $recordMode === 0) {
+	
+            $msg = 'ТЕСТОВЫЙ РЕЖИМ! Осталось менее 3ч респауна ' . $record['name'];  
+	}
+	if ($mode === 2 && $recordMode === 1) {
+	
+            $msg = 'ТЕСТОВЫЙ РЕЖИМ! Осталось менее 1,5ч респауна ' . $record['name'];  
+	}
+	$this->update($pdo, $mode, $record['id']);
+	$channel = $this->getChannel($result[0], $result[0]['server']);
+        $text = $date->format('Y-m-d H:i:s') . ' ' . $raid['description'];
+	echo $this->send_msg($text, $channel) . PHP_EOL;
+
+
+    }
+
+    public function update(\Slim\PDO\Database $pdo, $mode, $id)
+    {
+        $updateStatement = $pdo->update(['alarm' => $mode])
+                 ->table('new_raids')
+                 ->where('id', '=', $id);
+	$affectedRows = $updateStatement->execute();
     }
 }

@@ -13,3 +13,13 @@ CREATE TABLE `new_raids` (
                              KEY `new_raids_created_at_index` (`created_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
+CREATE TABLE `respawn_notification` (
+	`id` INT NOT NULL AUTO_INCREMENT,
+	`server` INT NOT NULL,
+	`title` VARCHAR(200) NOT NULL,
+	`created_at` DATETIME NOT NULL DEFAULT NOW(),
+	`shout` INT DEFAULT '1',
+	KEY `respawn_notification_created_at_index` (`created_at`) USING BTREE,
+    KEY `respawn_notification_shout_index` (`shout`) USING BTREE,
+	PRIMARY KEY (`id`)
+);

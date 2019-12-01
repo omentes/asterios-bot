@@ -5,7 +5,7 @@ require "_AsteriosBotManager.php";
 $manager = new AsteriosBotManager();
 
 $pdo = $manager->getPDO();
-$local = $manager->getDataPDOid($pdo, $manager::X5);
+$local = $manager->getDataPDOid($pdo, $manager::X7);
 
 $q = $manager->getDeadRB($local);
 
@@ -15,7 +15,7 @@ $r = array_filter(array_map(function (&$x) {
 	} else return null;
 }, $q));
 
-//pp($r);
+// pp($r);
 foreach ($r as $record) {
     
 	$time = $record['timestamp'];
