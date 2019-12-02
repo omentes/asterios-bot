@@ -171,9 +171,9 @@ class AsteriosBotManager
 
     public function checkRespawnTime(int $time)
     {
-	if ($time >= 32400) {
+	if ($time >= 32400 && $time < 37800) {
             return 1;
-	} elseif ($time >= 34200) {
+	} elseif ($time >= 37800) {
 	return 2;
 	}
 	return 0;
@@ -200,8 +200,7 @@ class AsteriosBotManager
 	}
 	$this->update($pdo, $mode, $record['id']);
 	$channel = $this->getChannel($result[0], $result[0]['server']);
-        $text = $date->format('Y-m-d H:i:s') . ' ' . $raid['description'];
-	echo $this->send_msg($text, $channel) . PHP_EOL;
+	echo $this->send_msg($msg, $channel) . PHP_EOL;
 
 
     }

@@ -9,7 +9,7 @@ $local = $manager->getDataPDO($pdo, $manager::X5);
 $remote = $manager->getRSSData($manager::URL_X5);
 $newRaids =    arrayRecursiveDiff($remote, $local);
 //pp(check_diff_multi($remote, $local));
-echo '[log] parse done, diff count ' . count($newRaids) . PHP_EOL;
+echo count($newRaids) . ' ';
 foreach ($newRaids as $raid) {
     $manager->trySend($pdo, $raid, $manager::X5);
 }
