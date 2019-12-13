@@ -192,11 +192,11 @@ class AsteriosBotManager
 	}
 	if ($mode === 1 && $recordMode === 0) {
 	
-            $msg = 'ТЕСТОВЫЙ РЕЖИМ! Осталось менее 3ч респауна ' . $record['name'];  
+            $msg = 'ALARM! Осталось менее 3ч респауна ' . $record['name'];  
 	}
 	if ($mode === 2 && $recordMode === 1) {
 	
-            $msg = 'ТЕСТОВЫЙ РЕЖИМ! Осталось менее 1,5ч респауна ' . $record['name'];  
+            $msg = 'ALARM! Осталось менее 1,5ч респауна ' . $record['name'];  
 	}
 	$this->update($pdo, $mode, $record['id']);
 	$channel = $this->getChannel($result[0], $result[0]['server']);
