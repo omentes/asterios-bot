@@ -187,7 +187,7 @@ class AsteriosBotManager
         $stmt = $selectStatement->execute();
         $result = $stmt->fetchAll();
 	$recordMode = $result[0]['alarm'] ?? 0;
-	if ($recordMode === $mode) {
+	if ($recordMode === $mode || !$this->isSubclassRb($record['name'])) {
 	    return $result;
 	}
 	if ($mode === 1 && $recordMode === 0) {
