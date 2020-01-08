@@ -99,8 +99,8 @@ class AsteriosBotManager
             $channel = $this->getChannel($raid, $server);
 	    $text = $date->format('Y-m-d H:i:s') . ' ' . $raid['description'];
 
-	    if (0 === $server){
-	    	$text .= "\n\nТОП Б и Б кри для саба => Oren, `target /BarbaraLiskov`";
+	    if (0 === $server && $this->isSubclassRb($raid['title'])) {
+	    	$text .= "\n\nПушка и кри для Реорина => Oren, `target /BarbaraLiskov`, спасибо :)";
 	    };
 
             echo $this->send_msg($text, $channel) . PHP_EOL;
@@ -120,7 +120,7 @@ class AsteriosBotManager
             'text' => $text
         ];
 
-        return file_get_contents("https://api.telegram.org/bot{$apiToken}/sendMessage?" . http_build_query($data) );
+        return file_get_contents("https://api.telegram.org/bot{$apiToken}/sendMessage?" . http_build_query($data) . "&parse_mode=markdown" );
     }
 
     public function isSubclassRb(string $text)
