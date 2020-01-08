@@ -1,4 +1,4 @@
-<?php
+:<?php
 require "vendor/autoload.php";
 
 class AsteriosBotManager
@@ -97,7 +97,12 @@ class AsteriosBotManager
                 ]);
             $insertId = $insertStatement->execute(false);
             $channel = $this->getChannel($raid, $server);
-            $text = $date->format('Y-m-d H:i:s') . ' ' . $raid['description'];
+	    $text = $date->format('Y-m-d H:i:s') . ' ' . $raid['description'];
+
+	    if (0 === $server){
+	    	$text .= "\n\nТОП Б и Б кри для саба => Oren, `target /BarbaraLiskov`";
+	    };
+
             echo $this->send_msg($text, $channel) . PHP_EOL;
         } catch (\Throwable $e) {
             $error = $e->getMessage();
