@@ -36,7 +36,7 @@ class AsteriosBotManager
         return new \Slim\PDO\Database($dsn, $usr, $pwd);
     }
 
-    public function getDataPDO(\Slim\PDO\Database $pdo, int $server, int $limit = 20)
+    public function getDataPDO(\Slim\PDO\Database $pdo, int $server, int $limit = 10)
     {
         $selectStatement = $pdo->select(['title', 'description', 'timestamp'])
             ->from('new_raids')
@@ -100,8 +100,12 @@ class AsteriosBotManager
 	    $text = $date->format('Y-m-d H:i:s') . ' ' . $raid['description'];
 
 	    if (0 === $server && $this->isSubclassRb($raid['title'])) {
-	    	$text .= "\n\nПушка и кри для Реорина => Oren, `target /BarbaraLiskov`, спасибо :)";
+	    	$text .= "\n\nДонат:\nВариант 1: купить пушку и кри для Реорина => Oren, `target /BarbaraLiskov`\nВариант 2: Купить голду на сайте или отправить почтой на персонажа AmazonS3 (x5 сервер)";
 	    };
+            if (8 === $server && $this->isSubclassRb($raid['title'])) {
+	    	$text .= "\n\nДонат:\nКупить голду на сайте или отправить почтой на персонажа AmazonS3 (x5 сервер)";
+	    };
+
 
             echo $this->send_msg($text, $channel) . PHP_EOL;
         } catch (\Throwable $e) {
