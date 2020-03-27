@@ -115,6 +115,22 @@ class AsteriosBotManager
             $text .= "\n\nТоповый донат - 6 голды от пользователя pepega228";
         }
 
+        $timeUp = new DateTime();
+        $timeUp->setTimestamp($raid['timestamp'] + 18*60*60);
+        $timeDown = new DateTime();
+        $timeDown->setTimestamp($raid['timestamp'] + 30*60*60);
+
+        if ($this->isSubclassRb($raid['title'])) {
+            $text .= "\n\nВремя респа: C " . $timeUp->format('Y-m-d H:i:s') . ' до ' . $timeDown->format('Y-m-d H:i:s');
+            if (0 === $server) {
+                $text .= "\n\nДонат:\nВариант 1: купить пушку и кри для Реорина => Oren, <code>target /BarbaraLiskov</code>\nВариант 2: Купить голду на сайте или отправить почтой на персонажа AmazonS3 (x5 сервер)";
+            };
+            if (8 === $server) {
+                $text .= "\n\nДонат:\nКупить голду на сайте или отправить почтой на персонажа AmazonS3 (x5 сервер)";
+            };
+            $text .= "\n\nТоповый донат - 10 голды от пользователя Черт1";
+        }
+
 
 
         echo $this->send_msg($text, $channel) . PHP_EOL;
