@@ -1,4 +1,4 @@
-:<?php
+<?php
 require "vendor/autoload.php";
 
 class AsteriosBotManager
@@ -36,7 +36,7 @@ class AsteriosBotManager
         return new \Slim\PDO\Database($dsn, $usr, $pwd);
     }
 
-    public function getDataPDO(\Slim\PDO\Database $pdo, int $server, int $limit = 10)
+    public function getDataPDO(\Slim\PDO\Database $pdo, int $server, int $limit = 20)
     {
         $selectStatement = $pdo->select(['title', 'description', 'timestamp'])
             ->from('new_raids')
@@ -99,15 +99,25 @@ class AsteriosBotManager
             $channel = $this->getChannel($raid, $server);
 	    $text = $date->format('Y-m-d H:i:s') . ' ' . $raid['description'];
 
-	    if (0 === $server && $this->isSubclassRb($raid['title'])) {
-	    	$text .= "\n\nДонат:\nВариант 1: купить пушку и кри для Реорина => Oren, `target /BarbaraLiskov`\nВариант 2: Купить голду на сайте или отправить почтой на персонажа AmazonS3 (x5 сервер)";
-	    };
-            if (8 === $server && $this->isSubclassRb($raid['title'])) {
-	    	$text .= "\n\nДонат:\nКупить голду на сайте или отправить почтой на персонажа AmazonS3 (x5 сервер)";
-	    };
+        $timeUp = new DateTime();
+        $timeUp->setTimestamp($raid['timestamp'] + 18*60*60);
+        $timeDown = new DateTime();
+        $timeDown->setTimestamp($raid['timestamp'] + 30*60*60);
+
+        if ($this->isSubclassRb($raid['title'])) {
+            $text .= "\n\nВремя респа: C " . $timeUp->format('Y-m-d H:i:s') . ' до ' . $timeDown->format('Y-m-d H:i:s');
+            if (0 === $server) {
+                $text .= "\n\nДонат:\nВариант 1: купить пушку и кри для Реорина => Oren, <code>target /BarbaraLiskov</code>\nВариант 2: Купить голду на сайте или отправить почтой на персонажа AmazonS3 (x5 сервер)";
+            };
+            if (8 === $server) {
+                $text .= "\n\nДонат:\nКупить голду на сайте или отправить почтой на персонажа AmazonS3 (x5 сервер)";
+            };
+            $text .= "\n\nТоповый донат - 10 голды от пользователя Черт1";
+        }
 
 
-            echo $this->send_msg($text, $channel) . PHP_EOL;
+
+        echo $this->send_msg($text, $channel) . PHP_EOL;
         } catch (\Throwable $e) {
             $error = $e->getMessage();
             echo "ERROR! $error";
@@ -123,8 +133,27 @@ class AsteriosBotManager
             'chat_id' => $channel,
             'text' => $text
         ];
+        try {
+            $handle = curl_init();
 
-        return file_get_contents("https://api.telegram.org/bot{$apiToken}/sendMessage?" . http_build_query($data) . "&parse_mode=markdown" );
+            $url = "https://api.telegram.org/bot{$apiToken}/sendMessage?" . http_build_query($data) . "&parse_mode=html";
+            curl_setopt($handle, CURLOPT_URL, $url);
+// Set the result output to be a string.
+            curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
+
+            $output = curl_exec($handle);
+
+            curl_close($handle);
+
+            $result =  $output;
+
+//             = file_get_contents($url);
+        }
+        catch (\Exception $e) {
+            $result = $e->getMessage();
+        }
+
+        return $result;
     }
 
     public function isSubclassRb(string $text)
