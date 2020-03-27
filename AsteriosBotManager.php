@@ -195,52 +195,54 @@ class AsteriosBotManager
         $raids = array_reverse($raids);
 	
 	foreach ($raids as $raid) {
-		$fix = 60*60*21; //97200 is 27 hours
-	//	if ($this->isSubclassRb($raid['title'])) {
-			$raid['timestamp'] = time() - $raid['timestamp'] - 18*60*60 ;//- $fix;// $fix;
-			$raid['name'] = explode(' was', $raid['title'])[0] ?? '';
-			$result[md5($raid['title'])] = $raid;
-			
-	   // }
-	}
+        $fix = 18 * 60 * 60;
+        if ($this->isSubclassRb($raid['title'])) {
+            $fix = 24 * 60 * 60;
+        }
+        $raid['timestamp'] = time() - $raid['timestamp'] - $fix;
+        $raid['name'] = explode(' was', $raid['title'])[0] ?? '';
+        $result[md5($raid['title'])] = $raid;
+    }
 
 	return $result;
     }
 
-    public function checkRespawnTime(int $time)
+    public function checkRespawnTime(int $time, string $name)
     {
-	if ($time >= 32400 && $time < 37800) {
+        $threeHours = 32400;
+        $oneAndHalfHour = 37800;
+        if (!$this->isSubclassRb($name)) {
+            $threeHours = 75600;
+            $oneAndHalfHour = 81000;
+        }
+        if ($time >= $threeHours && $time < $oneAndHalfHour) {
             return 1;
-	} elseif ($time >= 37800) {
-	return 2;
-	}
-	return 0;
+        } elseif ($time >= $oneAndHalfHour) {
+            return 2;
+        }
+	    return 0;
     }
 
     public function alarm(\Slim\PDO\Database $pdo, array $record, int $mode)
     {
-	 $selectStatement = $pdo->select(['id', 'title', 'server', 'alarm'])
-            ->from('new_raids')
-            ->where('id', '=', $record['id']);
+         $selectStatement = $pdo->select(['id', 'title', 'server', 'alarm'])
+                ->from('new_raids')
+                ->where('id', '=', $record['id']);
         $stmt = $selectStatement->execute();
         $result = $stmt->fetchAll();
-	$recordMode = $result[0]['alarm'] ?? 0;
-	if ($recordMode === $mode || !$this->isSubclassRb($record['name'])) {
-	    return $result;
-	}
-	if ($mode === 1 && $recordMode === 0) {
-	
-            $msg = 'ALARM! Осталось менее 3ч респауна ' . $record['name'];  
-	}
-	if ($mode === 2 && $recordMode === 1) {
-	
-            $msg = 'ALARM! Осталось менее 1,5ч респауна ' . $record['name'];  
-	}
-	$this->update($pdo, $mode, $record['id']);
-	$channel = $this->getChannel($result[0], $result[0]['server']);
-	echo $this->send_msg($msg, $channel) . PHP_EOL;
-
-
+        $recordMode = $result[0]['alarm'] ?? 0;
+        if ($recordMode === $mode) {
+            return $result;
+        }
+        if ($mode === 1 && $recordMode === 0) {
+                $msg = 'ALARM! Осталось менее 3ч респауна ' . $record['name'];
+        }
+        if ($mode === 2 && $recordMode === 1) {
+                $msg = 'ALARM! Осталось менее 1,5ч респауна ' . $record['name'];
+        }
+        $this->update($pdo, $mode, $record['id']);
+        $channel = $this->getChannel($result[0], $result[0]['server']);
+        echo $this->send_msg($msg, $channel) . PHP_EOL;
     }
 
     public function update(\Slim\PDO\Database $pdo, $mode, $id)

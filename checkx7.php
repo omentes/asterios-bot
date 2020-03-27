@@ -19,7 +19,7 @@ $r = array_filter(array_map(function (&$x) {
 foreach ($r as $record) {
     
 	$time = $record['timestamp'];
-        $res = $manager->checkRespawnTime($time);
+    $res = $manager->checkRespawnTime($time, $record['name']);
 	if ($res > 0) {
 	    $manager->alarm($pdo, $record, $res);
 	}
