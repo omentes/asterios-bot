@@ -97,43 +97,31 @@ class AsteriosBotManager
                 ]);
             $insertId = $insertStatement->execute(false);
             $channel = $this->getChannel($raid, $server);
-	    $text = $date->format('Y-m-d H:i:s') . ' ' . $raid['description'];
+	        $text = $date->format('Y-m-d H:i:s') . ' ' . $raid['description'];
+            $timeUp = new DateTime();
+            $timeDown = new DateTime();
+            if ($this->isAllianceRB($raid['title'])) {
+                $timeUp->setTimestamp($raid['timestamp'] + 24*60*60);
+                $timeDown->setTimestamp($raid['timestamp'] + 48*60*60);
+            } else {
+                $timeUp->setTimestamp($raid['timestamp'] + 18*60*60);
+                $timeDown->setTimestamp($raid['timestamp'] + 30*60*60);
+            }
 
-        $timeUp = new DateTime();
-        $timeUp->setTimestamp($raid['timestamp'] + 18*60*60);
-        $timeDown = new DateTime();
-        $timeDown->setTimestamp($raid['timestamp'] + 30*60*60);
-
-        if ($this->isSubclassRb($raid['title'])) {
             $text .= "\n\nВремя респа: C " . $timeUp->format('Y-m-d H:i:s') . ' до ' . $timeDown->format('Y-m-d H:i:s');
-            if (0 === $server) {
-                $text .= "\n\nДонат:\nВариант 1: купить пушку и кри для Реорина => Oren, <code>target /BarbaraLiskov</code>\nВариант 2: Купить голду на сайте или отправить почтой на персонажа AmazonS3 (x5 сервер)";
-            };
-            if (8 === $server) {
+            if ($this->isSubclassRb($raid['title'])) {
+                if (0 === $server) {
+                    $text .= "\n\nДонат:\nВариант 1: купить пушку и кри для Реорина => Oren, <code>target /BarbaraLiskov</code>\nВариант 2: Купить голду на сайте или отправить почтой на персонажа AmazonS3 (x5 сервер)";
+                };
+                if (8 === $server) {
+                    $text .= "\n\nДонат:\nКупить голду на сайте или отправить почтой на персонажа AmazonS3 (x5 сервер)";
+                };
+            } else {
                 $text .= "\n\nДонат:\nКупить голду на сайте или отправить почтой на персонажа AmazonS3 (x5 сервер)";
-            };
-            $text .= "\n\nТоповый донат - 6 голды от пользователя pepega228";
-        }
-
-        $timeUp = new DateTime();
-        $timeUp->setTimestamp($raid['timestamp'] + 18*60*60);
-        $timeDown = new DateTime();
-        $timeDown->setTimestamp($raid['timestamp'] + 30*60*60);
-
-        if ($this->isSubclassRb($raid['title'])) {
-            $text .= "\n\nВремя респа: C " . $timeUp->format('Y-m-d H:i:s') . ' до ' . $timeDown->format('Y-m-d H:i:s');
-            if (0 === $server) {
-                $text .= "\n\nДонат:\nВариант 1: купить пушку и кри для Реорина => Oren, <code>target /BarbaraLiskov</code>\nВариант 2: Купить голду на сайте или отправить почтой на персонажа AmazonS3 (x5 сервер)";
-            };
-            if (8 === $server) {
-                $text .= "\n\nДонат:\nКупить голду на сайте или отправить почтой на персонажа AmazonS3 (x5 сервер)";
-            };
+            }
             $text .= "\n\nТоповый донат - 10 голды от пользователя Черт1";
-        }
 
-
-
-        echo $this->send_msg($text, $channel) . PHP_EOL;
+            echo $this->send_msg($text, $channel) . PHP_EOL;
         } catch (\Throwable $e) {
             $error = $e->getMessage();
             echo "ERROR! $error";
@@ -182,6 +170,14 @@ class AsteriosBotManager
         ]);
     }
 
+    public function isAllianceRB(string $text)
+    {
+        return $this->contains($text, [
+            'Ketra',
+            'Varka',
+        ]);
+    }
+
     public function contains($str, array $raids)
     {
         foreach ($raids as $raid) {
@@ -227,7 +223,7 @@ class AsteriosBotManager
     {
         $threeHours = 32400;
         $oneAndHalfHour = 37800;
-        if (!$this->isSubclassRb($name)) {
+        if ($this->isAllianceRB($name)) {
             $threeHours = 75600;
             $oneAndHalfHour = 81000;
         }
@@ -266,6 +262,6 @@ class AsteriosBotManager
         $updateStatement = $pdo->update(['alarm' => $mode])
                  ->table('new_raids')
                  ->where('id', '=', $id);
-	$affectedRows = $updateStatement->execute();
+	    $affectedRows = $updateStatement->execute();
     }
 }
