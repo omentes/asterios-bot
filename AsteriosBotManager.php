@@ -212,7 +212,7 @@ class AsteriosBotManager
 	
 	foreach ($raids as $raid) {
         $fix = 18 * 60 * 60;
-        if ($this->isSubclassRb($raid['title'])) {
+        if (!$this->isSubclassRb($raid['title'])) {
             $fix = 24 * 60 * 60;
         }
         $raid['timestamp'] = time() - $raid['timestamp'] - $fix;
