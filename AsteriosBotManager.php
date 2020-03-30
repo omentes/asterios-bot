@@ -48,6 +48,18 @@ class AsteriosBotManager
         return $stmt->fetchAll();
     }
 
+    public function getRaidsLikeThis(\Slim\PDO\Database $pdo, string $like, int $server, string $order = 'asc')
+    {
+        $selectStatement = $pdo->select(['*'])
+            ->from('new_raids')
+            ->where('server', '=', $server)
+            ->whereLike('title', "%{$like}%")
+            ->orderBy('timestamp', $order);
+
+        $stmt = $selectStatement->execute();
+        return $stmt->fetchAll();
+    }
+
     public function getDataPDOid(\Slim\PDO\Database $pdo, int $server, int $limit = 20)
     {
         $selectStatement = $pdo->select(['id', 'title', 'description', 'timestamp'])

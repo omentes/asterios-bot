@@ -5,14 +5,44 @@ require "AsteriosBotManager.php";
 $manager = new AsteriosBotManager();
 
 $pdo = $manager->getPDO();
-$local = $manager->getDataPDO($pdo, $manager::X5);
-$remote = $manager->getRSSData($manager::URL_X5);
-$newRaids =    arrayRecursiveDiff($remote, $local);
-pp($newRaids);
-echo count($newRaids) . ' ';
-//foreach ($newRaids as $raid) {
-//    $manager->trySend($pdo, $raid, $manager::X5);
-//}
+$raids = $manager->getRaidsLikeThis($pdo, 'Shadith', $manager::X5);
+
+$old = new DateTime();
+$results = [];
+foreach ($raids as $index => $raid) {
+    if ($index) {
+        $time = new DateTime();
+        $time->setTimestamp($raid['timestamp']);
+        $diff = $old->diff($time);
+        $hours = $diff->h;
+        $hours = $hours + ($diff->days*24);
+        $minutes = $diff->i;
+        echo "{$hours}:{$minutes}\n";
+        if (!$results[$hours]) {
+            $results[$hours] = 1;
+        } else {
+            $results[$hours]++;
+        }
+    }
+    $old->setTimestamp($raid['timestamp']);
+}
+
+ksort ($results);
+
+foreach ($results as $index => $result) {
+    echo "{$index}\t";
+    foreach (range(0, $result) as $r) {
+        echo "x";
+    }
+    echo "\n";
+}
+echo "All: " . count($raids) . "\n";
+pp($results);
+
+
+
+
+
 
 function pp($item)
 {
@@ -22,42 +52,3 @@ function pp($item)
     echo PHP_EOL;
     die();
 }
-function arrayRecursiveDiff($aArray1, $aArray2) {
-    $aReturn = array();
-
-    foreach ($aArray1 as $mKey => $mValue) {
-        if (array_key_exists($mKey, $aArray2)) {
-            if (is_array($mValue)) {
-                $aRecursiveDiff = arrayRecursiveDiff($mValue, $aArray2[$mKey]);
-                if (count($aRecursiveDiff)) { $aReturn[$mKey] = $aRecursiveDiff; }
-            } else {
-                if ($mValue != $aArray2[$mKey]) {
-                    $aReturn[$mKey] = $mValue;
-                }
-            }
-        } else {
-            $aReturn[$mKey] = $mValue;
-        }
-    }
-    return $aReturn;
-}
-
-/**
- * * * * * * php /home/ubuntu/asterios-bot/_bot.php >> /home/ubuntu/asterios.bot.log 2>&1
- * * * * * ( sleep 7 ; php /home/ubuntu/asterios-bot/_bot.php >> /home/ubuntu/asterios.bot.log 2>&1 )
- * * * * * ( sleep 15 ; php /home/ubuntu/asterios-bot/_bot.php >> /home/ubuntu/asterios.bot.log 2>&1 )
- * * * * * ( sleep 23 ; php /home/ubuntu/asterios-bot/_bot.php >> /home/ubuntu/asterios.bot.log 2>&1 )
- * * * * * ( sleep 30 ; php /home/ubuntu/asterios-bot/_bot.php >> /home/ubuntu/asterios.bot.log 2>&1 )
- * * * * * ( sleep 37 ; php /home/ubuntu/asterios-bot/_bot.php >> /home/ubuntu/asterios.bot.log 2>&1 )
- * * * * * ( sleep 45 ; php /home/ubuntu/asterios-bot/_bot.php >> /home/ubuntu/asterios.bot.log 2>&1 )
- * * * * * ( sleep 53 ; php /home/ubuntu/asterios-bot/_bot.php >> /home/ubuntu/asterios.bot.log 2>&1 )
-
- * * * * * * php /home/ubuntu/asterios-bot/_botx7.php >> /home/ubuntu/asterios.bot.log 2>&1
- * * * * * ( sleep 7 ; php /home/ubuntu/asterios-bot/_botx7.php >> /home/ubuntu/asterios.bot.log 2>&1 )
- * * * * * ( sleep 15 ; php /home/ubuntu/asterios-bot/_botx7.php >> /home/ubuntu/asterios.bot.log 2>&1 )
- * * * * * ( sleep 23 ; php /home/ubuntu/asterios-bot/_botx7.php >> /home/ubuntu/asterios.bot.log 2>&1 )
- * * * * * ( sleep 30 ; php /home/ubuntu/asterios-bot/_botx7.php >> /home/ubuntu/asterios.bot.log 2>&1 )
- * * * * * ( sleep 37 ; php /home/ubuntu/asterios-bot/_botx7.php >> /home/ubuntu/asterios.bot.log 2>&1 )
- * * * * * ( sleep 45 ; php /home/ubuntu/asterios-bot/_botx7.php >> /home/ubuntu/asterios.bot.log 2>&1 )
- * * * * * ( sleep 53 ; php /home/ubuntu/asterios-bot/_botx7.php >> /home/ubuntu/asterios.bot.log 2>&1 )
- */
