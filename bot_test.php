@@ -5,7 +5,7 @@ require "AsteriosBotManager.php";
 $manager = new AsteriosBotManager();
 
 $pdo = $manager->getPDO();
-$raids = $manager->getRaidsLikeThis($pdo, 'Shadith', $manager::X5);
+$raids = $manager->getRaidsLikeThis($pdo, 'Mos', $manager::X5);
 
 $old = new DateTime();
 $results = [];

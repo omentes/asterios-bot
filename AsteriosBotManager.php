@@ -131,7 +131,7 @@ class AsteriosBotManager
             } else {
                 $text .= "\n\nДонат:\nКупить голду на сайте или отправить почтой на персонажа AmazonS3 (x5 сервер)";
             }
-            $text .= "\n\nТоповый донат - 10 голды от пользователя Черт1";
+            $text .= "\n\nТоповый донат - 11 голды от пользователя Depsik";
 
             echo $this->send_msg($text, $channel) . PHP_EOL;
         } catch (\Throwable $e) {
