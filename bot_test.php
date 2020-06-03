@@ -5,7 +5,7 @@ require "AsteriosBotManager.php";
 $manager = new AsteriosBotManager();
 
 $pdo = $manager->getPDO();
-$raids = $manager->getRaidsLikeThis($pdo, 'Mos', $manager::X5);
+$raids = $manager->getRaidsLikeThis($pdo, 'Shadit', $manager::X5);
 
 $old = new DateTime();
 $results = [];
@@ -18,7 +18,7 @@ foreach ($raids as $index => $raid) {
         $hours = $hours + ($diff->days*24);
         $minutes = $diff->i;
         echo "{$hours}:{$minutes}\n";
-        if (!$results[$hours]) {
+        if (!isset($results[$hours])) {
             $results[$hours] = 1;
         } else {
             $results[$hours]++;
