@@ -48,6 +48,18 @@ class AsteriosBotManager
         return $stmt->fetchAll();
     }
 
+    public function getRaidsLikeThis(\Slim\PDO\Database $pdo, string $like, int $server, string $order = 'asc')
+    {
+        $selectStatement = $pdo->select(['*'])
+            ->from('new_raids')
+            ->where('server', '=', $server)
+            ->whereLike('title', "%{$like}%")
+            ->orderBy('timestamp', $order);
+
+        $stmt = $selectStatement->execute();
+        return $stmt->fetchAll();
+    }
+
     public function getDataPDOid(\Slim\PDO\Database $pdo, int $server, int $limit = 20)
     {
         $selectStatement = $pdo->select(['id', 'title', 'description', 'timestamp'])
@@ -109,17 +121,8 @@ class AsteriosBotManager
             }
 
             $text .= "\n\nВремя респа: C " . $timeUp->format('Y-m-d H:i:s') . ' до ' . $timeDown->format('Y-m-d H:i:s');
-            if ($this->isSubclassRb($raid['title'])) {
-                if (0 === $server) {
-                    $text .= "\n\nДонат:\nВариант 1: купить пушку и кри для Реорина => Oren, <code>target /BarbaraLiskov</code>\nВариант 2: Купить голду на сайте или отправить почтой на персонажа AmazonS3 (x5 сервер)";
-                };
-                if (8 === $server) {
-                    $text .= "\n\nДонат:\nКупить голду на сайте или отправить почтой на персонажа AmazonS3 (x5 сервер)";
-                };
-            } else {
-                $text .= "\n\nДонат:\nКупить голду на сайте или отправить почтой на персонажа AmazonS3 (x5 сервер)";
-            }
-            $text .= "\n\nТоповый донат - 10 голды от пользователя Черт1";
+            $text .= "\n\nДонат:\nКупить голду на сайте или отправить почтой на персонажа AmazonS3 (x5 сервер) или вкачать твина по рефералке на х5 https://bit.ly/asterios-invite";
+            $text .= "\n\nТоповый донат - 11 голды от пользователя Depsik";
 
             echo $this->send_msg($text, $channel) . PHP_EOL;
         } catch (\Throwable $e) {
