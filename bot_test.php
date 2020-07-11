@@ -4,6 +4,23 @@ require "AsteriosBotManager.php";
 
 $manager = new AsteriosBotManager();
 
+\Prometheus\Storage\Redis::setDefaultOptions(
+    [
+        'host' => '127.0.0.1',
+        'port' => 6379,
+        'password' => null,
+        'timeout' => 0.1, // in seconds
+        'read_timeout' => '10', // in seconds
+        'persistent_connections' => false
+    ]
+);
+
+$registry = \Prometheus\CollectorRegistry::getDefault();
+
+$counter = $registry->getOrRegisterCounter('asterios_bot', 'healthcheck_test', 'it increases');
+$counter->incBy(1, []);
+
+
 $pdo = $manager->getPDO();
 $local = $manager->getDataPDO($pdo, $manager::X5);
 $remote = $manager->getRSSData($manager::URL_X5);
