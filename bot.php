@@ -8,8 +8,7 @@ $pdo = $manager->getPDO();
 $local = $manager->getDataPDO($pdo, $manager::X5);
 $remote = $manager->getRSSData($manager::URL_X5);
 $newRaids =    arrayRecursiveDiff($remote, $local);
-//pp(check_diff_multi($remote, $local));
-echo count($newRaids) . ' ';
+echo "[X5] " . date("Y-m-d H:i:s") . ' ' . count($newRaids) . PHP_EOL;
 \Prometheus\Storage\Redis::setDefaultOptions(
     [
         'host' => '127.0.0.1',
