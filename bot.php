@@ -10,6 +10,22 @@ $remote = $manager->getRSSData($manager::URL_X5);
 $newRaids =    arrayRecursiveDiff($remote, $local);
 //pp(check_diff_multi($remote, $local));
 echo count($newRaids) . ' ';
+\Prometheus\Storage\Redis::setDefaultOptions(
+    [
+        'host' => '127.0.0.1',
+        'port' => 6379,
+        'password' => null,
+        'timeout' => 0.1, // in seconds
+        'read_timeout' => '10', // in seconds
+        'persistent_connections' => false
+    ]
+);
+
+$registry = \Prometheus\CollectorRegistry::getDefault();
+
+$counter = $registry->getOrRegisterCounter('asterios_bot', 'healthcheck_x5', 'it increases');
+$counter->incBy(1, []);
+
 foreach ($newRaids as $raid) {
     $manager->trySend($pdo, $raid, $manager::X5);
 }

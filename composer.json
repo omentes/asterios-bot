@@ -5,6 +5,7 @@
       "slim/pdo": "^1.10",
       "vlucas/phpdotenv": "^3.6",
       "dg/rss-php": "^1.4",
-      "ext-curl": "*"
+      "ext-curl": "*",
+        "endclothing/prometheus_client_php": "^1.0"
     }
 }
