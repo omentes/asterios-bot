@@ -1,6 +1,7 @@
 <?php
 require "vendor/autoload.php";
 require "AsteriosBotManager.php";
+error_reporting(E_ERROR | E_PARSE);
 
 $manager = new AsteriosBotManager();
 
@@ -38,22 +39,17 @@ function pp($item)
     echo PHP_EOL;
     die();
 }
-function arrayRecursiveDiff($aArray1, $aArray2) {
-    $aReturn = array();
-
-    foreach ($aArray1 as $mKey => $mValue) {
-        if (array_key_exists($mKey, $aArray2)) {
-            if (is_array($mValue)) {
-                $aRecursiveDiff = arrayRecursiveDiff($mValue, $aArray2[$mKey]);
-                if (count($aRecursiveDiff)) { $aReturn[$mKey] = $aRecursiveDiff; }
-            } else {
-                if ($mValue != $aArray2[$mKey]) {
-                    $aReturn[$mKey] = $mValue;
-                }
-            }
-        } else {
-            $aReturn[$mKey] = $mValue;
+function arrayRecursiveDiff($second, $first) {
+    $tmp = $result = [];
+    foreach ($first as $item) {
+        $tmp[hash('sha1', json_encode($item))] = $item;
+    }
+    foreach ($second as $item) {
+        $hash = hash('sha1', json_encode($item));
+        if (!isset($tmp[$hash])) {
+            $result[] = $item;
         }
     }
-    return $aReturn;
+    return $result;
 }
+

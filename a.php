@@ -1,33 +1,24 @@
 <?php
 require "vendor/autoload.php";
-require "AsteriosBotManager.php";
+require "_AsteriosBotManager.php";
 error_reporting(E_ERROR | E_PARSE);
 
-$manager = new AsteriosBotManager();
+$manager = new _AsteriosBotManager();
 
 $pdo = $manager->getPDO();
-$local = $manager->getDataPDO($pdo, $manager::X5);
+$local = $manager->getDataPDO($pdo, 10);
 $remote = $manager->getRSSData($manager::URL_X5);
-$newRaids =    arrayRecursiveDiff($remote, $local);
+$newRaids =    arrayRecursiveDiff($local, $remote);
 echo "[X5] " . date("Y-m-d H:i:s") . ' ' . count($newRaids) . PHP_EOL;
-\Prometheus\Storage\Redis::setDefaultOptions(
-    [
-        'host' => '127.0.0.1',
-        'port' => 6379,
-        'password' => null,
-        'timeout' => 0.1, // in seconds
-        'read_timeout' => '10', // in seconds
-        'persistent_connections' => false
-    ]
-);
-
-$registry = \Prometheus\CollectorRegistry::getDefault();
-
-$counter = $registry->getOrRegisterCounter('asterios_bot', 'healthcheck_x5', 'it increases');
-$counter->incBy(1, []);
-
+$fp = fopen('local.json', 'w');
+fwrite($fp, json_encode($local));
+fclose($fp);
+$fp2 = fopen('remote.json', 'w');
+fwrite($fp2, json_encode($remote));
+fclose($fp2);
+//pp($newRaids);
 foreach ($newRaids as $raid) {
-    $manager->trySend($pdo, $raid, $manager::X5);
+    $manager->trySend($pdo, $raid, 10);
 }
 
 function pp($item)
@@ -38,7 +29,7 @@ function pp($item)
     echo PHP_EOL;
     die();
 }
-function arrayRecursiveDiff($second, $first) {
+function arrayRecursiveDiff($first, $second) {
     $tmp = $result = [];
     foreach ($first as $item) {
         $tmp[hash('sha1', json_encode($item))] = $item;

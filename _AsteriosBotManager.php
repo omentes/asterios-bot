@@ -1,7 +1,7 @@
 <?php
 require "vendor/autoload.php";
 
-class AsteriosBotManager
+class _AsteriosBotManager
 {
     public const X5 = 0;
     public const X7 = 8;
@@ -9,11 +9,11 @@ class AsteriosBotManager
     public const URL_X7 = 'https://asterios.tm/index.php?cmd=rss&serv=8&filter=keyboss&out=xml';
     public const CHANNELS = [
         self::X5 => [
-            'sub' => '@asteriosx5rb',
+            'sub' => '@grafanatest1',
             'key' => '@grafanatest1',
             ],
         self::X7 => [
-            'sub' => '@asteriosx7rb',
+            'sub' => '@grafanatest1',
             'key' => '@grafanatest1',
             ],
     ];
@@ -102,13 +102,13 @@ class AsteriosBotManager
             ])
                 ->into('new_raids')
                 ->values([
-                    $server,
+                    10,
                     $raid['title'],
                     $raid['description'],
                     $raid['timestamp'],
                 ]);
             $insertId = $insertStatement->execute(false);
-            $channel = $this->getChannel($raid, $server);
+            $channel = $this->getChannel($raid, 0);
 	        $text = $date->format('Y-m-d H:i:s') . ' ' . $raid['description'];
             $timeUp = new DateTime();
             $timeDown = new DateTime();
@@ -123,7 +123,7 @@ class AsteriosBotManager
             $text .= "\n\nВремя респа: C " . $timeUp->format('Y-m-d H:i:s') . ' до ' . $timeDown->format('Y-m-d H:i:s');
             $text .= "\n\nДонат:\nКупить голду на сайте или отправить почтой на персонажа AmazonS3 (x5 сервер) или вкачать твина по рефералке на х5 https://bit.ly/asterios-invite";
             $text .= "\n\nТоповый донат - 11 голды от пользователя Depsik";
-    
+
             echo "===split===\n" . $this->send_msg($text, $channel) . PHP_EOL . "===split===\n";
         } catch (\Throwable $e) {
             $error = $e->getMessage();
@@ -257,7 +257,7 @@ class AsteriosBotManager
         }
         $this->update($pdo, $mode, $record['id']);
         $channel = $this->getChannel($result[0], $result[0]['server']);
-        echo "===split===\n" . $this->send_msg($msg, $channel) . PHP_EOL . "===split===\n" ;
+        echo $this->send_msg($msg, $channel) . PHP_EOL;
     }
 
     public function update(\Slim\PDO\Database $pdo, $mode, $id)
