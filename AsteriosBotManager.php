@@ -10,11 +10,11 @@ class AsteriosBotManager
     public const CHANNELS = [
         self::X5 => [
             'sub' => '@asteriosx5rb',
-            'key' => '@grafanatest1',
+            'key' => '@asteriosX5keyRB',
             ],
         self::X7 => [
             'sub' => '@asteriosx7rb',
-            'key' => '@grafanatest1',
+            'key' => '@asteriosX7keyRB',
             ],
     ];
     public function __construct()
