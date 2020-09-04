@@ -24,7 +24,8 @@ $registry = \Prometheus\CollectorRegistry::getDefault();
 $counter = $registry->getOrRegisterCounter('asterios_bot', 'healthcheck_x7', 'it increases');
 $counter->incBy(1, []);
 
-echo count($newRaids) . ' ';
+echo "[X7] " . date("Y-m-d H:i:s") . ' ' . count($newRaids) . PHP_EOL;
+
 foreach ($newRaids as $raid) {
     $manager->trySend($pdo, $raid, $manager::X7);
 }
