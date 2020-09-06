@@ -4,8 +4,10 @@ require "vendor/autoload.php";
 class AsteriosBotManager
 {
     public const X5 = 0;
+    public const X3 = 6;
     public const X7 = 8;
     public const URL_X5 = 'https://asterios.tm/index.php?cmd=rss&serv=0&filter=keyboss&out=xml';
+    public const URL_X3 = 'https://asterios.tm/index.php?cmd=rss&serv=6&filter=keyboss&out=xml';
     public const URL_X7 = 'https://asterios.tm/index.php?cmd=rss&serv=8&filter=keyboss&out=xml';
     public const CHANNELS = [
         self::X5 => [
@@ -15,6 +17,10 @@ class AsteriosBotManager
         self::X7 => [
             'sub' => '@asteriosx7rb',
             'key' => '@asteriosX7keyRB',
+            ],
+        self::X3 => [
+            'sub' => '@asteriosx3rb',
+            'key' => '@asteriosX3keyRB',
             ],
     ];
     public function __construct()
@@ -119,10 +125,12 @@ class AsteriosBotManager
                 $timeUp->setTimestamp($raid['timestamp'] + 18*60*60);
                 $timeDown->setTimestamp($raid['timestamp'] + 30*60*60);
             }
-
+            $rightNow = new DateTime();
+            $rightNow->setTimestamp(time());
             $text .= "\n\nВремя респа: C " . $timeUp->format('Y-m-d H:i:s') . ' до ' . $timeDown->format('Y-m-d H:i:s');
             $text .= "\n\nДонат:\nКупить голду на сайте или отправить почтой на персонажа AmazonS3 (x5 сервер) или вкачать твина по рефералке на х5 https://bit.ly/asterios-invite";
             $text .= "\n\nТоповый донат - 11 голды от пользователя Depsik";
+            $text .= "\n\nВремя получения инфы о смерти с сайта Астериоса и публикации этого сообщения: " . $rightNow->format('Y-m-d H:i:s');
     
             echo "===split===\n" . $this->send_msg($text, $channel) . PHP_EOL . "===split===\n";
         } catch (\Throwable $e) {
