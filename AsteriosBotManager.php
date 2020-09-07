@@ -81,9 +81,13 @@ class AsteriosBotManager
 
     public function getRSSData(string $url, int $limit = 20)
     {
-        $rss = Feed::loadRss($url);
-
-        $newData = $rss->toArray();
+        try {
+            $rss = Feed::loadRss($url);
+            $newData = $rss->toArray();
+        } catch (FeedException $e) {
+            $newData = [];
+        }
+    
         $remoteBefore = $newData['item'] ?? [];
 
         return array_map(function ($record) {
@@ -132,10 +136,10 @@ class AsteriosBotManager
             $text .= "\n\nТоповый донат - 11 голды от пользователя Depsik";
             $text .= "\n\nВремя получения инфы о смерти с сайта Астериоса и публикации этого сообщения: " . $rightNow->format('Y-m-d H:i:s');
     
-            echo "===split===\n" . $this->send_msg($text, $channel) . PHP_EOL . "===split===\n";
+            echo $this->send_msg($text, $channel) . PHP_EOL;
         } catch (\Throwable $e) {
             $error = $e->getMessage();
-            echo "===split===\n" . "ERROR! $error" . "===split===\n";
+            echo "ERROR! $error" . PHP_EOL;
             die();
         }
     }
