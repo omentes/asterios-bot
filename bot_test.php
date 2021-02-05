@@ -1,9 +1,14 @@
 <?php
-require "vendor/autoload.php";
-require "AsteriosBotManager.php";
+require __DIR__ . '/vendor/autoload.php';
+use AsteriosBot\Core\Worker;
 
-$manager = new AsteriosBotManager();
-
+//$manager = new AsteriosBotManager();
+$cli = isset($argv[1]) && $argv[1] == 'cli';
+if (isset($argv[1]) && isset($argv[2])) {
+    $server = $argv[1];
+    $check = isset($argv[2]) && $argv[2] == 'true';
+    Worker::run($server, $check);
+}
 
 //\Prometheus\Storage\Redis::setDefaultOptions(
 //    [
@@ -63,11 +68,11 @@ pp($results);
 //$counter->incBy(1, []);
 
 
-$pdo = $manager->getPDO();
-$local = $manager->getDataPDO($pdo, 9);
-$remote = get_test(); //$manager->getRSSData($manager::URL_X7);
-$newRaids =    arrayRecursiveDiff($remote, $local);
-pp($remote);
+//$pdo = $manager->getPDO();
+//$local = $manager->getDataPDO($pdo, 9);
+//$remote = get_test(); //$manager->getRSSData($manager::URL_X7);
+//$newRaids =    arrayRecursiveDiff($remote, $local);
+//pp($remote);
 //echo count($newRaids) . ' ';
 //foreach ($newRaids as $raid) {
 //    $manager->trySend($pdo, $raid, $manager::X5);

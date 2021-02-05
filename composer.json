@@ -1,11 +1,18 @@
 {
     "require": {
-      "paquettg/php-html-parser": "^2.1",
-      "ext-json": "*",
-      "slim/pdo": "^1.10",
-      "vlucas/phpdotenv": "^3.6",
-      "dg/rss-php": "^1.4",
-      "ext-curl": "*",
-        "endclothing/prometheus_client_php": "^1.0"
+        "paquettg/php-html-parser": "^2.1",
+        "ext-json": "*",
+        "slim/pdo": "^1.10",
+        "vlucas/phpdotenv": "^5.3",
+        "dg/rss-php": "^1.4",
+        "ext-curl": "*",
+        "endclothing/prometheus_client_php": "^1.0",
+        "monolog/monolog": "^2.2",
+        "predis/predis": "^1.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "AsteriosBot\\": "app/"
+        }
     }
 }

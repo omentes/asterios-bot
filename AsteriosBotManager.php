@@ -25,7 +25,7 @@ class AsteriosBotManager
     ];
     public function __construct()
     {
-        $dotenv = Dotenv\Dotenv::create(__DIR__);
+        $dotenv = Dotenv\Dotenv::createUnsafeImmutable(__DIR__);
         $dotenv->load();
         date_default_timezone_set('Europe/Moscow');
     }
@@ -132,7 +132,7 @@ class AsteriosBotManager
             $rightNow = new DateTime();
             $rightNow->setTimestamp(time());
             $text .= "\n\nВремя респа: C " . $timeUp->format('Y-m-d H:i:s') . ' до ' . $timeDown->format('Y-m-d H:i:s');
-            $text .= "\n\nДонат:\nКупить голду на сайте или отправить почтой на персонажа AmazonS3 (x5 сервер) или вкачать твина по рефералке на х5 https://bit.ly/asterios-invite";
+            $text .= "\n\nДонат:\n вкачать твина по рефералке на х5 https://bit.ly/asterios-invite-link";
             $text .= "\n\nТоповый донат - 11 голды от пользователя Depsik";
             $text .= "\n\nВремя получения инфы о смерти с сайта Астериоса и публикации этого сообщения: " . $rightNow->format('Y-m-d H:i:s');
     
@@ -140,7 +140,7 @@ class AsteriosBotManager
         } catch (\Throwable $e) {
             $error = $e->getMessage();
             echo "ERROR! $error" . PHP_EOL;
-            die();
+//            die();
         }
     }
 

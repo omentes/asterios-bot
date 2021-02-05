@@ -6,7 +6,7 @@ error_reporting(E_ERROR | E_PARSE);
 $manager = new AsteriosBotManager();
 
 $pdo = $manager->getPDO();
-$local = $manager->getDataPDO($pdo, $manager::X5);
+$local = $manager->getDataPDO($pdo, $manager::X5, 30);
 $remote = $manager->getRSSData($manager::URL_X5);
 $newRaids =    arrayRecursiveDiff($remote, $local);
 echo "[X5] " . date("Y-m-d H:i:s") . ' ' . count($newRaids) . PHP_EOL;
