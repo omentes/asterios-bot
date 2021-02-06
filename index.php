@@ -11,6 +11,7 @@ if (isset($_REQUEST['uri']) && $_REQUEST['uri'] == '/metrics') {
     $result = $renderer->render($metrics->getRegistry()->getMetricFamilySamples());
     header('Content-type: ' . RenderTextFormat::MIME_TYPE);
     echo $result;
+    die;
 }
 
 echo json_encode(

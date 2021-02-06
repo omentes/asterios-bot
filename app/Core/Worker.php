@@ -12,7 +12,6 @@ class Worker extends Singleton
     public static function run(string $server, bool $check = false)
     {
         $app = App::getInstance();
-        $app->run();
 
         try {
             $app->botRunner($server, $check);

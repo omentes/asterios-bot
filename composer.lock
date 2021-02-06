@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "63bc6527cd2eb78546aa9e20324e1606",
+    "content-hash": "9e9dc76713b50bf30fb51ba2c5c8f241",
     "packages": [
         {
             "name": "dg/rss-php",
@@ -100,6 +100,67 @@
                 "source": "https://github.com/endclothing/prometheus_client_php/tree/v1.0.1"
             },
             "time": "2019-10-04T10:46:29+00:00"
+        },
+        {
+            "name": "faapz/pdo",
+            "version": "v2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/FaaPz/PDO.git",
+                "reference": "6b4c127dde91e087df22f0fb93d41c024d9996f9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/FaaPz/PDO/zipball/6b4c127dde91e087df22f0fb93d41c024d9996f9",
+                "reference": "6b4c127dde91e087df22f0fb93d41c024d9996f9",
+                "shasum": ""
+            },
+            "require": {
+                "ext-pdo": "*",
+                "php": ">=7.2.0"
+            },
+            "require-dev": {
+                "phan/phan": "^2.2",
+                "phpunit/phpunit": "^8",
+                "squizlabs/php_codesniffer": "3.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "FaaPz\\PDO\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabian de Laender",
+                    "email": "fabian@faapz.productions",
+                    "homepage": "https://faapz.productions",
+                    "role": "Owner"
+                },
+                {
+                    "name": "Alexander Barker",
+                    "email": "alex@1stleg.com",
+                    "homepage": "https://github.com/kwhat/",
+                    "role": "Collaborator"
+                }
+            ],
+            "description": "Just another PDO database library",
+            "homepage": "https://github.com/FaaPz/PDO",
+            "keywords": [
+                "database",
+                "pdo",
+                "sql"
+            ],
+            "support": {
+                "docs": "https://github.com/FaaPz/PDO/blob/master/docs/README.md",
+                "issues": "https://github.com/FaaPz/PDO/issues",
+                "source": "https://github.com/FaaPz/PDO/tree/v2.1.0"
+            },
+            "time": "2020-10-29T20:25:12+00:00"
         },
         {
             "name": "graham-campbell/result-type",
@@ -866,58 +927,6 @@
                 "source": "https://github.com/ralouphie/getallheaders/tree/develop"
             },
             "time": "2019-03-08T08:55:37+00:00"
-        },
-        {
-            "name": "slim/pdo",
-            "version": "1.10.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/FaaPz/Slim-PDO.git",
-                "reference": "2eaaae8c5fbfeba832bf3c8fa88b1780e23554ee"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/FaaPz/Slim-PDO/zipball/2eaaae8c5fbfeba832bf3c8fa88b1780e23554ee",
-                "reference": "2eaaae8c5fbfeba832bf3c8fa88b1780e23554ee",
-                "shasum": ""
-            },
-            "require": {
-                "ext-pdo": "*",
-                "php": ">=5.3.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Slim\\PDO\\": "src/PDO/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabian de Laender",
-                    "email": "fabian@faapz.nl",
-                    "homepage": "http://faapz.nl",
-                    "role": "Developer"
-                }
-            ],
-            "description": "PDO database library for Slim Framework",
-            "homepage": "https://github.com/FaaPz/Slim-PDO",
-            "keywords": [
-                "database",
-                "framework",
-                "pdo",
-                "slim"
-            ],
-            "support": {
-                "docs": "https://github.com/FaaPz/Slim-PDO/blob/master/docs/README.md",
-                "issues": "https://github.com/FaaPz/Slim-PDO/issues",
-                "source": "https://github.com/FaaPz/Slim-PDO/tree/master"
-            },
-            "abandoned": "faapz/pdo",
-            "time": "2017-08-15T10:42:44+00:00"
         },
         {
             "name": "symfony/polyfill-apcu",

@@ -7,7 +7,7 @@ namespace AsteriosBot\Core\Connection;
 use AsteriosBot\Core\App;
 use AsteriosBot\Core\Support\Config;
 use AsteriosBot\Core\Support\Singleton;
-use Slim\PDO\Database as DB;
+use FaaPz\PDO\Database as DB;
 
 class Database extends Singleton
 {

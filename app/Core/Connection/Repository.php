@@ -6,6 +6,8 @@ namespace AsteriosBot\Core\Connection;
 
 use AsteriosBot\Core\Support\ArrayHelper;
 use AsteriosBot\Core\Support\Config;
+use FaaPz\PDO\Clause\Conditional;
+use FaaPz\PDO\Clause\Limit;
 use Feed;
 use FeedException;
 
@@ -22,9 +24,9 @@ class Repository extends Database
     {
         $selectStatement = $this->getConnection()->select($columns)
             ->from('new_raids')
-            ->where('server', '=', $server)
+            ->where(new Conditional('server', '=', $server))
             ->orderBy('timestamp', 'desc')
-            ->limit($limit, 0);
+            ->limit(new Limit($limit));
 
         $stmt = $selectStatement->execute();
         return $stmt->fetchAll();
@@ -124,7 +126,7 @@ class Repository extends Database
     {
         $selectStatement = $this->getConnection()->select(['id', 'title', 'server', 'alarm'])
             ->from('new_raids')
-            ->where('id', '=', $id);
+            ->where(new Conditional('id', '=', $id));
         $stmt = $selectStatement->execute();
         return $stmt->fetchAll()[0] ?? [];
     }
@@ -138,7 +140,7 @@ class Repository extends Database
     {
         $updateStatement = $this->getConnection()->update(['alarm' => $mode])
             ->table('new_raids')
-            ->where('id', '=', $id);
+            ->where(new Conditional('id', '=', $id));
         $affectedRows = $updateStatement->execute();
     }
 
@@ -182,18 +184,11 @@ class Repository extends Database
     public function createRaidDeath(int $server, array $raid): void
     {
         $insertStatement = $this->getConnection()->insert([
-            'server',
-            'title',
-            'description',
-            'timestamp'
-        ])
-            ->into('new_raids')
-            ->values([
-                $server,
-                $raid['title'],
-                $raid['description'],
-                $raid['timestamp'],
-            ]);
-        $insertStatement->execute(false);
+            'server' => $server,
+            'title' => $raid['title'],
+            'description' => $raid['description'],
+            'timestamp' => $raid['timestamp'],
+        ])->into('new_raids');
+        $insertStatement->execute();
     }
 }

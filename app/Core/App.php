@@ -21,7 +21,7 @@ final class App extends Singleton
     /**
      *
      */
-    public function run(): void
+    public function __construct()
     {
         $paths = explode('/', __DIR__);
         array_pop($paths);
