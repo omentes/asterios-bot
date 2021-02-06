@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace AsteriosBot\Bot\Sender;
 
@@ -13,7 +14,7 @@ abstract class Sender
      * @var string
      */
     protected $apiToken;
-    
+
     /**
      * @var Repository
      */
@@ -23,7 +24,7 @@ abstract class Sender
      * @var Logger
      */
     protected $logger;
-    
+
     /**
      * Sender constructor.
      *
@@ -40,7 +41,7 @@ abstract class Sender
         $this->repository = !is_null($repository) ? $repository : Repository::getInstance();
         $this->logger = !is_null($logger) ? $logger : Log::getInstance()->getLogger();
     }
-    
+
     /**
      *
      * @param string $text
@@ -54,7 +55,7 @@ abstract class Sender
             'chat_id' => $channel,
             'text' => $text
         ];
-        
+
         try {
             $handle = curl_init();
             $url = "https://api.telegram.org/bot{$this->apiToken}/sendMessage?" . http_build_query($data) . "&parse_mode=html";
@@ -63,11 +64,10 @@ abstract class Sender
             curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
             $result = curl_exec($handle);
             curl_close($handle);
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             $result = $e->getMessage();
         }
-        
+
         return $result;
     }
 }

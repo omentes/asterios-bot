@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace AsteriosBot\Core\Connection;
 
@@ -11,20 +12,20 @@ use Exception;
 class Log extends Singleton
 {
     private $logger;
-    
+
     protected function __construct()
     {
-        $logger = new Logger('app');
+        $this->logger = new Logger('app');
         $logPath = getenv('LOG_PATH');
         try {
-            $logger->pushHandler(new StreamHandler($logPath . 'app.log', Logger::ERROR));
-            $logger->pushHandler(new StreamHandler($logPath . 'debug.log', Logger::DEBUG));
+            $this->logger->pushHandler(new StreamHandler($logPath . 'app.log', Logger::ERROR));
+            $this->logger->pushHandler(new StreamHandler($logPath . 'debug.log', Logger::DEBUG));
         } catch (Exception $e) {
-            $logger->error($e->getMessage());
+            $this->logger->error($e->getMessage());
             return;
         }
     }
-    
+
     /**
      * @return Logger
      */

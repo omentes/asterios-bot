@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace AsteriosBot\Core;
 
@@ -12,7 +13,7 @@ class Worker extends Singleton
     {
         $app = App::getInstance();
         $app->run();
-        
+
         try {
             $app->botRunner($server, $check);
         } catch (\Throwable $e) {

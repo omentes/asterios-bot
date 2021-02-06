@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace AsteriosBot\Bot;
 
@@ -7,44 +8,43 @@ use AsteriosBot\Bot\Sender\Death;
 use AsteriosBot\Bot\Sender\Notify;
 use AsteriosBot\Core\Connection\Metrics;
 use AsteriosBot\Core\Connection\Repository;
+use AsteriosBot\Core\Exception\BadServerException;
 use AsteriosBot\Core\Support\ArrayHelper;
-use AsteriosBot\Core\Support\ServerConstants;
+use AsteriosBot\Core\Support\Config;
 use Monolog\Logger;
 use Prometheus\Exception\MetricsRegistrationException;
 
 class Parser extends Bot
 {
-
-    
     /**
      * Checker constructor.
      *
-     * @param Notify|null     $sender
-     * @param Metrics|null    $metrics
-     * @param Repository|null $repository
-     * @param Logger|null     $logger
+     * @inheritDoc
      */
     public function __construct(
         Notify $sender = null,
         Metrics $metrics = null,
         Repository $repository = null,
+        Config $config = null,
         Logger $logger = null
     ) {
         $this->sender = !is_null($sender) ? $sender : new Death();
         parent::__construct();
     }
-    
+
     /**
      * @param string $serverName
      *
      * @throws MetricsRegistrationException
+     * @throws BadServerException
      */
     public function execute(string $serverName): void
     {
-        $serverId = ServerConstants::NAMES_TO_ID[$serverName];
-        $local = $this->repository->getDataPDO($serverId, 30);
-        $remote = $this->repository->getRSSData(ServerConstants::URLS[$serverId], 30);
-        $newRaids = ArrayHelper::arrayRecursiveDiff($remote, $local);
+        $serverId = $this->config->getServerId($serverName);
+        $local = $this->repository->getDeadRaidBosses($serverId, 30);
+        $url = $this->config->getRSSUrl($serverId);
+        $remote = $this->repository->getRSSFeedByUrl($url, 30);
+        $newRaids = ArrayHelper::arrayDiff($remote, $local);
         $counter = count($remote);
         $this->logger->debug("[$serverName]: $counter", $newRaids);
         if ($counter) {

@@ -1,8 +1,10 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace AsteriosBot\Core\Connection;
 
+use AsteriosBot\Core\App;
 use AsteriosBot\Core\Support\Singleton;
 use Prometheus\CollectorRegistry;
 use Prometheus\Exception\MetricsRegistrationException;
@@ -15,13 +17,16 @@ class Metrics extends Singleton
      * @var CollectorRegistry
      */
     private $registry;
-    
+
     public function __construct()
     {
+        $dto = App::getInstance()->getConfig()->getRedisDTO();
+
         Redis::setDefaultOptions(
             [
-                'host' => '127.0.0.1',
-                'port' => 6379,
+                'host' => $dto->getHost(),
+                'port' => $dto->getPort(),
+                'database' => $dto->getDatabase(),
                 'password' => null,
                 'timeout' => 0.1, // in seconds
                 'read_timeout' => '10', // in seconds
@@ -30,7 +35,7 @@ class Metrics extends Singleton
         );
         $this->registry = CollectorRegistry::getDefault();
     }
-    
+
     /**
      * @return CollectorRegistry
      */
@@ -38,7 +43,7 @@ class Metrics extends Singleton
     {
         return $this->registry;
     }
-    
+
     /**
      * @param string $metricName
      *
@@ -49,7 +54,7 @@ class Metrics extends Singleton
         $counter = $this->registry->getOrRegisterCounter('asterios_bot', $metricName, 'it increases');
         $counter->incBy(1, []);
     }
-    
+
     /**
      * @param string $serverName
      *
@@ -57,6 +62,7 @@ class Metrics extends Singleton
      */
     public function increaseHealthCheck(string $serverName): void
     {
-        $this->increaseMetric(self::METRIC_HEALTH_CHECK_PREFIX . $serverName);
+        $prefix = App::getInstance()->getConfig()->isTestServer() ? '_test_' : '';
+        $this->increaseMetric($prefix . self::METRIC_HEALTH_CHECK_PREFIX . $serverName);
     }
 }

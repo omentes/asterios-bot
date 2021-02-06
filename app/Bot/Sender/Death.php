@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace AsteriosBot\Bot\Sender;
 
@@ -8,40 +9,44 @@ use DateTime;
 
 class Death extends Sender implements Notify
 {
+    public const EIGHTEEN_HOURS = 18 * 60 * 60;
+    public const THIRTY_HOURS = 30 * 60 * 60;
+    public const TWENTY_FOUR_HOURS = 24 * 60 * 60;
+    public const FORTY_EIGHT_HOURS = 48 * 60 * 60;
     /**
      * @param array $raid
      * @param int   $serverId
      */
     public function notify(array $raid, int $serverId): void
     {
-        $date = $this->getDateTime($raid['timestamp']);
+        $date = $this->getDateTime((int)$raid['timestamp']);
         try {
             $this->repository->createRaidDeath($serverId, $raid);
             $channel = $this->repository->getChannel($raid, $serverId);
-            [$timeUp, $timeDown] = $this->getTimeUpAndDown($this->repository, $raid['timestamp']);
+            [$timeUp, $timeDown] = $this->getTimeUpAndDown($this->repository, (int)$raid['timestamp']);
             $rightNow = $this->getNowDateTime();
             $text = $this->getDeathRaidMessageText($raid['description'], $date, $timeUp, $timeDown, $rightNow);
-    
+
             $result = $this->sendMessage($text, $channel);
         } catch (\Throwable $e) {
             $result = $e->getMessage();
         }
         $this->logger->debug($result);
     }
-    
+
     /**
-     * @param $timestamp
+     * @param int $timestamp
      *
      * @return DateTime
      */
-    private function getDateTime($timestamp): DateTime
+    private function getDateTime(int $timestamp): DateTime
     {
         $date = new DateTime();
         $date->setTimestamp($timestamp);
-        
+
         return $date;
-}
-    
+    }
+
     /**
      * @return DateTime
      */
@@ -49,10 +54,10 @@ class Death extends Sender implements Notify
     {
         $rightNow = new DateTime();
         $rightNow->setTimestamp(time());
-        
+
         return $rightNow;
     }
-    
+
     /**
      * @param Repository $repo
      * @param int        $timestamp
@@ -63,17 +68,17 @@ class Death extends Sender implements Notify
     {
         $timeUp = new DateTime();
         $timeDown = new DateTime();
-        if ($this->repository->isAllianceRB($timestamp['title'])) {
-            $timeUp->setTimestamp($timestamp + 24 * 60 * 60);
-            $timeDown->setTimestamp($timestamp + 48 * 60 * 60);
+        if ($this->repository->isAlliance($timestamp['title'])) {
+            $timeUp->setTimestamp($timestamp + self::TWENTY_FOUR_HOURS);
+            $timeDown->setTimestamp($timestamp + self::FORTY_EIGHT_HOURS);
         } else {
-            $timeUp->setTimestamp($timestamp + 18 * 60 * 60);
-            $timeDown->setTimestamp($timestamp + 30 * 60 * 60);
+            $timeUp->setTimestamp($timestamp + self::EIGHTEEN_HOURS);
+            $timeDown->setTimestamp($timestamp + self::THIRTY_HOURS);
         }
-        
+
         return [$timeUp, $timeDown];
     }
-    
+
     /**
      * @param DateTime $date
      * @param          $description
@@ -95,7 +100,7 @@ class Death extends Sender implements Notify
         $text .= "\n\nДонат:\n вкачать твина по рефералке на х5 https://bit.ly/asterios-invite-link";
         $text .= "\n\nТоповый донат - 11 голды от пользователя Depsik";
         $text .= "\n\nВремя получения инфы о смерти с сайта Астериоса и публикации этого сообщения: " . $rightNow->format('Y-m-d H:i:s');
-        
+
         return $text;
-}
+    }
 }
