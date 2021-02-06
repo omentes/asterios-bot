@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f549f069c43ff43e2c0d7a171ff1f319",
+    "content-hash": "63bc6527cd2eb78546aa9e20324e1606",
     "packages": [
         {
             "name": "dg/rss-php",
