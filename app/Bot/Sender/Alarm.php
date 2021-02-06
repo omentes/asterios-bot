@@ -18,7 +18,7 @@ class Alarm extends Sender implements Notify
         if ($recordMode === $mode) {
             return;
         }
-    
+
         $message = $this->getMessage($mode, $raid['name']);
         $this->repository->updateAlarm($raid['id'], $mode);
         $channel = $this->repository->getChannel($result, $serverId);

@@ -152,7 +152,7 @@ class Config
             getenv('REDIS_DB')
         );
     }
-    
+
     /**
      * @param int $server
      *
@@ -162,7 +162,7 @@ class Config
     {
         return $this->getChannel($server, 'sub');
     }
-    
+
     /**
      * @param int $server
      *
@@ -172,7 +172,7 @@ class Config
     {
         return $this->getChannel($server, 'sub');
     }
-    
+
     /**
      * @param int    $server
      * @param string $type
@@ -182,7 +182,7 @@ class Config
     public function getChannel(int $server, string $type): string
     {
         $channels = $this->isTestServer() ? self::CHANNELS_TEST : self::CHANNELS;
-        
+
         return $channels[$server][$type];
     }
 }

@@ -57,7 +57,7 @@ class Death extends Sender implements Notify
 
         return $rightNow;
     }
-    
+
     /**
      * @param array $raid
      *
