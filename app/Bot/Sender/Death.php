@@ -23,15 +23,15 @@ class Death extends Sender implements Notify
         try {
             $this->repository->createRaidDeath($serverId, $raid);
             $channel = $this->repository->getChannel($raid, $serverId);
-            [$timeUp, $timeDown] = $this->getTimeUpAndDown($this->repository, (int)$raid['timestamp']);
+            [$timeUp, $timeDown] = $this->getTimeUpAndDown($raid);
             $rightNow = $this->getNowDateTime();
             $text = $this->getDeathRaidMessageText($raid['description'], $date, $timeUp, $timeDown, $rightNow);
 
-            $result = $this->sendMessage($text, $channel);
+//            $result = $this->sendMessage($text, $channel);
         } catch (\Throwable $e) {
             $result = $e->getMessage();
         }
-        $this->logger->debug($result);
+        $this->logger->debug('empty');
     }
 
     /**
@@ -57,18 +57,18 @@ class Death extends Sender implements Notify
 
         return $rightNow;
     }
-
+    
     /**
-     * @param Repository $repo
-     * @param int        $timestamp
+     * @param array $raid
      *
      * @return DateTime[]
      */
-    private function getTimeUpAndDown(Repository $repo, int $timestamp): array
+    private function getTimeUpAndDown(array $raid): array
     {
         $timeUp = new DateTime();
         $timeDown = new DateTime();
-        if ($this->repository->isAlliance($timestamp['title'])) {
+        $timestamp = (int)$raid['timestamp'];
+        if ($this->repository->isAlliance($raid['title'])) {
             $timeUp->setTimestamp($timestamp + self::TWENTY_FOUR_HOURS);
             $timeDown->setTimestamp($timestamp + self::FORTY_EIGHT_HOURS);
         } else {

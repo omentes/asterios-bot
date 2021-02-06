@@ -12,14 +12,15 @@ use AsteriosBot\Core\Exception\BadServerException;
 use AsteriosBot\Core\Support\ArrayHelper;
 use AsteriosBot\Core\Support\Config;
 use Monolog\Logger;
+use PHP_CodeSniffer\Tokenizers\PHP;
 use Prometheus\Exception\MetricsRegistrationException;
 
 class Parser extends Bot
 {
     /**
-     * Checker constructor.
+     * Parser constructor.
      *
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function __construct(
         Notify $sender = null,
@@ -41,9 +42,9 @@ class Parser extends Bot
     public function execute(string $serverName): void
     {
         $serverId = $this->config->getServerId($serverName);
-        $local = $this->repository->getDeadRaidBosses($serverId, 30);
+        $local = $this->repository->getDeadRaidBosses($serverId, 20);
         $url = $this->config->getRSSUrl($serverId);
-        $remote = $this->repository->getRSSFeedByUrl($url, 30);
+        $remote = $this->repository->getRSSFeedByUrl($url, 20);
         $newRaids = ArrayHelper::arrayDiff($remote, $local);
         $counter = count($remote);
         $this->logger->debug("[$serverName]: $counter", $newRaids);

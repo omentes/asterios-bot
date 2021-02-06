@@ -126,7 +126,7 @@ class Repository extends Database
             ->from('new_raids')
             ->where('id', '=', $id);
         $stmt = $selectStatement->execute();
-        return $stmt->fetchAll();
+        return $stmt->fetchAll()[0] ?? [];
     }
 
 
@@ -151,8 +151,8 @@ class Repository extends Database
     public function getChannel(array $raid, int $server): string
     {
         return $this->isSubclass($raid['title']) ?
-            Config::CHANNELS[$server]['sub'] :
-            Config::CHANNELS[$server]['key'];
+            $this->config->getSubChannel($server) :
+            $this->config->getKeyChannel($server) ;
     }
 
     /**
@@ -178,10 +178,8 @@ class Repository extends Database
     /**
      * @param int   $server
      * @param array $raid
-     *
-     * @return int
      */
-    public function createRaidDeath(int $server, array $raid): int
+    public function createRaidDeath(int $server, array $raid): void
     {
         $insertStatement = $this->getConnection()->insert([
             'server',
@@ -196,6 +194,6 @@ class Repository extends Database
                 $raid['description'],
                 $raid['timestamp'],
             ]);
-        return (int) $insertStatement->execute(false);
+        $insertStatement->execute(false);
     }
 }

@@ -18,8 +18,7 @@ class Checker extends Bot
     /**
      * Checker constructor.
      *
-     *
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function __construct(
         Notify $sender = null,
@@ -40,7 +39,7 @@ class Checker extends Bot
     public function execute(string $serverName)
     {
         $serverId = $this->config->getServerId($serverName);
-        $local = $this->repository->getDeadRaidBosses($serverId);
+        $local = $this->repository->getDeadRaidBossesWithId($serverId);
         $dead = $this->repository->getRaidBossesWithRespawnTime($local);
         $records = ArrayHelper::filterDeadRaidBosses($dead);
         foreach ($records as $record) {

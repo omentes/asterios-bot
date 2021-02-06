@@ -34,16 +34,16 @@ class Config
 
     public const CHANNELS_TEST = [
         self::X5 => [
-            'sub' => 'who_m_1',
-            'key' => 'who_m_1',
+            'sub' => '@who_m_1',
+            'key' => '@who_m_1',
         ],
         self::X7 => [
-            'sub' => 'who_m_1',
-            'key' => 'who_m_1',
+            'sub' => '@who_m_1',
+            'key' => '@who_m_1',
         ],
         self::X3 => [
-            'sub' => 'who_m_1',
-            'key' => 'who_m_1',
+            'sub' => '@who_m_1',
+            'key' => '@who_m_1',
         ],
     ];
 
@@ -151,5 +151,38 @@ class Config
             getenv('REDIS_PORT'),
             getenv('REDIS_DB')
         );
+    }
+    
+    /**
+     * @param int $server
+     *
+     * @return string
+     */
+    public function getSubChannel(int $server): string
+    {
+        return $this->getChannel($server, 'sub');
+    }
+    
+    /**
+     * @param int $server
+     *
+     * @return string
+     */
+    public function getKeyChannel(int $server): string
+    {
+        return $this->getChannel($server, 'sub');
+    }
+    
+    /**
+     * @param int    $server
+     * @param string $type
+     *
+     * @return string
+     */
+    public function getChannel(int $server, string $type): string
+    {
+        $channels = $this->isTestServer() ? self::CHANNELS_TEST : self::CHANNELS;
+        
+        return $channels[$server][$type];
     }
 }
