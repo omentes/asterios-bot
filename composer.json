@@ -1,5 +1,5 @@
 {
-    "name": "Asterios RaidBoss Bot",
+    "name": "omentes/asterios-bot",
     "description": "Parse Asterios's feed with raid's deathes and posting to telegram channel",
     "license": "MIT",
     "require": {
