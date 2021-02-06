@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace AsteriosBot\Core\Connection;
 
-use AsteriosBot\Bot\ServerConstants;
+use AsteriosBot\Core\Support\ServerConstants;
 use Feed;
 use FeedException;
 
@@ -199,5 +199,29 @@ class Repository extends Database
                 'timestamp' => $record['timestamp'],
             ];
         }, array_slice($remoteBefore, 0, $limit));
+    }
+    
+    /**
+     * @param int   $server
+     * @param array $raid
+     *
+     * @return int
+     */
+    public function createRaidDeath(int $server, array $raid): int
+    {
+        $insertStatement = $this->getConnection()->insert([
+            'server',
+            'title',
+            'description',
+            'timestamp'
+        ])
+            ->into('new_raids')
+            ->values([
+                $server,
+                $raid['title'],
+                $raid['description'],
+                $raid['timestamp'],
+            ]);
+        return (int) $insertStatement->execute(false);
     }
 }

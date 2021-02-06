@@ -19,7 +19,7 @@ class Database extends Singleton
     protected function __construct()
     {
         $dbhost = getenv('DB_HOST');
-        $dbname = getenv('DB_NAME');
+        $dbname = 'test';//getenv('DB_NAME');
         $dsn = "mysql:host={$dbhost};dbname={$dbname};charset=utf8";
         $usr = getenv('DB_USERNAME');
         $pwd = getenv('DB_PASSWORD');

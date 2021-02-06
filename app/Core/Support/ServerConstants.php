@@ -1,6 +1,6 @@
 <?php
 
-namespace AsteriosBot\Bot;
+namespace AsteriosBot\Core\Support;
 
 class ServerConstants
 {
@@ -15,16 +15,16 @@ class ServerConstants
     public const URL_X7 = 'https://asterios.tm/index.php?cmd=rss&serv=8&filter=keyboss&out=xml';
     public const CHANNELS = [
         self::X5 => [
-            'sub' => '@asteriosx5rb',
-            'key' => '@asteriosX5keyRB',
+            'sub' => 'who_m_1',//'@asteriosx5rb',
+            'key' => 'who_m_1',//'@asteriosX5keyRB',
         ],
         self::X7 => [
-            'sub' => '@asteriosx7rb',
-            'key' => '@asteriosX7keyRB',
+            'sub' => 'who_m_1',//'@asteriosx7rb',
+            'key' => 'who_m_1',//'@asteriosX7keyRB',
         ],
         self::X3 => [
-            'sub' => '@asteriosx3rb',
-            'key' => '@asteriosX3keyRB',
+            'sub' => 'who_m_1',//'@asteriosx3rb',
+            'key' => 'who_m_1',//'@asteriosX3keyRB',
         ],
     ];
     public const URLS = [

@@ -6,51 +6,96 @@ namespace AsteriosBot\Bot\Sender;
 use AsteriosBot\Core\Connection\Repository;
 use DateTime;
 
-class Death extends Sender
+class Death extends Sender implements Notify
 {
-    public function deathMessage(array $raid, int $server)
+    /**
+     * @param array $raid
+     * @param int   $serverId
+     */
+    public function notify(array $raid, int $serverId): void
     {
-        $repo = Repository::getInstance();
-        $date = new DateTime();
-        $date->setTimestamp($raid['timestamp']);
+        $date = $this->getDateTime($raid['timestamp']);
         try {
-            $insertStatement = $pdo->insert([
-                'server',
-                'title',
-                'description',
-                'timestamp'
-            ])
-                ->into('new_raids')
-                ->values([
-                    $server,
-                    $raid['title'],
-                    $raid['description'],
-                    $raid['timestamp'],
-                ]);
-            $insertId = $insertStatement->execute(false);
-            $channel = $this->getChannel($raid, $server);
-            $text = $date->format('Y-m-d H:i:s') . ' ' . $raid['description'];
-            $timeUp = new DateTime();
-            $timeDown = new DateTime();
-            if ($this->isAllianceRB($raid['title'])) {
-                $timeUp->setTimestamp($raid['timestamp'] + 24 * 60 * 60);
-                $timeDown->setTimestamp($raid['timestamp'] + 48 * 60 * 60);
-            } else {
-                $timeUp->setTimestamp($raid['timestamp'] + 18 * 60 * 60);
-                $timeDown->setTimestamp($raid['timestamp'] + 30 * 60 * 60);
-            }
-            $rightNow = new DateTime();
-            $rightNow->setTimestamp(time());
-            $text .= "\n\nВремя респа: C " . $timeUp->format('Y-m-d H:i:s') . ' до ' . $timeDown->format('Y-m-d H:i:s');
-            $text .= "\n\nДонат:\n вкачать твина по рефералке на х5 https://bit.ly/asterios-invite-link";
-            $text .= "\n\nТоповый донат - 11 голды от пользователя Depsik";
-            $text .= "\n\nВремя получения инфы о смерти с сайта Астериоса и публикации этого сообщения: " . $rightNow->format('Y-m-d H:i:s');
-        
-            echo $this->send_msg($text, $channel) . PHP_EOL;
+            $this->repository->createRaidDeath($serverId, $raid);
+            $channel = $this->repository->getChannel($raid, $serverId);
+            [$timeUp, $timeDown] = $this->getTimeUpAndDown($this->repository, $raid['timestamp']);
+            $rightNow = $this->getNowDateTime();
+            $text = $this->getDeathRaidMessageText($raid['description'], $date, $timeUp, $timeDown, $rightNow);
+    
+            $result = $this->sendMessage($text, $channel);
         } catch (\Throwable $e) {
-            $error = $e->getMessage();
-            echo "ERROR! $error" . PHP_EOL;
-//            die();
+            $result = $e->getMessage();
         }
+        $this->logger->debug($result);
     }
+    
+    /**
+     * @param $timestamp
+     *
+     * @return DateTime
+     */
+    private function getDateTime($timestamp): DateTime
+    {
+        $date = new DateTime();
+        $date->setTimestamp($timestamp);
+        
+        return $date;
+}
+    
+    /**
+     * @return DateTime
+     */
+    private function getNowDateTime(): DateTime
+    {
+        $rightNow = new DateTime();
+        $rightNow->setTimestamp(time());
+        
+        return $rightNow;
+    }
+    
+    /**
+     * @param Repository $repo
+     * @param int        $timestamp
+     *
+     * @return DateTime[]
+     */
+    private function getTimeUpAndDown(Repository $repo, int $timestamp): array
+    {
+        $timeUp = new DateTime();
+        $timeDown = new DateTime();
+        if ($this->repository->isAllianceRB($timestamp['title'])) {
+            $timeUp->setTimestamp($timestamp + 24 * 60 * 60);
+            $timeDown->setTimestamp($timestamp + 48 * 60 * 60);
+        } else {
+            $timeUp->setTimestamp($timestamp + 18 * 60 * 60);
+            $timeDown->setTimestamp($timestamp + 30 * 60 * 60);
+        }
+        
+        return [$timeUp, $timeDown];
+    }
+    
+    /**
+     * @param DateTime $date
+     * @param          $description
+     * @param DateTime $timeUp
+     * @param DateTime $timeDown
+     * @param DateTime $rightNow
+     *
+     * @return string
+     */
+    private function getDeathRaidMessageText(
+        $description,
+        DateTime $date,
+        DateTime $timeUp,
+        DateTime $timeDown,
+        DateTime $rightNow
+    ): string {
+        $text = $date->format('Y-m-d H:i:s') . ' ' . $description;
+        $text .= "\n\nВремя респа: C " . $timeUp->format('Y-m-d H:i:s') . ' до ' . $timeDown->format('Y-m-d H:i:s');
+        $text .= "\n\nДонат:\n вкачать твина по рефералке на х5 https://bit.ly/asterios-invite-link";
+        $text .= "\n\nТоповый донат - 11 голды от пользователя Depsik";
+        $text .= "\n\nВремя получения инфы о смерти с сайта Астериоса и публикации этого сообщения: " . $rightNow->format('Y-m-d H:i:s');
+        
+        return $text;
+}
 }

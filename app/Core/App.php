@@ -4,21 +4,17 @@ declare(strict_types = 1);
 namespace AsteriosBot\Core;
 
 use AsteriosBot\Bot\Checker;
-use AsteriosBot\Bot\Runner;
+use AsteriosBot\Bot\Parser;
+use AsteriosBot\Core\Support\Singleton;
 use Dotenv\Dotenv;
-use Exception;
+use Prometheus\Exception\MetricsRegistrationException;
 
-final class App
+final class App extends Singleton
 {
-    /**
-     * @var array
-     */
-    protected static $registry = [];
-    
     /**
      *
      */
-    public static function run(): self
+    public function run(): void
     {
         $paths = explode('/', __DIR__);
         array_pop($paths);
@@ -29,47 +25,17 @@ final class App
     }
     
     /**
-     * @param string $key
-     * @param $value
-     */
-    public static function bind(string $key, $value): void
-    {
-        static::$registry[$key] = $value;
-    }
-    
-    /**
-     * @param string $key
-     * @return mixed
-     * @throws Exception
-     */
-    public static function get(string $key)
-    {
-        if (!self::exist($key)) {
-            throw new Exception('No {$key} is bound in the container.');
-        }
-        
-        return static::$registry[$key];
-    }
-    
-    /**
-     * @param string $key
-     * @return bool
-     */
-    public static function exist(string $key): bool
-    {
-        return array_key_exists($key, static::$registry);
-    }
-    
-    /**
      * @param string $server
      * @param bool   $check
+     *
+     * @throws MetricsRegistrationException
      */
     public function botRunner(string $server, bool $check): void
     {
         if ($check) {
             (new Checker())->execute($server);
         } else {
-            (new Runner())->execute($server);
+            (new Parser())->execute($server);
         }
     }
 }

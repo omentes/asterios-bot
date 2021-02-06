@@ -3,15 +3,20 @@ declare(strict_types = 1);
 
 namespace AsteriosBot\Core;
 
+use AsteriosBot\Core\Connection\Log;
 use AsteriosBot\Core\Support\Singleton;
 
 class Worker extends Singleton
 {
-    public static function run(string $server, bool $check = false, int $counter = 100)
+    public static function run(string $server, bool $check = false)
     {
-        $app = App::run();
-        while ($counter--) {
+        $app = App::getInstance();
+        $app->run();
+        
+        try {
             $app->botRunner($server, $check);
+        } catch (\Throwable $e) {
+            Log::getInstance()->getLogger()->error($e->getMessage(), $e->getTrace());
         }
     }
 }

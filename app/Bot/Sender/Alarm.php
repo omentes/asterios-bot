@@ -3,36 +3,47 @@ declare(strict_types = 1);
 
 namespace AsteriosBot\Bot\Sender;
 
-use AsteriosBot\Core\Connection\Log;
-use AsteriosBot\Core\Connection\Repository;
-
-class Alarm extends Sender
+class Alarm extends Sender implements Notify
 {
     /**
-     * @param array $record
-     * @param int   $mode
+     * @param array $raid
+     * @param int   $serverId
      */
-    public function alarm(array $record, int $mode): void
+    public function notify(array $raid, int $serverId): void
     {
-        $repo = Repository::getInstance();
-        $result = $repo->getRaidById($record['id']);
-        $message = 'Что-то пошло не так...';
-        
+        $mode = $this->repository->checkRespawnTime($raid['timestamp'], $raid['name']);
+        $result = $this->repository->getRaidById($raid['id']);
+    
         $recordMode = $result[0]['alarm'] ?? 0;
         if ($recordMode === $mode) {
             return;
         }
-        if ($mode === 1 && $recordMode === 0) {
-            $message = 'ALARM! Осталось менее 3ч респауна ' . $record['name'];
-        }
-        if ($mode === 2 && $recordMode === 1) {
-            $message = 'ALARM! Осталось менее 1,5ч респауна ' . $record['name'];
-        }
         
-        $repo->update($record['id'], $mode);
-        $channel = $repo->getChannel($result[0], $result[0]['server']);
+        $message = $this->getMessage($mode, $recordMode, $raid['name']);
+        $this->repository->update($raid['id'], $mode);
+        $channel = $this->repository->getChannel($result[0], $serverId);
         $answer = $this->sendMessage($message, $channel);
         
-        Log::getInstance()->getLogger()->debug($answer);
+        $this->logger->debug($answer);
     }
+    
+    /**
+     * @param int    $mode
+     * @param int    $recordMode
+     * @param string $name
+     *
+     * @return string
+     */
+    private function getMessage(int $mode, int $recordMode, string $name): string
+    {
+        $message = 'Что-то пошло не так...';
+        if ($mode === 1 && $recordMode === 0) {
+            $message = 'ALARM! Осталось менее 3ч респауна ' . $name;
+        }
+        if ($mode === 2 && $recordMode === 1) {
+            $message = 'ALARM! Осталось менее 1,5ч респауна ' . $name;
+        }
+        
+        return $message;
+}
 }

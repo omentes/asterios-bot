@@ -4,20 +4,32 @@ declare(strict_types = 1);
 namespace AsteriosBot\Bot;
 
 use AsteriosBot\Bot\Sender\Alarm;
+use AsteriosBot\Bot\Sender\Notify;
+use AsteriosBot\Core\Connection\Metrics;
 use AsteriosBot\Core\Connection\Repository;
+use AsteriosBot\Core\Support\ServerConstants;
+use Monolog\Logger;
 
-class Checker
+class Checker extends Bot
 {
-    /**
-     * @param string $server
-     */
-    public function execute(string $server)
-    {
-        $repo = Repository::getInstance();
-        $sender = new Alarm();
-        $local = $repo->getDataPDOid(ServerConstants::NAMES_TO_ID[$server]);
-        $dead = $repo->getDeadRB($local);
+    public function __construct(
+        Notify $sender = null,
+        Metrics $metrics = null,
+        Repository $repository = null,
+        Logger $logger = null
+    ) {
+        $this->sender = !is_null($sender) ? $sender : new Alarm();
+        parent::__construct();
+    }
     
+    /**
+     * @param string $serverName
+     */
+    public function execute(string $serverName)
+    {
+        $local = $this->repository->getDataPDOid(ServerConstants::NAMES_TO_ID[$serverName]);
+        $dead = $this->repository->getDeadRB($local);
+        $serverId = ServerConstants::NAMES_TO_ID[$serverName];
         $records = array_filter(array_map(function (&$x) {
             if ($x['timestamp'] > 0) {
                 return $x;
@@ -25,10 +37,9 @@ class Checker
         }, $dead));
     
         foreach ($records as $record) {
-            $time = $record['timestamp'];
-            $respawn = $repo->checkRespawnTime($time, $record['name']);
+            $respawn = $this->repository->checkRespawnTime($record['timestamp'], $record['name']);
             if ($respawn > 0) {
-                $sender->alarm($record, $respawn);
+                $this->sender->notify($record, $serverId);
             }
         }
     }
