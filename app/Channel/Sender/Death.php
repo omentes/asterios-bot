@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AsteriosBot\Bot\Sender;
+namespace AsteriosBot\Channel\Sender;
 
 use AsteriosBot\Core\Connection\Repository;
 use DateTime;

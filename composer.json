@@ -11,7 +11,8 @@
         "endclothing/prometheus_client_php": "^1.0",
         "monolog/monolog": "^2.2",
         "predis/predis": "^1.1",
-        "faapz/pdo": "^2.1"
+        "faapz/pdo": "^2.1",
+        "longman/telegram-bot": "^0.70.1"
     },
     "autoload": {
         "psr-4": {

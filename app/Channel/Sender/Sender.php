@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace AsteriosBot\Bot\Sender;
+namespace AsteriosBot\Channel\Sender;
 
 use AsteriosBot\Core\App;
 use AsteriosBot\Core\Connection\Log;
 use AsteriosBot\Core\Connection\Repository;
+use AsteriosBot\Core\Exception\EnvironmentException;
 use AsteriosBot\Core\Support\Config;
 use GuzzleHttp\Client;
 use Monolog\Logger;
@@ -46,6 +47,8 @@ abstract class Sender
      * @param Logger|null     $logger
      * @param Client|null     $client
      * @param Config|null     $config
+     *
+     * @throws EnvironmentException
      */
     public function __construct(
         string $apiToken = '',
@@ -54,11 +57,11 @@ abstract class Sender
         Client $client = null,
         Config $config = null
     ) {
-        $this->apiToken = !empty($apiToken) ? $apiToken : getenv('TG_API');
         $this->repository = !is_null($repository) ? $repository : Repository::getInstance();
         $this->logger = !is_null($logger) ? $logger : Log::getInstance()->getLogger();
         $this->client = !is_null($client) ? $client : new Client();
         $this->config = !is_null($config) ? $config : App::getInstance()->getConfig();
+        $this->apiToken = !empty($apiToken) ? $apiToken : $this->config->getTelegramToken();
     }
 
     /**
