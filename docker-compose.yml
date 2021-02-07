@@ -53,8 +53,8 @@ services:
     environment:
       MYSQL_DATABASE: asterios
       MYSQL_ROOT_PASSWORD: password
-    volumes:
-      - ./docker/sql/dump.sql:/docker-entrypoint-initdb.d/dump.sql
+#    volumes:
+#      - ./docker/sql/dump.sql:/docker-entrypoint-initdb.d/dump.sql
     networks:
       - telegram-bots-network
 
