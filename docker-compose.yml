@@ -14,7 +14,7 @@ services:
     links:
       - php
     networks:
-      - telegram-bots-network
+      - tier
 
   php:
     build:
@@ -28,7 +28,7 @@ services:
       - mysql
       - redis
     networks:
-      - telegram-bots-network
+      - tier
 
   worker:
     build:
@@ -42,7 +42,7 @@ services:
       - mysql
       - redis
     networks:
-      - telegram-bots-network
+      - tier
 
   mysql:
     image: mysql:5.7.22
@@ -57,7 +57,7 @@ services:
 #    volumes:
 #      - ./docker/sql/dump.sql:/docker-entrypoint-initdb.d/dump.sql
     networks:
-      - telegram-bots-network
+      - tier
 
   redis:
     container_name: 'asterios-bot-redis'
@@ -66,8 +66,21 @@ services:
     ports:
       - "127.0.0.1:6379:6379/tcp"
     networks:
-      - telegram-bots-network
+      - tier
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: 'laracasts-forum-pma'
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - '8006:80'
+    networks:
+      - tier
 
 networks:
-  telegram-bots-network:
-    driver: bridge
+  tier:
+    external:
+      name: telegram-bots-network

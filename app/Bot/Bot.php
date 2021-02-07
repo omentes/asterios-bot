@@ -42,7 +42,7 @@ class Bot extends Singleton
             Log::getInstance()->getBotLogger()->error($e->getMessage(), $e->getTrace());
         }
     }
-    
+
     /**
      *
      * @throws MetricsRegistrationException
