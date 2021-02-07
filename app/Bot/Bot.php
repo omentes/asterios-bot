@@ -36,7 +36,6 @@ class Bot extends Singleton
                 'password' => $dto->getPassword(),
                 'database' => $dto->getName(),
             ]);
-            $this->telegram->enableLimiter();
         } catch (EnvironmentException | TelegramException $e) {
             Log::getInstance()->getBotLogger()->error($e->getMessage(), $e->getTrace());
         }
