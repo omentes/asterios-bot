@@ -30,7 +30,7 @@ abstract class Sender
      * @var Client
      */
     private $client;
-    
+
     /**
      * Sender constructor.
      *
