@@ -185,4 +185,14 @@ class Config
 
         return $channels[$server][$type];
     }
+
+    public function isSilentMode(): bool
+    {
+        return getenv('SILENT_MODE') && 'true' === getenv('SILENT_MODE');
+    }
+
+    public function isFillerMode(): bool
+    {
+        return getenv('FILLER_MODE') && 'true' === getenv('FILLER_MODE');
+    }
 }

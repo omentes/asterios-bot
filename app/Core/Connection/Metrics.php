@@ -18,10 +18,9 @@ class Metrics extends Singleton
      */
     private $registry;
 
-    public function __construct()
+    protected function __construct()
     {
         $dto = App::getInstance()->getConfig()->getRedisDTO();
-
         Redis::setDefaultOptions(
             [
                 'host' => $dto->getHost(),

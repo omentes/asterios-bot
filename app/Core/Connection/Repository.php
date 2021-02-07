@@ -22,6 +22,10 @@ class Repository extends Database
      */
     public function selectRaidBossesByServer(array $columns, int $server, int $limit = 40): array
     {
+        if ($this->config->isFillerMode()) {
+            $limit = 100;
+        }
+
         $selectStatement = $this->getConnection()->select($columns)
             ->from('new_raids')
             ->where(new Conditional('server', '=', $server))
@@ -163,8 +167,12 @@ class Repository extends Database
      *
      * @return array
      */
-    public function getRSSFeedByUrl(string $url, int $limit = 40): array
+    public function getRSSFeedByUrl(string $url, int $limit = 20): array
     {
+        if ($this->config->isFillerMode()) {
+            $limit = 100;
+        }
+        
         try {
             $rss = Feed::loadRss($url);
             $newData = $rss->toArray();
