@@ -52,7 +52,9 @@ class StartCommand extends SystemCommand
         $keyboard->setResizeKeyboard(true);
         $data = [
             'chat_id' => $chat_id,
-            'text' => 'Привет!1.️',
+            'text' => 'Привет! Я умею показывать время до респауна сабовых РБ на серверах Астериоса.
+Информация берется с их офф сайта, поэтому если у самого Астериоса проблемы - тут тоже может быть неточная информация.
+Этот бот - дополнение к каналам, куда публикуются сообщения во время смерти РБ. Подробнее тут https://t.me/asteriosx5rb/3451',
             'parse_mode' => 'markdown',
             'disable_web_page_preview' => true,
             'reply_markup' => $keyboard,
