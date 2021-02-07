@@ -1,11 +1,32 @@
 {
+    "name": "omentes/asterios-bot",
+    "description": "Parse Asterios's feed with raid's deathes and posting to telegram channel",
+    "license": "MIT",
     "require": {
-      "paquettg/php-html-parser": "^2.1",
-      "ext-json": "*",
-      "slim/pdo": "^1.10",
-      "vlucas/phpdotenv": "^3.6",
-      "dg/rss-php": "^1.4",
-      "ext-curl": "*",
-        "endclothing/prometheus_client_php": "^1.0"
+        "paquettg/php-html-parser": "^2.1",
+        "ext-json": "*",
+        "vlucas/phpdotenv": "^5.3",
+        "dg/rss-php": "^1.4",
+        "ext-curl": "*",
+        "endclothing/prometheus_client_php": "^1.0",
+        "monolog/monolog": "^2.2",
+        "predis/predis": "^1.1",
+        "faapz/pdo": "^2.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "AsteriosBot\\": "app/"
+        }
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.5",
+        "codeception/codeception": "^4.1",
+        "codeception/module-phpbrowser": "^1.0.0",
+        "codeception/module-asserts": "^1.0.0",
+        "codeception/module-cli": "^1.1"
+    },
+    "support": {
+        "email": "setnemo@gmail.com",
+        "telegram": "omentes"
     }
 }
