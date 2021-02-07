@@ -212,9 +212,11 @@ class Repository extends Database
         $selectStatement = $this->getConnection()->select(['title', 'description', 'timestamp'])
             ->from('new_raids')
             ->where(
-                new Grouping("AND",
+                new Grouping(
+                    "AND",
                     new Conditional('server', '=', $serverId),
-                    new Conditional('title', 'LIKE', "%$name%"))
+                    new Conditional('title', 'LIKE', "%$name%")
+                )
             )
             ->orderBy('timestamp', 'desc')
             ->limit(new Limit(1));

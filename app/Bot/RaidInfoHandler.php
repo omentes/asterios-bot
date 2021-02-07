@@ -68,7 +68,7 @@ class RaidInfoHandler
         if (time() - $raid['timestamp'] > Death::THIRTY_HOURS) {
             return "{$name}: уже должен стоять\n";
         }
-        
+
         $respawn = new DateTime();
         $respawn->setTimestamp($raid['timestamp'] + Death::EIGHTEEN_HOURS);
         $now = new DateTime();
