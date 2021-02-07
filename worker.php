@@ -11,8 +11,12 @@ if (isset($argv[1]) &&
     $check = isset($argv[2]) && $argv[2] == 'true';
     $now = time();
     $expectedTime = $now + 10 * 60;
+    $oneSecond = time();
     while (true) {
-        Worker::run($server, $check);
+        if (time() >= $oneSecond) {
+            $oneSecond = time() + 1;
+            Worker::run($server, $check);
+        }
         if ($expectedTime === time()) {
             die(0);
         }

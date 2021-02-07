@@ -29,15 +29,6 @@ RUN apk update && apk add --no-cache \
     php7-redis \
     php7-session
 
-## Add and Enable PHP-PDO Extenstions
-#RUN docker-php-ext-install pdo pdo_mysql
-#RUN docker-php-ext-enable pdo_mysql
-
-## Redis
-#RUN apk add --no-cache pcre-dev $PHPIZE_DEPS \
-#        && pecl install redis \
-#        && docker-php-ext-enable redis.so
-
 
 # Install PHP Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -60,6 +51,8 @@ VOLUME ["/app"]
 WORKDIR /app
 
 RUN composer install
+
+EXPOSE 9000
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
 

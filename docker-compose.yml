@@ -24,6 +24,9 @@ services:
     restart: always
     volumes:
       - .:/app/
+    links:
+      - mysql
+      - redis
     networks:
       - asterios-bot-network
 
