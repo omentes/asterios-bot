@@ -172,7 +172,7 @@ class Repository extends Database
         if ($this->config->isFillerMode()) {
             $limit = 100;
         }
-        
+
         try {
             $rss = Feed::loadRss($url);
             $newData = $rss->toArray();
