@@ -170,7 +170,7 @@ class Config
      */
     public function getKeyChannel(int $server): string
     {
-        return $this->getChannel($server, 'sub');
+        return $this->getChannel($server, 'key');
     }
 
     /**
