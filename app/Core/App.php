@@ -30,6 +30,7 @@ final class App extends Singleton
         $env = Dotenv::createUnsafeImmutable($path . '/');
         $env->load();
         $this->config = new Config();
+        date_default_timezone_set('Europe/Moscow');
     }
 
     /**
