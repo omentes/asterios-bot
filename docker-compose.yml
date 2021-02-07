@@ -46,7 +46,7 @@ services:
 
   mysql:
     image: mysql:5.7.22
-    container_name: 'asterios-bot-mysql'
+    container_name: 'telegram-bots-mysql'
     restart: always
     ports:
       - "3306:3306"
@@ -60,7 +60,7 @@ services:
       - tier
 
   redis:
-    container_name: 'asterios-bot-redis'
+    container_name: 'telegram-bots-redis'
     image: redis:3.2
     restart: always
     ports:
@@ -70,7 +70,7 @@ services:
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    container_name: 'laracasts-forum-pma'
+    container_name: 'telegram-bots-pma'
     environment:
       PMA_HOST: mysql
       PMA_PORT: 3306
