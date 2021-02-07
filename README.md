@@ -51,6 +51,8 @@ CREATE index new_raids_created_at_index
 ```yaml
 SERVICE_ROLE=prod
 TG_API=YOUR_API_TOKEN
+TG_ADMIN_ID=YOUR_USER_ID
+TG_NAME=AsteriosRBbot
 DB_HOST=mysql
 DB_NAME=asterios
 DB_CHARSET=utf8

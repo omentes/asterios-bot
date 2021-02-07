@@ -1,6 +1,6 @@
 <?php
 
-namespace AsteriosBot\Bot\Sender;
+namespace AsteriosBot\Channel\Sender;
 
 interface Notify
 {

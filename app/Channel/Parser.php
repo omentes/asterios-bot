@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace AsteriosBot\Bot;
+namespace AsteriosBot\Channel;
 
-use AsteriosBot\Bot\Sender\Death;
-use AsteriosBot\Bot\Sender\Notify;
+use AsteriosBot\Channel\Sender\Death;
+use AsteriosBot\Channel\Sender\Notify;
 use AsteriosBot\Core\Connection\Metrics;
 use AsteriosBot\Core\Connection\Repository;
 use AsteriosBot\Core\Exception\BadServerException;
@@ -14,7 +14,7 @@ use AsteriosBot\Core\Support\Config;
 use Monolog\Logger;
 use Prometheus\Exception\MetricsRegistrationException;
 
-class Parser extends Bot
+class Parser extends Channel
 {
     /**
      * Parser constructor.

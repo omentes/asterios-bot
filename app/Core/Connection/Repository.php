@@ -7,6 +7,7 @@ namespace AsteriosBot\Core\Connection;
 use AsteriosBot\Core\Support\ArrayHelper;
 use AsteriosBot\Core\Support\Config;
 use FaaPz\PDO\Clause\Conditional;
+use FaaPz\PDO\Clause\Grouping;
 use FaaPz\PDO\Clause\Limit;
 use Feed;
 use FeedException;
@@ -198,5 +199,28 @@ class Repository extends Database
             'timestamp' => $raid['timestamp'],
         ])->into('new_raids');
         $insertStatement->execute();
+    }
+
+    /**
+     * @param string $name
+     * @param int    $serverId
+     *
+     * @return array
+     */
+    public function getLastRaidLikeName(string $name, int $serverId): array
+    {
+        $selectStatement = $this->getConnection()->select(['title', 'description', 'timestamp'])
+            ->from('new_raids')
+            ->where(
+                new Grouping(
+                    "AND",
+                    new Conditional('server', '=', $serverId),
+                    new Conditional('title', 'LIKE', "%$name%")
+                )
+            )
+            ->orderBy('timestamp', 'desc')
+            ->limit(new Limit(1));
+        $stmt = $selectStatement->execute();
+        return $stmt->fetchAll()[0];
     }
 }

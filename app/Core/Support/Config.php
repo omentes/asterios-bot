@@ -5,6 +5,7 @@ namespace AsteriosBot\Core\Support;
 use AsteriosBot\Core\Connection\DTO\Database as DatabaseDTO;
 use AsteriosBot\Core\Connection\DTO\Redis as RedisDTO;
 use AsteriosBot\Core\Exception\BadServerException;
+use AsteriosBot\Core\Exception\EnvironmentException;
 
 class Config
 {
@@ -186,13 +187,57 @@ class Config
         return $channels[$server][$type];
     }
 
+    /**
+     * @return bool
+     */
     public function isSilentMode(): bool
     {
         return getenv('SILENT_MODE') && 'true' === getenv('SILENT_MODE');
     }
 
+    /**
+     * @return bool
+     */
     public function isFillerMode(): bool
     {
         return getenv('FILLER_MODE') && 'true' === getenv('FILLER_MODE');
+    }
+
+    /**
+     * @return string
+     * @throws EnvironmentException
+     */
+    public function getTelegramToken(): string
+    {
+        if (getenv('TG_API') === false) {
+            throw new EnvironmentException('TG_API not found in .env');
+        }
+
+        return getenv('TG_API');
+    }
+    /**
+     * @return string
+     * @throws EnvironmentException
+     */
+    public function getTelegramBotName(): string
+    {
+        if (getenv('TG_NAME') === false) {
+            throw new EnvironmentException('TG_NAME not found in .env');
+        }
+
+        return getenv('TG_NAME');
+    }
+
+    /**
+     * @return int
+     * @throws EnvironmentException
+     */
+    public function getTelegramAdminId(): int
+    {
+        if (getenv('TG_ADMIN_ID') === false) {
+            throw new EnvironmentException('TG_ADMIN_ID not found in .env');
+        }
+
+        return intval(getenv('TG_ADMIN_ID'));
     }
 }

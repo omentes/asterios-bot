@@ -4,60 +4,53 @@ declare(strict_types=1);
 
 namespace AsteriosBot\Bot;
 
-use AsteriosBot\Bot\Sender\Notify;
 use AsteriosBot\Core\App;
 use AsteriosBot\Core\Connection\Log;
-use AsteriosBot\Core\Connection\Metrics;
-use AsteriosBot\Core\Connection\Repository;
-use AsteriosBot\Core\Support\Config;
-use Monolog\Logger;
+use AsteriosBot\Core\Exception\EnvironmentException;
+use AsteriosBot\Core\Support\Singleton;
+use Longman\TelegramBot\Exception\TelegramException;
+use Longman\TelegramBot\Telegram;
+use Longman\TelegramBot\TelegramLog;
 
-abstract class Bot
+class Bot extends Singleton
 {
     /**
-     * @var Notify
+     * @var Telegram
      */
-    protected $sender;
+    private $telegram;
+
+    protected function __construct()
+    {
+        $config = App::getInstance()->getConfig();
+        try {
+            $bot_api_key = $config->getTelegramToken();
+            $bot_username = $config->getTelegramBotName();
+            $dto = $config->getDatabaseDTO();
+            $this->telegram = new Telegram($bot_api_key, $bot_username);
+            TelegramLog::initialize(Log::getInstance()->getBotLogger());
+            $this->telegram->enableAdmin($config->getTelegramAdminId());
+            $this->telegram->addCommandsPaths(['/app/app/Bot/Commands',]);
+            $this->telegram->enableMySql([
+                'host'     => $dto->getHost(),
+                'user'     => $dto->getUser(),
+                'password' => $dto->getPassword(),
+                'database' => $dto->getName(),
+            ]);
+            $this->telegram->enableLimiter();
+        } catch (EnvironmentException | TelegramException $e) {
+            Log::getInstance()->getBotLogger()->error($e->getMessage(), $e->getTrace());
+        }
+    }
 
     /**
-     * @var Metrics
-     */
-    protected $metrics;
-
-    /**
-     * @var Logger
-     */
-    protected $logger;
-
-    /**
-     * @var Repository
-     */
-    protected $repository;
-
-    /**
-     * @var Config
-     */
-    protected $config;
-
-    /**
-     * Checker constructor.
      *
-     * @param Notify|null     $sender
-     * @param Metrics|null    $metrics
-     * @param Repository|null $repository
-     * @param Config|null     $config
-     * @param Logger|null     $logger
      */
-    public function __construct(
-        Notify $sender = null,
-        Metrics $metrics = null,
-        Repository $repository = null,
-        Config $config = null,
-        Logger $logger = null
-    ) {
-        $this->metrics = !is_null($metrics) ? $metrics : Metrics::getInstance();
-        $this->repository = !is_null($repository) ? $repository : Repository::getInstance();
-        $this->logger = !is_null($logger) ? $logger : Log::getInstance()->getLogger();
-        $this->config = !is_null($config) ? $config : App::getInstance()->getConfig();
+    public function run(): void
+    {
+        try {
+            $this->telegram->handleGetUpdates();
+        } catch (TelegramException $e) {
+            Log::getInstance()->getBotLogger()->error($e->getMessage(), $e->getTrace());
+        }
     }
 }

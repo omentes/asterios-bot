@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace AsteriosBot\Bot;
+namespace AsteriosBot\Channel;
 
-use AsteriosBot\Bot\Sender\Alarm;
-use AsteriosBot\Bot\Sender\Notify;
+use AsteriosBot\Channel\Sender\Alarm;
+use AsteriosBot\Channel\Sender\Notify;
 use AsteriosBot\Core\Connection\Metrics;
 use AsteriosBot\Core\Connection\Repository;
 use AsteriosBot\Core\Exception\BadServerException;
@@ -13,7 +13,7 @@ use AsteriosBot\Core\Support\ArrayHelper;
 use AsteriosBot\Core\Support\Config;
 use Monolog\Logger;
 
-class Checker extends Bot
+class Checker extends Channel
 {
     /**
      * Checker constructor.
