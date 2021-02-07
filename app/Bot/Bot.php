@@ -6,11 +6,13 @@ namespace AsteriosBot\Bot;
 
 use AsteriosBot\Core\App;
 use AsteriosBot\Core\Connection\Log;
+use AsteriosBot\Core\Connection\Metrics;
 use AsteriosBot\Core\Exception\EnvironmentException;
 use AsteriosBot\Core\Support\Singleton;
 use Longman\TelegramBot\Exception\TelegramException;
 use Longman\TelegramBot\Telegram;
 use Longman\TelegramBot\TelegramLog;
+use Prometheus\Exception\MetricsRegistrationException;
 
 class Bot extends Singleton
 {
@@ -40,14 +42,16 @@ class Bot extends Singleton
             Log::getInstance()->getBotLogger()->error($e->getMessage(), $e->getTrace());
         }
     }
-
+    
     /**
      *
+     * @throws MetricsRegistrationException
      */
     public function run(): void
     {
         try {
             $this->telegram->handleGetUpdates();
+            Metrics::getInstance()->increaseHealthCheck('bot');
         } catch (TelegramException $e) {
             Log::getInstance()->getBotLogger()->error($e->getMessage(), $e->getTrace());
         }
