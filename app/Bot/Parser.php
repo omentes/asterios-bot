@@ -12,7 +12,6 @@ use AsteriosBot\Core\Exception\BadServerException;
 use AsteriosBot\Core\Support\ArrayHelper;
 use AsteriosBot\Core\Support\Config;
 use Monolog\Logger;
-use PHP_CodeSniffer\Tokenizers\PHP;
 use Prometheus\Exception\MetricsRegistrationException;
 
 class Parser extends Bot
@@ -30,7 +29,13 @@ class Parser extends Bot
         Logger $logger = null
     ) {
         $this->sender = !is_null($sender) ? $sender : new Death();
-        parent::__construct();
+        parent::__construct(
+            $this->sender,
+            $metrics,
+            $repository,
+            $config,
+            $logger
+        );
     }
 
     /**
@@ -46,7 +51,7 @@ class Parser extends Bot
         $url = $this->config->getRSSUrl($serverId);
         $remote = $this->repository->getRSSFeedByUrl($url, 20);
         $newRaids = ArrayHelper::arrayDiff($remote, $local);
-        $counter = count($remote);
+        $counter = count($newRaids);
         $this->logger->debug("[$serverName]: $counter", $newRaids);
         if ($counter) {
             $this->metrics->increaseHealthCheck($serverName);

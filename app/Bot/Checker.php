@@ -28,7 +28,13 @@ class Checker extends Bot
         Logger $logger = null
     ) {
         $this->sender = !is_null($sender) ? $sender : new Alarm();
-        parent::__construct();
+        parent::__construct(
+            $this->sender,
+            $metrics,
+            $repository,
+            $config,
+            $logger
+        );
     }
 
     /**

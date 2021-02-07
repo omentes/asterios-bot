@@ -20,7 +20,7 @@ class Repository extends Database
      *
      * @return array
      */
-    public function selectRaidBossesByServer(array $columns, int $server, int $limit = 20): array
+    public function selectRaidBossesByServer(array $columns, int $server, int $limit = 40): array
     {
         $selectStatement = $this->getConnection()->select($columns)
             ->from('new_raids')
@@ -38,7 +38,7 @@ class Repository extends Database
      *
      * @return array
      */
-    public function getDeadRaidBossesWithId(int $server, int $limit = 20): array
+    public function getDeadRaidBossesWithId(int $server, int $limit = 40): array
     {
         return $this->selectRaidBossesByServer(['id', 'title', 'description', 'timestamp'], $server, $limit);
     }
@@ -49,7 +49,7 @@ class Repository extends Database
      *
      * @return array
      */
-    public function getDeadRaidBosses(int $server, int $limit = 20): array
+    public function getDeadRaidBosses(int $server, int $limit = 40): array
     {
         return $this->selectRaidBossesByServer(['title', 'description', 'timestamp'], $server, $limit);
     }
@@ -163,7 +163,7 @@ class Repository extends Database
      *
      * @return array
      */
-    public function getRSSFeedByUrl(string $url, int $limit = 20): array
+    public function getRSSFeedByUrl(string $url, int $limit = 40): array
     {
         try {
             $rss = Feed::loadRss($url);

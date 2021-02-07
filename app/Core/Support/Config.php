@@ -8,14 +8,14 @@ use AsteriosBot\Core\Exception\BadServerException;
 
 class Config
 {
-    public const X5 = 0;
     public const X3 = 6;
+    public const X5 = 0;
     public const X7 = 8;
-    public const X5_NAME = 'x5';
     public const X3_NAME = 'x3';
+    public const X5_NAME = 'x5';
     public const X7_NAME = 'x7';
-    public const URL_X5 = 'https://asterios.tm/index.php?cmd=rss&serv=0&filter=keyboss&out=xml';
     public const URL_X3 = 'https://asterios.tm/index.php?cmd=rss&serv=6&filter=keyboss&out=xml';
+    public const URL_X5 = 'https://asterios.tm/index.php?cmd=rss&serv=0&filter=keyboss&out=xml';
     public const URL_X7 = 'https://asterios.tm/index.php?cmd=rss&serv=8&filter=keyboss&out=xml';
     public const CHANNELS = [
         self::X5 => [
@@ -48,15 +48,15 @@ class Config
     ];
 
     public const URLS = [
+        self::X3 => self::URL_X3,
         self::X5 => self::URL_X5,
         self::X7 => self::URL_X7,
-        self::X3 => self::URL_X3,
     ];
 
     public const NAMES_TO_ID = [
+        self::X3_NAME => self::X3,
         self::X5_NAME => self::X5,
         self::X7_NAME => self::X7,
-        self::X3_NAME => self::X3,
 
     ];
 

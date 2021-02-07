@@ -9,7 +9,14 @@ if (isset($argv[1]) &&
 ) {
     $server = $argv[1];
     $check = isset($argv[2]) && $argv[2] == 'true';
-    Worker::run($server, $check);
+    $now = time();
+    $expectedTime = $now + 10 * 60;
+    while (true) {
+        Worker::run($server, $check);
+        if ($expectedTime === time()) {
+            die(0);
+        }
+    }
 }
 
 function validate($first, $second): bool

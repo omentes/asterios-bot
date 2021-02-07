@@ -7,7 +7,7 @@ COPY ./docker/php/php-fpm.conf /usr/local/etc/php-fpm.d/www.conf
 COPY . /app
 
 RUN apk update && apk add --no-cache \
-    build-base shadow vim curl \
+    build-base shadow vim curl supervisor \
     php7 \
     php7-fpm \
     php7-common \
@@ -17,6 +17,7 @@ RUN apk update && apk add --no-cache \
     php7-mcrypt \
     php7-mbstring \
     php7-xml \
+    php7-simplexml \
     php7-openssl \
     php7-json \
     php7-phar \
@@ -24,16 +25,18 @@ RUN apk update && apk add --no-cache \
     php7-gd \
     php7-dom \
     php7-session \
-    php7-zlib
+    php7-zlib \
+    php7-redis \
+    php7-session
 
-# Add and Enable PHP-PDO Extenstions
-RUN docker-php-ext-install pdo pdo_mysql
-RUN docker-php-ext-enable pdo_mysql
+## Add and Enable PHP-PDO Extenstions
+#RUN docker-php-ext-install pdo pdo_mysql
+#RUN docker-php-ext-enable pdo_mysql
 
-# Redis
-RUN apk add --no-cache pcre-dev $PHPIZE_DEPS \
-        && pecl install redis \
-        && docker-php-ext-enable redis.so
+## Redis
+#RUN apk add --no-cache pcre-dev $PHPIZE_DEPS \
+#        && pecl install redis \
+#        && docker-php-ext-enable redis.so
 
 
 # Install PHP Composer
@@ -48,11 +51,15 @@ RUN usermod -u 1000 www-data
 # Copy existing application directory permissions
 COPY --chown=www-data:www-data . /app
 
-# Change current user to www
-USER www-data
+# setup supervisor
+ADD docker/supervisor/asterios.conf /etc/supervisor/conf.d/asterios.conf
+ADD docker/supervisor/supervisord.conf /etc/supervisord.conf
 
 VOLUME ["/app"]
 
 WORKDIR /app
 
+RUN composer install
+
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
 

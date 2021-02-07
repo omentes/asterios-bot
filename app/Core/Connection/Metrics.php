@@ -62,7 +62,7 @@ class Metrics extends Singleton
      */
     public function increaseHealthCheck(string $serverName): void
     {
-        $prefix = App::getInstance()->getConfig()->isTestServer() ? '_test_' : '';
+        $prefix = App::getInstance()->getConfig()->isTestServer() ? 'test_' : '';
         $this->increaseMetric($prefix . self::METRIC_HEALTH_CHECK_PREFIX . $serverName);
     }
 }

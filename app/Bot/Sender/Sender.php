@@ -6,6 +6,7 @@ namespace AsteriosBot\Bot\Sender;
 
 use AsteriosBot\Core\Connection\Log;
 use AsteriosBot\Core\Connection\Repository;
+use GuzzleHttp\Client;
 use Monolog\Logger;
 
 abstract class Sender
@@ -26,20 +27,28 @@ abstract class Sender
     protected $logger;
 
     /**
+     * @var Client
+     */
+    private $client;
+    
+    /**
      * Sender constructor.
      *
      * @param string          $apiToken
      * @param Repository|null $repository
      * @param Logger|null     $logger
+     * @param Client|null     $client
      */
     public function __construct(
         string $apiToken = '',
         Repository $repository = null,
-        Logger $logger = null
+        Logger $logger = null,
+        Client $client = null
     ) {
         $this->apiToken = !empty($apiToken) ? $apiToken : getenv('TG_API');
         $this->repository = !is_null($repository) ? $repository : Repository::getInstance();
         $this->logger = !is_null($logger) ? $logger : Log::getInstance()->getLogger();
+        $this->client = !is_null($client) ? $client : new Client();
     }
 
     /**
@@ -57,13 +66,9 @@ abstract class Sender
         ];
 
         try {
-            $handle = curl_init();
             $url = "https://api.telegram.org/bot{$this->apiToken}/sendMessage?" . http_build_query($data) . "&parse_mode=html";
-            curl_setopt($handle, CURLOPT_URL, $url);
-            // Set the result output to be a string.
-            curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
-            $result = curl_exec($handle);
-            curl_close($handle);
+            $response = $this->client->get($url);
+            $result = $response->getBody()->getContents();
         } catch (\Exception $e) {
             $result = $e->getMessage();
         }
