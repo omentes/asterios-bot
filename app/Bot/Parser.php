@@ -51,7 +51,7 @@ class Parser extends Bot
         $url = $this->config->getRSSUrl($serverId);
         $remote = $this->repository->getRSSFeedByUrl($url, 20);
         $newRaids = ArrayHelper::arrayDiff($remote, $local);
-        $counter = count($newRaids);
+        $counter = count($remote);
 //        $this->logger->debug("[$serverName]: $counter", $newRaids);
         if ($counter) {
             $this->metrics->increaseHealthCheck($serverName);
