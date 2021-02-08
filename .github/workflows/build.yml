@@ -43,4 +43,10 @@ jobs:
         run: php vendor/bin/phpcs --standard=psr12 app/ -n
 
       - name: Run unit tests
+        env:
+          DB_CONNECTION: mysql
+          DB_DATABASE: test_db
+          DB_PORT: 3306
+          DB_USER: root
+          DB_PASSWORD: password
         run: ./vendor/bin/codecept run unit
