@@ -47,7 +47,7 @@ jobs:
 
       - name: Prepare Codeception config
         run: |
-          sed -i 's/mysql:host=mysql;port=3306;/mysql:host=localhost;port=32574;/g' tests/unit.suite.yml
+          sed -i 's/mysql:host=mysql;port=3306;/mysql:host=0.0.0.0;port=32574;/g' tests/unit.suite.yml
 
       - name: Run unit tests
         run: |
