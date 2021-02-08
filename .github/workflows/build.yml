@@ -49,6 +49,6 @@ jobs:
           DB_USER: root
           DB_PASSWORD: password
         run: |
-          sed -i 's/old-text/mysql:host=127.0.0.1;dbname=test_db;port=33306/g' tests/unit.suite.yml
+          sed -i 's/mysql:host=mysql/mysql:host=127.0.0.1;dbname=test_db;port=33306/g' tests/unit.suite.yml
           cp .env.dist .env
           ./vendor/bin/codecept run unit
