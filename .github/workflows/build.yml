@@ -25,23 +25,19 @@ jobs:
             ${{ runner.os }}-composer-
       - name: Composer validate
         run: composer validate
-
       - name: Composer Install
         run: composer install --dev --no-interaction --no-ansi --prefer-dist --no-suggest --ignore-platform-reqs
-
       - name: PHPCS check
         run: php vendor/bin/phpcs --standard=psr12 app/ -n
-
       - name: Create env file
         run: |
           cp .env.github.actions .env
-
       - name: Build the docker-compose stack
         run: docker-compose -f docker-compose.github.actions.yml -p asterios-tests up -d
       - name: Sleep
         uses: jakejarvis/wait-action@master
         with:
-          time: '60s'
+          time: '30s'
       - name: Check running containers
         run: docker ps -a
       - name: Run test suite
