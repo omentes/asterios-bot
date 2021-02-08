@@ -46,8 +46,7 @@ class Checker extends Channel
     {
         $serverId = $this->config->getServerId($serverName);
         $local = $this->repository->getDeadRaidBossesWithId($serverId);
-        $dead = $this->repository->getRaidBossesWithRespawnTime($local);
-        $records = ArrayHelper::filterDeadRaidBosses($dead);
+        $records = $this->repository->getRaidBossesWithRespawnTime($local);
         foreach ($records as $record) {
             $respawn = $this->repository->checkRespawnTime($record['timestamp'], $record['name']);
             if ($respawn > 0) {

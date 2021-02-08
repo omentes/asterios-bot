@@ -7,4 +7,17 @@ modules:
     enabled:
         - Asserts
         - \Helper\Unit
+        - Db:
+              dsn: 'mysql:host=mysql;'
+              user: 'root'
+              password: 'password'
+              dump: 'tests/_data/dump.sql'
+              populate: true
+              cleanup: true
+              reconnect: true
+              waitlock: 10
+              initial_queries:
+                  - 'CREATE DATABASE IF NOT EXISTS temp_db;'
+                  - 'USE temp_db;'
+                  - 'SET NAMES utf8;'
     step_decorators: ~        

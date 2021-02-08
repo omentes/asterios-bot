@@ -28,22 +28,6 @@ class ArrayHelper
     }
 
     /**
-     * @param array $dead
-     *
-     * @return array
-     */
-    public static function filterDeadRaidBosses(array $dead): array
-    {
-        return array_filter(array_map(function (&$x) {
-            if ($x['timestamp'] > 0) {
-                return $x;
-            } else {
-                return null;
-            }
-        }, $dead));
-    }
-
-    /**
      * @param array $remoteBefore
      * @param int   $limit
      *

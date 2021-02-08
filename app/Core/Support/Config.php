@@ -61,14 +61,20 @@ class Config
 
     ];
 
-    public const ALARM_STATE_WAIT = 0;
-    public const ALARM_STATE_3H = 1;
-    public const ALARM_STATE_90M = 2;
+    public const EIGHTEEN_HOURS = 18 * 60 * 60;
+    public const THIRTY_HOURS = 30 * 60 * 60;
+    public const TWENTY_FOUR_HOURS = 24 * 60 * 60;
+    public const FORTY_EIGHT_HOURS = 48 * 60 * 60;
 
-    public const STATE_3H_SUB_RB = 32400;
-    public const STATE_3H_ALLIANCE_RB = 75600;
-    public const STATE_90M_SUB_RB = 37800;
-    public const STATE_90M_ALLIANCE_RB = 81000;
+    public const ALARM_STATE_WAIT = 0;
+    public const ALARM_STATE_START_RESPAWN = 1;
+    public const ALARM_STATE_3H = 2;
+    public const ALARM_STATE_90M = 3;
+
+    public const STATE_3H_SUB_RB = 97200;
+    public const STATE_3H_ALLIANCE_RB = 162000;
+    public const STATE_90M_SUB_RB = 102600;
+    public const STATE_90M_ALLIANCE_RB = 167400;
 
     public const SUBCLASS_RAIDS = [
         'Cabrio',
@@ -80,6 +86,20 @@ class Config
         'Ketra',
         'Varka',
         'Barakiel'
+    ];
+    const RAIDS_NAME_TO_TITLE = [
+        'Death Lord Hallate',
+        'Flame of Splendor Barakiel',
+        'Kernon',
+        'Ketra\'s Chief Brakki',
+        'Ketra\'s Commander Tayr',
+        'Ketra\'s Hero Hekaton',
+        'Longhorn Golkonda',
+        'Shilen\'s Messenger Cabrio',
+        'Varka\'s Chief Horus',
+        'Varka\'s Commander Mos',
+        'Varka\'s Hero Shadith',
+
     ];
 
     /**

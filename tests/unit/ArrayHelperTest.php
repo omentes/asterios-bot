@@ -1,8 +1,11 @@
 <?php
 
-use AsteriosBot\Core\Support\ArrayHelper;
+namespace unit;
 
-class ArrayHelperTest extends \Codeception\Test\Unit
+use AsteriosBot\Core\Support\ArrayHelper;
+use Codeception\Test\Unit;
+
+class ArrayHelperTest extends Unit
 {
     /**
      * @var \UnitTester
@@ -11,8 +14,10 @@ class ArrayHelperTest extends \Codeception\Test\Unit
 
     /**
      * @dataProvider arrayDiffProvider
+     *
+     * @param array $example
      */
-    public function testSomeFeature($example)
+    public function testArrayDiffHelper(array $example)
     {
         $actual = ArrayHelper::arrayDiff($example['remote'], $example['local']);
         $this->assertEquals($example['expected'], $actual);
@@ -21,7 +26,7 @@ class ArrayHelperTest extends \Codeception\Test\Unit
     /**
      * @return array
      */
-    public static function arrayDiffProvider()
+    public static function arrayDiffProvider(): array
     {
         return [
             [['remote' => [
