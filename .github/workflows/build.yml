@@ -36,9 +36,6 @@ jobs:
         run: |
           cp .env.github.actions .env
 
-      - name: Prepare Codeception config
-        run: |
-          sed -i 's/mysql:host=mysql;port=3306;/mysql:host=0.0.0.0;port=32574;/g' tests/unit.suite.yml
       - name: Build the docker-compose stack
         run: docker-compose -f docker-compose.github.actions.yml -p asterios-tests up -d
       - name: Sleep
