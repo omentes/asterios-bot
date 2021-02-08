@@ -45,12 +45,6 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Remove Cache
 RUN rm -rf /var/cache/apk/*
 
-# Add UID '1000' to www-data
-RUN usermod -u 1000 www-data
-
-# Copy existing application directory permissions
-COPY --chown=www-data:www-data . /app
-
 VOLUME ["/app"]
 
 WORKDIR /app

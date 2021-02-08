@@ -23,6 +23,10 @@ install: up
 logs:
 	tail -f ./logs/app/*.log
 
+.PHONY: test
+test: up
+	docker-compose exec worker vendor/bin/codecept run unit
+
 .PHONY: worker
 worker: up
 	docker-compose exec worker sh
@@ -69,6 +73,7 @@ help: .title
 	echo '  worker-stop-all:  Stop worker supervisorctl'
 	echo '  worker-start-all: Run all worker jobs'
 	echo '  worker-sctl:      Run worker supervisorctl with {args}'
+	echo '  worker-status:    Show worker supervisorctl status'
 	echo '  worker:           Run worker bash'
 	echo ''
 

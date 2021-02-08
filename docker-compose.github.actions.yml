@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+
+  php:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: 'asterios-tests-php'
+    volumes:
+      - .:/app/
+    networks:
+      - asterios-tests-network
+
+  mysql:
+    image: mysql:5.7.22
+    container_name: 'asterios-tests-mysql'
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: asterios
+      MYSQL_ROOT_PASSWORD: password
+    volumes:
+      - ./tests/_data/dump.sql:/docker-entrypoint-initdb.d/dump.sql
+    networks:
+      - asterios-tests-network
+#
+#  redis:
+#    container_name: 'asterios-tests-redis'
+#    image: redis:3.2
+#    ports:
+#      - "127.0.0.1:6379:6379/tcp"
+#    networks:
+#      - asterios-tests-network
+
+networks:
+  asterios-tests-network:
+    driver: bridge
