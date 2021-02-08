@@ -48,7 +48,17 @@ jobs:
       - name: Prepare Codeception config
         run: |
           sed -i 's/mysql:host=mysql;port=3306;/mysql:host=0.0.0.0;port=32574;/g' tests/unit.suite.yml
-
-      - name: Run unit tests
-        run: |
-          ./vendor/bin/codecept run unit
+      - name: Build the docker-compose stack
+        run: docker-compose up -d
+      - name: Sleep
+        uses: jakejarvis/wait-action@master
+        with:
+          time: '60s'
+      - name: Check running containers
+        run: docker ps
+      - name: Run test suite
+        run: make test
+#
+#      - name: Run unit tests
+#        run: |
+#          ./vendor/bin/codecept run unit
