@@ -8,7 +8,7 @@ modules:
         - Asserts
         - \Helper\Unit
         - Db:
-              dsn: 'mysql:host=127.0.0.1;dbname=test_db;port=33306'
+              dsn: 'mysql:host=mysql;'
               user: 'root'
               password: 'password'
               dump: 'tests/_data/dump.sql'
@@ -17,8 +17,7 @@ modules:
               reconnect: true
               waitlock: 10
               initial_queries:
-                  - 'CREATE DATABASE IF NOT EXISTS test_db;'
-                  - 'USE test_db;'
-                  - 'SET NAMES utf8;'
+                - 'CREATE DATABASE IF NOT EXISTS test_db;'
+                - 'USE test_db;'
+                - 'SET NAMES utf8;'
     step_decorators: ~
-
