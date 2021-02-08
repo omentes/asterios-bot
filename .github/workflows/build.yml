@@ -45,7 +45,10 @@ jobs:
         run: |
           cp .env.github.actions .env
 
-      - name: Run unit tests
+      - name: Prepare Codeception config
         run: |
           sed -i 's/mysql:host=mysql;port=3306;/mysql:host=127.0.0.1;port=32574;/g' tests/unit.suite.yml
+
+      - name: Run unit tests
+        run: |
           ./vendor/bin/codecept run
