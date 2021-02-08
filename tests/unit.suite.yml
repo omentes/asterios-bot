@@ -20,4 +20,5 @@ modules:
                   - 'CREATE DATABASE IF NOT EXISTS temp_db;'
                   - 'USE temp_db;'
                   - 'SET NAMES utf8;'
-    step_decorators: ~        
+    step_decorators: ~
+
