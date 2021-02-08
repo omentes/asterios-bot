@@ -38,8 +38,7 @@ jobs:
         uses: jakejarvis/wait-action@master
         with:
           time: '30s'
-      - name: Check running containers
-        run: docker ps -a
       - name: Run test suite
-        run: docker-compose -f docker-compose.github.actions.yml -p asterios-tests exec php vendor/bin/codecept run unit
+        run: |
+        docker-compose -f docker-compose.github.actions.yml -p asterios-tests exec php vendor/bin/codecept run unit
 
