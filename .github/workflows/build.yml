@@ -48,8 +48,5 @@ jobs:
       - name: Check running containers
         run: docker ps -a
       - name: Run test suite
-        run: make test
-#
-#      - name: Run unit tests
-#        run: |
-#          ./vendor/bin/codecept run unit
+        run: docker-compose exec php vendor/bin/codecept run unit
+
