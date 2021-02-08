@@ -13,7 +13,6 @@ jobs:
       mysql:
         image: mysql:5.7
         env:
-          MYSQL_ALLOW_EMPTY_PASSWORD: false
           MYSQL_ROOT_PASSWORD: password
           MYSQL_DATABASE: test_db
         ports:
@@ -43,10 +42,6 @@ jobs:
         run: php vendor/bin/phpcs --standard=psr12 app/ -n
 
       - name: Run unit tests
-        env:
-          DB_CONNECTION: mysql
-          DB_DATABASE: test_db
-          DB_PORT: 33306
-          DB_USER: root
-          DB_PASSWORD: password
-        run: ./vendor/bin/codecept run unit
+        run: |
+          cp .env.dist .env
+          ./vendor/bin/codecept run unit
