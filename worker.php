@@ -1,9 +1,11 @@
 <?php
+
 require __DIR__ . '/vendor/autoload.php';
 
 use AsteriosBot\Core\Worker;
 
-if (isset($argv[1]) &&
+if (
+    isset($argv[1]) &&
     isset($argv[2]) &&
     validate($argv[1], $argv[2])
 ) {

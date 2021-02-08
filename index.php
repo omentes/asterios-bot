@@ -17,4 +17,3 @@ if (isset($_REQUEST['uri']) && $_REQUEST['uri'] == '/metrics') {
 echo json_encode(
     ["status" => "ok"]
 );
-

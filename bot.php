@@ -12,6 +12,3 @@ while (true) {
         die(0);
     }
 }
-
-
-

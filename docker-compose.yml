@@ -76,7 +76,7 @@ services:
       PMA_PORT: 3306
       MYSQL_ROOT_PASSWORD: password
     ports:
-      - '8080:8006'
+      - '8080:80'
     networks:
       - tier
 
