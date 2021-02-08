@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AsteriosBot\Core\Connection;
 
+use AsteriosBot\Core\Exception\BadRaidException;
 use AsteriosBot\Core\Support\ArrayHelper;
 use AsteriosBot\Core\Support\Config;
 use FaaPz\PDO\Clause\Conditional;
@@ -68,12 +69,10 @@ class Repository extends Database
         $result = [];
         $raids = array_reverse($raids);
         foreach ($raids as $raid) {
-            $fix = 18 * 60 * 60;
             if ($this->isAlliance($raid['title'])) {
-                $fix = 24 * 60 * 60;
             }
-            $raid['timestamp'] = time() - $raid['timestamp'] - $fix;
-            $raid['name'] = explode(' was', $raid['title'])[0] ?? '';
+            $raid['timestamp'] = time() - $raid['timestamp'];
+            $raid['name'] = $this->getRaidNameByTitle($raid['title']);
             $result[md5($raid['title'])] = $raid;
         }
         return $result;
@@ -109,15 +108,19 @@ class Repository extends Database
     {
         $threeHours = Config::STATE_3H_SUB_RB;
         $oneAndHalfHour = Config::STATE_90M_SUB_RB;
+        $start = Config::EIGHTEEN_HOURS;
         if ($this->isAlliance($name)) {
             $threeHours = Config::STATE_3H_ALLIANCE_RB ;
             $oneAndHalfHour = Config::STATE_90M_ALLIANCE_RB;
+            $start = Config::TWENTY_FOUR_HOURS;
         }
 
         if ($time >= $threeHours && $time < $oneAndHalfHour) {
             return Config::ALARM_STATE_3H;
         } elseif ($time >= $oneAndHalfHour) {
             return Config::ALARM_STATE_90M;
+        } else if ($time >= $start) {
+            return Config::ALARM_STATE_START_RESPAWN;
         }
         return Config::ALARM_STATE_WAIT;
     }
@@ -222,5 +225,21 @@ class Repository extends Database
             ->limit(new Limit(1));
         $stmt = $selectStatement->execute();
         return $stmt->fetchAll()[0];
+    }
+
+    /**
+     * @param string $title
+     *
+     * @return string
+     */
+    public function getRaidNameByTitle(string $title): string
+    {
+        foreach (Config::RAIDS_NAME_TO_TITLE as $name) {
+            if (stripos($title, $name) !== false) {
+                return $name;
+            }
+        }
+
+        throw new BadRaidException('Raid name not found!');
     }
 }

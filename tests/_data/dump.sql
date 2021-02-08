@@ -1,6 +1,6 @@
-CREATE DATABASE IF NOT EXISTS asterios;
+CREATE DATABASE IF NOT EXISTS test_db;
 
-use asterios;
+use test_db;
 
 CREATE TABLE IF NOT EXISTS new_raids
 (
@@ -17,6 +17,4 @@ CREATE TABLE IF NOT EXISTS new_raids
     )
     charset=utf8mb4;
 
-CREATE index new_raids_created_at_index
-	ON new_raids (created_at);
 

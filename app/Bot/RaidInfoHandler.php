@@ -6,6 +6,7 @@ namespace AsteriosBot\Bot;
 
 use AsteriosBot\Channel\Sender\Death;
 use AsteriosBot\Core\Connection\Repository;
+use AsteriosBot\Core\Support\Config;
 use DateTime;
 
 class RaidInfoHandler
@@ -57,20 +58,20 @@ class RaidInfoHandler
         if (empty($raid)) {
             throw new \Exception('2');
         }
-        if (time() - $raid['timestamp'] < Death::EIGHTEEN_HOURS) {
+        if (time() - $raid['timestamp'] < Config::EIGHTEEN_HOURS) {
             $respawn = new DateTime();
-            $respawn->setTimestamp(Death::EIGHTEEN_HOURS + $raid['timestamp']);
+            $respawn->setTimestamp(Config::EIGHTEEN_HOURS + $raid['timestamp']);
             $now = new DateTime();
             $now->setTimestamp(time());
             $interval = $respawn->diff($now);
             return "{$name}: респ начнется через " . $interval->format('%H:%I:%S') . "\n";
         }
-        if (time() - $raid['timestamp'] > Death::THIRTY_HOURS) {
+        if (time() - $raid['timestamp'] > Config::THIRTY_HOURS) {
             return "{$name}: уже должен стоять\n";
         }
 
         $respawn = new DateTime();
-        $respawn->setTimestamp($raid['timestamp'] + Death::EIGHTEEN_HOURS);
+        $respawn->setTimestamp($raid['timestamp'] + Config::EIGHTEEN_HOURS);
         $now = new DateTime();
         $now->setTimestamp(time());
         $interval = $now->diff($respawn);

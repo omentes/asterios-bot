@@ -10,6 +10,7 @@ use AsteriosBot\Core\Connection\Repository;
 use AsteriosBot\Core\Exception\EnvironmentException;
 use AsteriosBot\Core\Support\Config;
 use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use Monolog\Logger;
 
 abstract class Sender
@@ -42,11 +43,11 @@ abstract class Sender
     /**
      * Sender constructor.
      *
-     * @param string          $apiToken
-     * @param Repository|null $repository
-     * @param Logger|null     $logger
-     * @param Client|null     $client
-     * @param Config|null     $config
+     * @param string               $apiToken
+     * @param Repository|null      $repository
+     * @param Logger|null          $logger
+     * @param ClientInterface|null $client
+     * @param Config|null          $config
      *
      * @throws EnvironmentException
      */
@@ -54,7 +55,7 @@ abstract class Sender
         string $apiToken = '',
         Repository $repository = null,
         Logger $logger = null,
-        Client $client = null,
+        ClientInterface $client = null,
         Config $config = null
     ) {
         $this->repository = !is_null($repository) ? $repository : Repository::getInstance();

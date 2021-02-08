@@ -4,15 +4,12 @@ declare(strict_types=1);
 
 namespace AsteriosBot\Channel\Sender;
 
-use AsteriosBot\Core\Connection\Repository;
+use AsteriosBot\Core\Support\Config;
 use DateTime;
 
 class Death extends Sender implements Notify
 {
-    public const EIGHTEEN_HOURS = 18 * 60 * 60;
-    public const THIRTY_HOURS = 30 * 60 * 60;
-    public const TWENTY_FOUR_HOURS = 24 * 60 * 60;
-    public const FORTY_EIGHT_HOURS = 48 * 60 * 60;
+
     /**
      * @param array $raid
      * @param int   $serverId
@@ -69,11 +66,11 @@ class Death extends Sender implements Notify
         $timeDown = new DateTime();
         $timestamp = (int)$raid['timestamp'];
         if ($this->repository->isAlliance($raid['title'])) {
-            $timeUp->setTimestamp($timestamp + self::TWENTY_FOUR_HOURS);
-            $timeDown->setTimestamp($timestamp + self::FORTY_EIGHT_HOURS);
+            $timeUp->setTimestamp($timestamp + Config::TWENTY_FOUR_HOURS);
+            $timeDown->setTimestamp($timestamp + Config::FORTY_EIGHT_HOURS);
         } else {
-            $timeUp->setTimestamp($timestamp + self::EIGHTEEN_HOURS);
-            $timeDown->setTimestamp($timestamp + self::THIRTY_HOURS);
+            $timeUp->setTimestamp($timestamp + Config::EIGHTEEN_HOURS);
+            $timeDown->setTimestamp($timestamp + Config::THIRTY_HOURS);
         }
 
         return [$timeUp, $timeDown];
