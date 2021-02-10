@@ -15,16 +15,17 @@ if (isset($argv[1]) && validate($argv[1])) {
     $app = App::getInstance();
     $checker = new Checker();
     $parser = new Parser();
+    $logger = Log::getInstance()->getLogger();
     while (true) {
-        $now = time();
-        if (time() >= $oneSecond) {
-            $oneSecond = $now + 1;
-            try {
-                $parser->execute($server);
+        $now = time(); // 11
+        try {
+            if ($now % 2 === 0) {
                 $checker->execute($server);
-            } catch (\Throwable $e) {
-                Log::getInstance()->getLogger()->error($e->getMessage(), $e->getTrace());
+            } else {
+                $parser->execute($server);
             }
+        } catch (\Throwable $e) {
+            $logger->error($e->getMessage(), $e->getTrace());
         }
         if ($expectedTime <= $now) {
             die(0);
