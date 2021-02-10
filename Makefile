@@ -27,6 +27,10 @@ logs:
 test: up
 	docker-compose exec worker vendor/bin/codecept run unit
 
+.PHONY: test-run
+test-run: up
+	docker-compose exec worker vendor/bin/codecept run ${ARGS}
+
 .PHONY: worker
 worker: up
 	docker-compose exec worker sh
