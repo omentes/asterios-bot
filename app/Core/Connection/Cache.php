@@ -21,11 +21,13 @@ class Cache extends Singleton
     protected function __construct()
     {
         $dto = App::getInstance()->getConfig()->getRedisDTO();
-        $this->connection = new Client([
+        $this->connection = new Client(
+            [
             'host' => $dto->getHost(),
             'port' => $dto->getPort(),
             'database' => $dto->getDatabase(),
-        ]);
+            ]
+        );
     }
 
     /**

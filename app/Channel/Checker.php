@@ -9,7 +9,6 @@ use AsteriosBot\Channel\Sender\Notify;
 use AsteriosBot\Core\Connection\Metrics;
 use AsteriosBot\Core\Connection\Repository;
 use AsteriosBot\Core\Exception\BadServerException;
-use AsteriosBot\Core\Support\ArrayHelper;
 use AsteriosBot\Core\Support\Config;
 use Monolog\Logger;
 

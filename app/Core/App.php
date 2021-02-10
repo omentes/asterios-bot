@@ -34,22 +34,6 @@ final class App extends Singleton
     }
 
     /**
-     * @param string $server
-     * @param bool   $check
-     *
-     * @throws MetricsRegistrationException
-     * @throws Exception\BadServerException
-     */
-    public function botRunner(string $server, bool $check): void
-    {
-        if ($check) {
-            (new Checker())->execute($server);
-        } else {
-            (new Parser())->execute($server);
-        }
-    }
-
-    /**
      * @return Config
      */
     public function getConfig(): Config

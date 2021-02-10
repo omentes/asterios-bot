@@ -61,7 +61,7 @@ class Repository extends Database
     }
 
     /**
-     * @param array $raids
+     * @param  array $raids
      * @return array
      */
     public function getRaidBossesWithRespawnTime(array $raids): array
@@ -162,7 +162,7 @@ class Repository extends Database
     {
         return $this->isSubclass($raid['title']) ?
             $this->config->getSubChannel($server) :
-            $this->config->getKeyChannel($server) ;
+            $this->config->getKeyChannel($server);
     }
 
     /**
@@ -195,12 +195,14 @@ class Repository extends Database
      */
     public function createRaidDeath(int $server, array $raid): void
     {
-        $insertStatement = $this->getConnection()->insert([
+        $insertStatement = $this->getConnection()->insert(
+            [
             'server' => $server,
             'title' => $raid['title'],
             'description' => $raid['description'],
             'timestamp' => $raid['timestamp'],
-        ])->into('new_raids');
+            ]
+        )->into('new_raids');
         $insertStatement->execute();
     }
 

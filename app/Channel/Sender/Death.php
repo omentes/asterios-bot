@@ -78,7 +78,7 @@ class Death extends Sender implements Notify
 
     /**
      * @param DateTime $date
-     * @param          $description
+     * @param $description
      * @param DateTime $timeUp
      * @param DateTime $timeDown
      * @param DateTime $rightNow
