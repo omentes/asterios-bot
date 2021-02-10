@@ -16,18 +16,25 @@ if (isset($argv[1]) && validate($argv[1])) {
     $checker = new Checker();
     $parser = new Parser();
     $logger = Log::getInstance()->getLogger();
+    
+    $now = time();
+    $expectedTime = $now + 10 * 60;
+    $oneSecond = time();
     while (true) {
-        $now = time(); // 11
-        try {
-            if ($now % 2 === 0) {
-                $checker->execute($server);
-            } else {
-                $parser->execute($server);
+        $now = time();
+        if ($now >= $oneSecond) {
+            $oneSecond = $now + 1;
+            try {
+                if ($now % 2 === 0) {
+                    $checker->execute($server);
+                } else {
+                    $parser->execute($server);
+                }
+            } catch (\Throwable $e) {
+                $logger->error($e->getMessage(), $e->getTrace());
             }
-        } catch (\Throwable $e) {
-            $logger->error($e->getMessage(), $e->getTrace());
         }
-        if ($expectedTime <= $now) {
+        if ($expectedTime === time()) {
             die(0);
         }
     }
