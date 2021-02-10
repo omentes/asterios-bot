@@ -11,6 +11,7 @@ use AsteriosBot\Core\Connection\Repository;
 use AsteriosBot\Core\Exception\BadServerException;
 use AsteriosBot\Core\Support\Config;
 use Monolog\Logger;
+use Prometheus\Exception\MetricsRegistrationException;
 
 class Checker extends Channel
 {
@@ -35,11 +36,12 @@ class Checker extends Channel
             $logger
         );
     }
-
+    
     /**
      * @param string $serverName
      *
      * @throws BadServerException
+     * @throws MetricsRegistrationException
      */
     public function execute(string $serverName)
     {
@@ -52,5 +54,6 @@ class Checker extends Channel
                 $this->sender->notify($record, $serverId);
             }
         }
+        $this->metrics->increaseHealthCheck('_checker' . $serverName);
     }
 }
