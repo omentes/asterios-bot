@@ -36,7 +36,7 @@ class Checker extends Channel
             $logger
         );
     }
-    
+
     /**
      * @param string $serverName
      *
