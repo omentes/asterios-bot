@@ -1,68 +1,49 @@
 # asterios-bot
 
-Парсер убийства РБ с RSS фида на сайте Астериоса. Добавлен функционал подсчета остатка времени респауна, будет 2 оповещения, одно за 3ч до окончания респа, второе за 1,5ч. Эта фича сделана специально для ленивого фарма, когда ждать вообще лень, а 1,5-3ч подождать можно.
+Парсер убийства РБ с RSS фида на сайте Астериоса и сохраняет в базу данных.
+Имея эту информацию бот публикует следующие виды сообщений в каналы:
+- начало респа РБ
+- осталось 3ч до максимального респа
+- осталось 1,5ч до максимального респа
+- смерть РБ (сундук стоит 2 минуты, вполне можно успеть зайти с релога и поговорить с ящиком)
 
-### Каналы по РБ для сервера x5
+Так же бот имеет возможность посмотреть статус респауна в конкретный момент
+### Каналы по РБ для сервера 
+- https://t.me/AsteriosRBBot - бот
+- https://t.me/asteriosx5rb - x5 сабовые, Кабрио и ТоИ
+- https://t.me/asteriosX5keyRB - x5 все остальные с фида
+- https://t.me/asteriosx7rb  - x7 сабовые, Кабрио и ТоИ
+- https://t.me/asteriosX7keyRB - x7 все остальные с фида
+- https://t.me/asteriosx3rb  - x3 сабовые, Кабрио и ТоИ
+- https://t.me/asteriosX3keyRB - x3 все остальные с фида
 
-https://t.me/asteriosx5rb - сабовые, Кабрио и ТоИ
+## Техническая документация
 
-https://t.me/asteriosX5keyRB - все остальные с фида
-
-### Каналы по РБ для сервера x7
-
-https://t.me/asteriosx7rb  - сабовые, Кабрио и ТоИ
-
-https://t.me/asteriosX7keyRB - все остальные с фида
-
-### Каналы по РБ для сервера x3
-
-https://t.me/asteriosx3rb  - сабовые, Кабрио и ТоИ
-
-https://t.me/asteriosX3keyRB - все остальные с фида
-
-## Tech info
-
-- DB dump
-```SQL
-CREATE DATABASE IF NOT EXISTS asterios;
-
-use asterios;
-
-CREATE TABLE IF NOT EXISTS new_raids
-(
-    id int auto_increment
-    primary key,
-    server int not null,
-    title varchar(200) not null,
-    description varchar(200) null,
-    timestamp varchar(20) not null,
-    created_at datetime default CURRENT_TIMESTAMP null,
-    alarm int default 0 null,
-    constraint new_raids_title_timestamp_server_uindex
-    unique (title, timestamp, server)
-    )
-    charset=utf8mb4;
-
-CREATE index new_raids_created_at_index
-	ON new_raids (created_at);
-
+Данный проект работает в `docker` и имеет быстрый набор команд в `Makefile`. Этот проект не может работать самостоятельно, так требует окружения в виде MySQL, Redis, Prometheus, Grafana. Если вы хотите поднять проект самостоятельно, вам требуется следующие шаги:
+1. Скачать и устновить окружение
+```bash
+git clone https://github.com/omentes/bots-environment.git
+cd bots-environment
+echo "DB_PASSWORD=password\n" > .env
+make up
 ```
-- .env.dist (need create `.env`)
-```yaml
-SERVICE_ROLE=prod
-TG_API=YOUR_API_TOKEN
-TG_ADMIN_ID=YOUR_USER_ID
-TG_NAME=AsteriosRBbot
-DB_HOST=mysql
-DB_NAME=asterios
-DB_CHARSET=utf8
-DB_USERNAME=root
-DB_PASSWORD=password
-LOG_PATH=/app/logs/
-DB_NAME_TEST=test
-REDIS_HOST=redis
-REDIS_PORT=6379
-REDIS_DB=0
-SILENT_MODE=true
-FILLER_MODE=true
+2. Скачать и установить самого бота
+```bash
+git clone https://github.com/omentes/asterios-bot.git
+cd asterios-bot
+make build
+```
+3. Создать файл `.env` и вписать туда свои токен от телеграм и свой user_id
+```bash
+cat .env.dist > .env
+```
+4. Запустить контейнеры докера
+```bash
+make up
+```
+5. Проверить статус воркеров, остановить, снова запустить
+```bash
+make worker-status
+make worker-stop-all
+make worker-start-all
 ```
