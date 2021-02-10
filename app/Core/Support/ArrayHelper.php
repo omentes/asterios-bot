@@ -42,7 +42,8 @@ class ArrayHelper
                 'description' => $record['description'],
                 'timestamp' => $record['timestamp'],
                 ];
-            }, array_slice($remoteBefore, 0, $limit)
+            },
+            array_slice($remoteBefore, 0, $limit)
         );
     }
 
