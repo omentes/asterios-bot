@@ -25,8 +25,8 @@ if (isset($argv[1]) && validate($argv[1])) {
         if ($now >= $oneSecond) {
             $oneSecond = $now + 1;
             try {
-                $checker->execute($server);
                 $parser->execute($server);
+                $checker->execute($server);
             } catch (\Throwable $e) {
                 $logger->error($e->getMessage(), $e->getTrace());
             }
