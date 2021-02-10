@@ -32,12 +32,14 @@ class Bot extends Singleton
             TelegramLog::initialize(Log::getInstance()->getBotLogger());
             $this->telegram->enableAdmin($config->getTelegramAdminId());
             $this->telegram->addCommandsPaths(['/app/app/Bot/Commands',]);
-            $this->telegram->enableMySql([
+            $this->telegram->enableMySql(
+                [
                 'host'     => $dto->getHost(),
                 'user'     => $dto->getUser(),
                 'password' => $dto->getPassword(),
                 'database' => $dto->getName(),
-            ]);
+                ]
+            );
         } catch (EnvironmentException | TelegramException $e) {
             Log::getInstance()->getBotLogger()->error($e->getMessage(), $e->getTrace());
         }

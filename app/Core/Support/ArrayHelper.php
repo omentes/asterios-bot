@@ -35,13 +35,16 @@ class ArrayHelper
      */
     public static function getFormattedRaidBosses(array $remoteBefore, int $limit): array
     {
-        return array_map(function ($record) {
-            return [
+        return array_map(
+            function ($record) {
+                return [
                 'title' => $record['title'],
                 'description' => $record['description'],
                 'timestamp' => $record['timestamp'],
-            ];
-        }, array_slice($remoteBefore, 0, $limit));
+                ];
+            },
+            array_slice($remoteBefore, 0, $limit)
+        );
     }
 
     /**

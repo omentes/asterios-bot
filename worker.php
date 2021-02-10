@@ -2,31 +2,37 @@
 
 require __DIR__ . '/vendor/autoload.php';
 
-use AsteriosBot\Core\Worker;
+use AsteriosBot\Channel\Checker;
+use AsteriosBot\Channel\Parser;
+use AsteriosBot\Core\App;
+use AsteriosBot\Core\Connection\Log;
 
-if (
-    isset($argv[1]) &&
-    isset($argv[2]) &&
-    validate($argv[1], $argv[2])
-) {
+if (isset($argv[1]) && validate($argv[1])) {
     $server = $argv[1];
-    $check = isset($argv[2]) && $argv[2] == 'true';
     $now = time();
     $expectedTime = $now + 10 * 60;
     $oneSecond = time();
+    $app = App::getInstance();
+    $checker = new Checker();
+    $parser = new Parser();
     while (true) {
+        $now = time();
         if (time() >= $oneSecond) {
-            $oneSecond = time() + 1;
-            Worker::run($server, $check);
+            $oneSecond = $now + 1;
+            try {
+                $parser->execute($server);
+                $checker->execute($server);
+            } catch (\Throwable $e) {
+                Log::getInstance()->getLogger()->error($e->getMessage(), $e->getTrace());
+            }
         }
-        if ($expectedTime === time()) {
+        if ($expectedTime <= $now) {
             die(0);
         }
     }
 }
 
-function validate($first, $second): bool
+function validate($first): bool
 {
-    return in_array($first, ['x5', 'x7', 'x3']) &&
-        in_array($second, ['true', 'false']);
+    return in_array($first, ['x5', 'x7', 'x3']);
 }
