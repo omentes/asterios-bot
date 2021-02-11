@@ -25,7 +25,8 @@
         "codeception/module-phpbrowser": "^1.0.0",
         "codeception/module-asserts": "^1.0.0",
         "codeception/module-cli": "^1.1",
-        "codeception/module-db": "^1.1"
+        "codeception/module-db": "^1.1",
+        "vimeo/psalm": "^4.5"
     },
     "support": {
         "email": "setnemo@gmail.com",
