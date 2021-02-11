@@ -8,17 +8,13 @@ use AsteriosBot\Core\App;
 use AsteriosBot\Core\Connection\Log;
 
 if (isset($argv[1]) && validate($argv[1])) {
-    $server = $argv[1];
-    $now = time();
-    $expectedTime = $now + 10 * 60;
-    $oneSecond = time();
     $app = App::getInstance();
     $checker = new Checker();
     $parser = new Parser();
     $logger = Log::getInstance()->getLogger();
-    
+    $server = $argv[1];
     $now = time();
-    $expectedTime = $now + 10 * 60;
+    $expectedTime = $now + 10 * 60; // +10 min in seconds
     $oneSecond = time();
     while (true) {
         $now = time();

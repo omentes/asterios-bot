@@ -17,27 +17,27 @@ abstract class Channel
     /**
      * @var Notify
      */
-    protected $sender;
+    protected Notify $sender;
 
     /**
      * @var Metrics
      */
-    protected $metrics;
+    protected Metrics $metrics;
 
     /**
      * @var Logger
      */
-    protected $logger;
+    protected Logger $logger;
 
     /**
      * @var Repository
      */
-    protected $repository;
+    protected Repository $repository;
 
     /**
      * @var Config
      */
-    protected $config;
+    protected Config $config;
 
     /**
      * Checker constructor.

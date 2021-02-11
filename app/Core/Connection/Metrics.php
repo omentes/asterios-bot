@@ -16,7 +16,7 @@ class Metrics extends Singleton
     /**
      * @var CollectorRegistry
      */
-    private $registry;
+    private CollectorRegistry $registry;
 
     protected function __construct()
     {

@@ -9,12 +9,12 @@ class RaidDTO
     /**
      * @var int
      */
-    private $serverId;
+    private int $serverId;
 
     /**
      * @var string
      */
-    private $name;
+    private string $name;
 
     /**
      * RaidDTO constructor.

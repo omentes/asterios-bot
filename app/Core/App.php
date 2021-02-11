@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace AsteriosBot\Core;
 
-use AsteriosBot\Channel\Checker;
-use AsteriosBot\Channel\Parser;
 use AsteriosBot\Core\Support\Config;
 use AsteriosBot\Core\Support\Singleton;
 use Dotenv\Dotenv;
-use Prometheus\Exception\MetricsRegistrationException;
 
 final class App extends Singleton
 {

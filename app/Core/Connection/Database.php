@@ -14,12 +14,12 @@ class Database extends Singleton
     /**
      * @var DB
      */
-    protected $connection;
+    protected DB $connection;
 
     /**
      * @var Config
      */
-    protected $config;
+    protected Config $config;
 
     /**
      * Database constructor.

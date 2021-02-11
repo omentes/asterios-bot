@@ -14,12 +14,12 @@ class RaidInfoHandler
     /**
      * @var RaidDTO
      */
-    private $dto;
+    private RaidDTO $dto;
 
     /**
      * @var Repository
      */
-    private $repository;
+    private Repository $repository;
 
     public function __construct(RaidDTO $dto, Repository $repository = null)
     {

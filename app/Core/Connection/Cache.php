@@ -13,7 +13,7 @@ class Cache extends Singleton
     /**
      * @var Client
      */
-    private $connection;
+    private Client $connection;
 
     /**
      * Database constructor.

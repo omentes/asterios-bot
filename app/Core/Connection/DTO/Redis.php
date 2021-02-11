@@ -9,17 +9,17 @@ class Redis
     /**
      * @var string
      */
-    private $host;
+    private string $host;
 
     /**
      * @var int
      */
-    private $port;
+    private int $port;
 
     /**
      * @var int
      */
-    private $database;
+    private int $database;
 
     public function __construct(string $host = '127.0.0.1', int $port = 6379, int $database = 0)
     {

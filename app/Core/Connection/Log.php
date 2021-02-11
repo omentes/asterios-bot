@@ -15,12 +15,12 @@ class Log extends Singleton
     /**
      * @var Logger
      */
-    private $logger;
+    private Logger $logger;
 
     /**
      * @var Logger
      */
-    private $botLogger;
+    private Logger $botLogger;
 
     protected function __construct()
     {

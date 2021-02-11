@@ -9,27 +9,27 @@ class Database
     /**
      * @var string
      */
-    private $host;
+    private string $host;
 
     /**
      * @var string
      */
-    private $name;
+    private string $name;
 
     /**
      * @var string
      */
-    private $dsn;
+    private string $dsn;
 
     /**
      * @var string
      */
-    private $user;
+    private string $user;
 
     /**
      * @var string
      */
-    private $password;
+    private string $password;
 
     /**
      * DatabaseDTO constructor.

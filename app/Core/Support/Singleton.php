@@ -9,7 +9,7 @@ use AsteriosBot\Core\Exception\SerializeException;
 
 class Singleton
 {
-    protected static $instances = [];
+    protected static array $instances = [];
 
     /**
      * Singleton constructor.

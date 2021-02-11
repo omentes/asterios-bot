@@ -19,7 +19,7 @@ class Bot extends Singleton
     /**
      * @var Telegram
      */
-    private $telegram;
+    private Telegram $telegram;
 
     protected function __construct()
     {
