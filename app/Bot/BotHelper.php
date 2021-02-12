@@ -40,6 +40,18 @@ class BotHelper
             ['[x3] ALL SUB RB', '[x5] ALL SUB RB'],
         ];
     }
+    
+    /**
+     * @return \string[][]
+     */
+    public static function getKeyboardX5(): array
+    {
+        return [
+            ['[x5] Cabrio', '[x5] ToI 3', ],
+            ['[x5] ToI 8', '[x5] ToI 11',],
+            ['[x5] ALL SUB RB'],
+        ];
+    }
 
     /**
      * @param string $text

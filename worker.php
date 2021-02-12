@@ -10,6 +10,7 @@ use AsteriosBot\Core\Connection\Log;
 $app = App::getInstance();
 $checker = new Checker();
 $parser = new Parser();
+$servers = $app->getConfig()->getEnableServers();
 $logger = Log::getInstance()->getLogger();
 $expectedTime = time() + 60; // +1 min in seconds
 $oneSecond = time();
@@ -18,10 +19,10 @@ while (true) {
     if ($now >= $oneSecond) {
         $oneSecond = $now + 1;
         try {
-            $parser->execute('x5');
-            $parser->execute('x3');
-            $checker->execute('x5');
-            $checker->execute('x3');
+            foreach ($servers as $server) {
+                $parser->execute($server);
+                $checker->execute($server);
+            }
         } catch (\Throwable $e) {
             $logger->error($e->getMessage(), $e->getTrace());
         }

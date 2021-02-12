@@ -271,4 +271,13 @@ class Config
         $logPath = getenv('LOG_PATH');
         return $logPath !== false ? $logPath : './logs';
     }
+    
+    /**
+     * @return array
+     */
+    public function getEnableServers(): array
+    {
+        $array = getenv("ENABLE_SERVERS") ?? 'x5';
+        return explode(',', $array);
+    }
 }
