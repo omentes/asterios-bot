@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace AsteriosBot\Core\Connection;
 
+use AsteriosBot\Core\App;
+use AsteriosBot\Core\Support\Config;
 use AsteriosBot\Core\Support\Singleton;
-use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Exception;
@@ -18,20 +19,15 @@ class Log extends Singleton
     private Logger $logger;
 
     /**
-     * @var Logger
+     * Log constructor.
      */
-    private Logger $botLogger;
-
     protected function __construct()
     {
+        $config = App::getInstance()->getConfig();
         $this->logger = new Logger('app');
-        $this->botLogger = new Logger('bot');
-        $logPath = getenv('LOG_PATH');
+        $logPath = $config->getLogPath();
         try {
             $this->logger->pushHandler(new StreamHandler($logPath . 'app.log', Logger::ERROR));
-            $this->logger->pushHandler(new StreamHandler($logPath . 'debug.log', Logger::DEBUG));
-            $this->botLogger->pushHandler(new StreamHandler($logPath . 'bot.log', Logger::ERROR));
-            $this->botLogger->pushHandler(new StreamHandler($logPath . 'bot.log', Logger::INFO));
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
             return;
@@ -44,13 +40,5 @@ class Log extends Singleton
     public function getLogger(): Logger
     {
         return $this->logger;
-    }
-
-    /**
-     * @return Logger
-     */
-    public function getBotLogger(): Logger
-    {
-        return $this->botLogger;
     }
 }

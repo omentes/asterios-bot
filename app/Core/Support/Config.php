@@ -147,18 +147,18 @@ class Config
     {
         if ($this->isTestServer()) {
             return new DatabaseDTO(
-                getenv('DB_HOST'),
-                getenv('DB_NAME_TEST'),
-                getenv('DB_USERNAME'),
-                getenv('DB_PASSWORD')
+                getenv('DB_HOST') ?? '127.0.0.1',
+                getenv('DB_NAME_TEST') ?? 'test_db',
+                getenv('DB_USERNAME') ?? 'root',
+                getenv('DB_PASSWORD') ?? 'password'
             );
         }
 
         return new DatabaseDTO(
-            getenv('DB_HOST'),
-            getenv('DB_NAME'),
-            getenv('DB_USERNAME'),
-            getenv('DB_PASSWORD')
+            getenv('DB_HOST') ?? '127.0.0.1',
+            getenv('DB_NAME') ?? 'asterios',
+            getenv('DB_USERNAME') ?? 'root',
+            getenv('DB_PASSWORD') ?? 'password'
         );
     }
 
@@ -168,9 +168,9 @@ class Config
     public function getRedisDTO(): RedisDTO
     {
         return new RedisDTO(
-            getenv('REDIS_HOST'),
-            getenv('REDIS_PORT'),
-            getenv('REDIS_DB')
+            getenv('REDIS_HOST') ?? '127.0.0.1',
+            getenv('REDIS_PORT') ?? 6379,
+            getenv('REDIS_DB') ?? 0
         );
     }
 
@@ -233,7 +233,8 @@ class Config
             throw new EnvironmentException('TG_API not found in .env');
         }
 
-        return getenv('TG_API');
+        $api = getenv('TG_API');
+        return $api !== false ? $api : 'XYZ';
     }
     /**
      * @return string
@@ -245,7 +246,8 @@ class Config
             throw new EnvironmentException('TG_NAME not found in .env');
         }
 
-        return getenv('TG_NAME');
+        $name = getenv('TG_NAME');
+        return $name !== false ? $name : 'XYZ';
     }
 
     /**
@@ -258,6 +260,15 @@ class Config
             throw new EnvironmentException('TG_ADMIN_ID not found in .env');
         }
 
-        return intval(getenv('TG_ADMIN_ID'));
+        return intval(getenv('TG_ADMIN_ID') ?? 0);
+    }
+
+    /**
+     * @return string
+     */
+    public function getLogPath(): string
+    {
+        $logPath = getenv('LOG_PATH');
+        return $logPath !== false ? $logPath : './logs';
     }
 }

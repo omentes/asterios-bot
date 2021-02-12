@@ -29,7 +29,7 @@ class Bot extends Singleton
             $bot_username = $config->getTelegramBotName();
             $dto = $config->getDatabaseDTO();
             $this->telegram = new Telegram($bot_api_key, $bot_username);
-            TelegramLog::initialize(Log::getInstance()->getBotLogger());
+            TelegramLog::initialize(Log::getInstance()->getLogger());
             $this->telegram->enableAdmin($config->getTelegramAdminId());
             $this->telegram->addCommandsPaths(['/app/app/Bot/Commands',]);
             $this->telegram->enableMySql(
@@ -41,7 +41,7 @@ class Bot extends Singleton
                 ]
             );
         } catch (EnvironmentException | TelegramException $e) {
-            Log::getInstance()->getBotLogger()->error($e->getMessage(), $e->getTrace());
+            Log::getInstance()->getLogger()->error($e->getMessage(), $e->getTrace());
         }
     }
 
@@ -55,7 +55,7 @@ class Bot extends Singleton
             $this->telegram->handleGetUpdates();
             Metrics::getInstance()->increaseHealthCheck('bot');
         } catch (TelegramException $e) {
-            Log::getInstance()->getBotLogger()->error($e->getMessage(), $e->getTrace());
+            Log::getInstance()->getLogger()->error($e->getMessage(), $e->getTrace());
         }
     }
 }

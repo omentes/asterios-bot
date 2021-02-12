@@ -54,6 +54,5 @@ class Checker extends Channel
                 $this->sender->notify($record, $serverId);
             }
         }
-        $this->metrics->increaseHealthCheck('checker_' . $serverName);
     }
 }

@@ -119,7 +119,7 @@ class Repository extends Database
             return Config::ALARM_STATE_3H;
         } elseif ($time >= $oneAndHalfHour) {
             return Config::ALARM_STATE_90M;
-        } else if ($time >= $start) {
+        } elseif ($time >= $start) {
             return Config::ALARM_STATE_START_RESPAWN;
         }
         return Config::ALARM_STATE_WAIT;
