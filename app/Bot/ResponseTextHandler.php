@@ -4,24 +4,23 @@ declare(strict_types=1);
 
 namespace AsteriosBot\Bot;
 
-use AsteriosBot\Channel\Sender\Death;
 use AsteriosBot\Core\Connection\Repository;
 use AsteriosBot\Core\Support\Config;
 use DateTime;
 
-class RaidInfoHandler
+class ResponseTextHandler
 {
     /**
-     * @var RaidDTO
+     * @var Director
      */
-    private RaidDTO $dto;
+    private Director $dto;
 
     /**
      * @var Repository
      */
     private Repository $repository;
 
-    public function __construct(RaidDTO $dto, Repository $repository = null)
+    public function __construct(Director $dto, Repository $repository = null)
     {
         $this->dto = $dto;
         $this->repository = !is_null($repository) ? $repository : Repository::getInstance();
@@ -33,12 +32,16 @@ class RaidInfoHandler
      */
     public function getText(): string
     {
-        if ($this->dto->getName() !== 'all') {
-            $raid = $this->repository->getLastRaidLikeName($this->dto->getName(), $this->dto->getServerId());
-            return $this->prepareText($raid, $this->dto->getName());
+        if ($this->dto->getRaidBossName() === 'servers') {
+            return "Выберете сервер";
+        }
+        if ($this->dto->getRaidBossName() !== 'all') {
+            $raid = $this->repository->getLastRaidLikeName($this->dto->getRaidBossName(), $this->dto->getServerId());
+            return $this->prepareText($raid, $this->dto->getRaidBossName());
         }
         $result = '';
-        foreach (['Cabrio', 'Hallate', 'Kernon', 'Golkonda'] as $name) {
+        $names = BotHelper::ALL_RAIDS;
+        foreach ($names as $name) {
             $raid = $this->repository->getLastRaidLikeName($name, $this->dto->getServerId());
             $result .= $this->prepareText($raid, $name);
         }

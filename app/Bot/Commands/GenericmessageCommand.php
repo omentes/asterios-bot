@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace Longman\TelegramBot\Commands\SystemCommands;
 
 use AsteriosBot\Bot\BotHelper;
-use AsteriosBot\Bot\RaidDTO;
-use AsteriosBot\Bot\RaidInfoHandler;
+use AsteriosBot\Bot\Director;
+use AsteriosBot\Bot\ResponseTextHandler;
 use AsteriosBot\Core\App;
-use AsteriosBot\Core\Support\ArrayHelper;
+use AsteriosBot\Core\Exception\BadServerException;
 use Longman\TelegramBot\Commands\SystemCommand;
-use Longman\TelegramBot\Conversation;
 use Longman\TelegramBot\Entities\Keyboard;
 use Longman\TelegramBot\Entities\ServerResponse;
 use Longman\TelegramBot\Exception\TelegramException;
@@ -32,12 +31,11 @@ class GenericmessageCommand extends SystemCommand
         $chat_id = $this->getMessage()->getChat()->getId();
         try {
             $dto = $this->parseText($text);
-
-            $keyboard = new Keyboard(...BotHelper::getKeyboard());
+            $keyboard = $this->getKeyboard($dto->getServerName());
             $keyboard->setResizeKeyboard(true);
             $data = [
                 'chat_id' => $chat_id,
-                'text' => (new RaidInfoHandler($dto))->getText(),
+                'text' => (new ResponseTextHandler($dto))->getText(),
                 'parse_mode' => 'markdown',
                 'disable_web_page_preview' => true,
                 'reply_markup' => $keyboard,
@@ -47,23 +45,45 @@ class GenericmessageCommand extends SystemCommand
         }
         return Request::emptyResponse();
     }
-
+    
     /**
-     * @param $text
      *
-     * @return RaidDTO
-     * @throws \Exception
+     * @param string $text
+     *
+     * @return Director
+     * @throws BadServerException
      */
-    private function parseText($text): RaidDTO
+    private function parseText(string $text): Director
     {
         if (!in_array($text, BotHelper::TEXT_QUESTIONS)) {
-            throw new \Exception();
+            return new Director(-1, 'servers', 'servers');
         }
-
-        $x5flag = strpos($text, 'x5');
-        $slug = BotHelper::getRaidName($text);
-        $serverName = $x5flag === false ? 'x3' : 'x5';
+        $raidBossName = BotHelper::getRaidName($text);
+        $serverName = BotHelper::getServerName($text);
         $serverId = App::getInstance()->getConfig()->getServerId($serverName);
-        return new RaidDTO($serverId, $slug);
+        return new Director($serverId, $serverName, $raidBossName);
+    }
+    
+    /**
+     * @param string $serverName
+     *
+     * @return Keyboard
+     */
+    public function getKeyboard(string $serverName): Keyboard
+    {
+        switch ($serverName) {
+            case "x3":
+                $keyboard = new Keyboard(...BotHelper::getKeyboardX3());
+                break;
+            case "x5":
+                $keyboard = new Keyboard(...BotHelper::getKeyboardX5());
+                break;
+            case "x7":
+                $keyboard = new Keyboard(...BotHelper::getKeyboardX7());
+                break;
+            default:
+                $keyboard = new Keyboard(...BotHelper::getKeyboardServers());
+        }
+        return $keyboard;
     }
 }
