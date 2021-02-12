@@ -7,33 +7,26 @@ use AsteriosBot\Channel\Parser;
 use AsteriosBot\Core\App;
 use AsteriosBot\Core\Connection\Log;
 
-if (isset($argv[1]) && validate($argv[1])) {
-    $app = App::getInstance();
-    $checker = new Checker();
-    $parser = new Parser();
-    $logger = Log::getInstance()->getLogger();
-    $server = $argv[1];
+$app = App::getInstance();
+$checker = new Checker();
+$parser = new Parser();
+$logger = Log::getInstance()->getLogger();
+$expectedTime = time() + 60; // +1 min in seconds
+$oneSecond = time();
+while (true) {
     $now = time();
-    $expectedTime = $now + 10 * 60; // +10 min in seconds
-    $oneSecond = time();
-    while (true) {
-        $now = time();
-        if ($now >= $oneSecond) {
-            $oneSecond = $now + 1;
-            try {
-                $parser->execute($server);
-                $checker->execute($server);
-            } catch (\Throwable $e) {
-                $logger->error($e->getMessage(), $e->getTrace());
-            }
-        }
-        if ($expectedTime === time()) {
-            die(0);
+    if ($now >= $oneSecond) {
+        $oneSecond = $now + 1;
+        try {
+            $parser->execute('x5');
+            $parser->execute('x3');
+            $checker->execute('x5');
+            $checker->execute('x3');
+        } catch (\Throwable $e) {
+            $logger->error($e->getMessage(), $e->getTrace());
         }
     }
-}
-
-function validate($first): bool
-{
-    return in_array($first, ['x5', 'x7', 'x3']);
+    if ($expectedTime < $now) {
+        die(0);
+    }
 }
