@@ -45,7 +45,7 @@ class GenericmessageCommand extends SystemCommand
         }
         return Request::emptyResponse();
     }
-    
+
     /**
      *
      * @param string $text
@@ -63,7 +63,7 @@ class GenericmessageCommand extends SystemCommand
         $serverId = App::getInstance()->getConfig()->getServerId($serverName);
         return new Director($serverId, $serverName, $raidBossName);
     }
-    
+
     /**
      * @param string $serverName
      *

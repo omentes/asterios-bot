@@ -22,7 +22,7 @@ class Director
      * @var string
      */
     private string $serverName;
-    
+
     /**
      * RaidDTO constructor.
      *
@@ -52,7 +52,7 @@ class Director
     {
         return $this->raidBossName;
     }
-    
+
     /**
      * @return string
      */

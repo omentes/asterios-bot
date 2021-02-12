@@ -14,7 +14,7 @@ class BotHelper
         'Kernon',
         'Longhorn Golkonda'
     ];
-    
+
     public const TEXT_TO_RAID = [
         'Другой сервер' => 'servers',
         '[x3]' => 'all',
@@ -36,7 +36,7 @@ class BotHelper
         '[x7] ToI 11 Golkonda' => 'Longhorn Golkonda',
         '[x7] Все РБ' => 'all',
     ];
-    
+
     public const TEXT_TO_SERVER = [
         'Другой сервер' => 'servers',
         '[x3]' => 'x3',
@@ -89,7 +89,7 @@ class BotHelper
             ['[x3] Все РБ', '[x5] Все РБ'],
         ];
     }
-    
+
     /**
      * @return array
      */
@@ -104,7 +104,7 @@ class BotHelper
             $buttons,
         ];
     }
-    
+
     /**
      * @return array
      */
@@ -116,7 +116,7 @@ class BotHelper
             ['Другой сервер', '[x5] Все РБ'],
         ];
     }
-    
+
     /**
      * @return array
      */
@@ -128,7 +128,7 @@ class BotHelper
             ['Другой сервер', '[x3] Все РБ'],
         ];
     }
-    
+
     /**
      * @return array
      */
