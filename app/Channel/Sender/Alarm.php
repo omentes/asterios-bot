@@ -23,8 +23,8 @@ class Alarm extends Sender implements Notify
         $message = $this->getMessage($mode, $raid['name']);
         if ($this->repository->isSubclass($raid['name'])) {
             $type = App::getInstance()->getConfig()->getShortRaidName($raid['name']);
+            $this->repository->createEvent($serverId, $type, $message);
         }
-        $this->repository->createEvent($serverId, $type, $message);
         $this->repository->updateAlarm($raid['id'], $mode);
         $channel = $this->repository->getChannel($result, $serverId);
         $answer = $this->sendMessage($message, $channel);
