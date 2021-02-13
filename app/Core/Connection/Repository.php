@@ -229,7 +229,7 @@ class Repository extends Database
         $stmt = $selectStatement->execute();
         return $stmt->fetchAll()[0];
     }
-    
+
     /**
      * @param string $title
      *
@@ -246,7 +246,7 @@ class Repository extends Database
 
         throw new BadRaidException('Raid name not found!');
     }
-    
+
     /**
      * @return array
      */
@@ -262,7 +262,7 @@ class Repository extends Database
         $stmt = $selectStatement->execute();
         return $stmt->fetchAll()[0] ?? [];
     }
-    
+
     /**
      * @param int $userId
      * @param int $versionId
@@ -277,7 +277,7 @@ class Repository extends Database
         )->into('version_notification');
         $insertStatement->execute();
     }
-    
+
     /**
      * @param int $versionId
      */

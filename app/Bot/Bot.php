@@ -65,7 +65,7 @@ class Bot extends Singleton
             Log::getInstance()->getLogger()->error($e->getMessage(), $e->getTrace());
         }
     }
-    
+
     /**
      * @throws TelegramException
      */
@@ -77,7 +77,7 @@ class Bot extends Singleton
         if (!empty($version)) {
             $keyboard = new Keyboard(...BotHelper::getKeyboardServers());
             $keyboard->setResizeKeyboard(true);
-    
+
             $results = Request::sendToActiveChats(
                 'sendMessage',
                 [
@@ -98,8 +98,6 @@ class Bot extends Singleton
                     /** @var Message $message */
                     $message = $result->getResult();
                     $chat = $message->getChat() ;
-//                    Log::getInstance()->getLogger()->error('1111', [var_export($message)]);
-    
                     if (!empty($chat)) {
                         /** @var Chat $chat */
                         $chatId = $chat->getId();

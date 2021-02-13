@@ -15,7 +15,7 @@ class AnswerDTO
      * @var string
      */
     private string $serverName;
-    
+
     /**
      * @var string
      */
@@ -50,7 +50,7 @@ class AnswerDTO
     {
         return $this->serverName;
     }
-    
+
     /**
      * @return string
      */

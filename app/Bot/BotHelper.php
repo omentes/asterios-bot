@@ -14,7 +14,7 @@ class BotHelper
         'Kernon',
         'Longhorn Golkonda'
     ];
-    
+
     public const AVAILABLE_INPUTS = [
         '[x3]',
         '[x5]',
@@ -35,7 +35,7 @@ class BotHelper
         '[x7] ToI 11 Golkonda',
         '[x7] Все РБ',
     ];
-    
+
     public const FLOORS = [
         '[x3]' => -1,
         '[x5]' => -1,
@@ -170,7 +170,7 @@ class BotHelper
     {
         return self::INPUT_TO_SERVER[$text];
     }
-    
+
     /**
      * @param string $message
      *
