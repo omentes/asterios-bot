@@ -48,7 +48,7 @@ class StartCommand extends SystemCommand
     public function execute(): ServerResponse
     {
         $chat_id = $this->getMessage()->getChat()->getId();
-        $keyboard = new Keyboard(...BotHelper::getKeyboard());
+        $keyboard = new Keyboard(...BotHelper::getKeyboardServers());
         $keyboard->setResizeKeyboard(true);
         $data = [
             'chat_id' => $chat_id,

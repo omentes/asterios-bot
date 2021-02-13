@@ -8,14 +8,46 @@ use AsteriosBot\Core\App;
 
 class BotHelper
 {
-    public const ALL_RAIDS = [
+    public const RAID_NAMES = [
         'Shilen\'s Messenger Cabrio',
         'Death Lord Hallate',
         'Kernon',
         'Longhorn Golkonda'
     ];
+    
+    public const AVAILABLE_INPUTS = [
+        '[x3]',
+        '[x5]',
+        '[x7]',
+        '[x3] Cabrio',
+        '[x3] ToI 3 Hallate',
+        '[x3] ToI 8 Kernon',
+        '[x3] ToI 11 Golkonda',
+        '[x3] Все РБ',
+        '[x5] Cabrio',
+        '[x5] ToI 3 Hallate',
+        '[x5] ToI 8 Kernon',
+        '[x5] ToI 11 Golkonda',
+        '[x5] Все РБ',
+        '[x7] Cabrio',
+        '[x7] ToI 3 Hallate',
+        '[x7] ToI 8 Kernon',
+        '[x7] ToI 11 Golkonda',
+        '[x7] Все РБ',
+    ];
+    
+    public const FLOORS = [
+        '[x3]' => -1,
+        '[x5]' => -1,
+        '[x7]' => -1,
+        'all' => -1,
+        'Shilen\'s Messenger Cabrio' => -1,
+        'Death Lord Hallate' => 3,
+        'Kernon' => 8,
+        'Longhorn Golkonda' => 11,
+    ];
 
-    public const TEXT_TO_RAID = [
+    public const INPUT_TO_TYPE = [
         'Другой сервер' => 'servers',
         '[x3]' => 'all',
         '[x3] Cabrio' => 'Shilen\'s Messenger Cabrio',
@@ -37,7 +69,7 @@ class BotHelper
         '[x7] Все РБ' => 'all',
     ];
 
-    public const TEXT_TO_SERVER = [
+    public const INPUT_TO_SERVER = [
         'Другой сервер' => 'servers',
         '[x3]' => 'x3',
         '[x3] Cabrio' => 'x3',
@@ -57,28 +89,6 @@ class BotHelper
         '[x7] ToI 8 Kernon' => 'x7',
         '[x7] ToI 11 Golkonda' => 'x7',
         '[x7] Все РБ' => 'x7',
-    ];
-
-    public const TEXT_QUESTIONS = [
-//        'Другой сервер',
-        '[x3]',
-        '[x5]',
-        '[x7]',
-        '[x3] Cabrio',
-        '[x3] ToI 3 Hallate',
-        '[x3] ToI 8 Kernon',
-        '[x3] ToI 11 Golkonda',
-        '[x3] Все РБ',
-        '[x5] Cabrio',
-        '[x5] ToI 3 Hallate',
-        '[x5] ToI 8 Kernon',
-        '[x5] ToI 11 Golkonda',
-        '[x5] Все РБ',
-        '[x7] Cabrio',
-        '[x7] ToI 3 Hallate',
-        '[x7] ToI 8 Kernon',
-        '[x7] ToI 11 Golkonda',
-        '[x7] Все РБ',
     ];
 
     public static function getKeyboard(): array
@@ -146,9 +156,9 @@ class BotHelper
      *
      * @return string
      */
-    public static function getRaidName(string $text): string
+    public static function getAnswerTYpe(string $text): string
     {
-        return self::TEXT_TO_RAID[$text];
+        return self::INPUT_TO_TYPE[$text];
     }
 
     /**
@@ -158,6 +168,16 @@ class BotHelper
      */
     public static function getServerName(string $text): string
     {
-        return self::TEXT_TO_SERVER[$text];
+        return self::INPUT_TO_SERVER[$text];
+    }
+    
+    /**
+     * @param string $message
+     *
+     * @return int
+     */
+    public static function getFloor(string $message): int
+    {
+        return self::FLOORS[$message];
     }
 }

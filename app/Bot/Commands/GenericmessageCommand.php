@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Longman\TelegramBot\Commands\SystemCommands;
 
 use AsteriosBot\Bot\BotHelper;
-use AsteriosBot\Bot\Director;
-use AsteriosBot\Bot\ResponseTextHandler;
+use AsteriosBot\Bot\AnswerDTO;
+use AsteriosBot\Bot\AnswerHandler;
 use AsteriosBot\Core\App;
 use AsteriosBot\Core\Exception\BadServerException;
 use Longman\TelegramBot\Commands\SystemCommand;
@@ -35,7 +35,7 @@ class GenericmessageCommand extends SystemCommand
             $keyboard->setResizeKeyboard(true);
             $data = [
                 'chat_id' => $chat_id,
-                'text' => (new ResponseTextHandler($dto))->getText(),
+                'text' => (new AnswerHandler($dto))->getText(),
                 'parse_mode' => 'markdown',
                 'disable_web_page_preview' => true,
                 'reply_markup' => $keyboard,
@@ -50,18 +50,18 @@ class GenericmessageCommand extends SystemCommand
      *
      * @param string $text
      *
-     * @return Director
+     * @return AnswerDTO
      * @throws BadServerException
      */
-    private function parseText(string $text): Director
+    private function parseText(string $text): AnswerDTO
     {
-        if (!in_array($text, BotHelper::TEXT_QUESTIONS)) {
-            return new Director(-1, 'servers', 'servers');
+        if (!in_array($text, BotHelper::AVAILABLE_INPUTS)) {
+            return new AnswerDTO(-1, 'servers', 'servers');
         }
-        $raidBossName = BotHelper::getRaidName($text);
+        $raidBossName = BotHelper::getAnswerTYpe($text);
         $serverName = BotHelper::getServerName($text);
         $serverId = App::getInstance()->getConfig()->getServerId($serverName);
-        return new Director($serverId, $serverName, $raidBossName);
+        return new AnswerDTO($serverId, $serverName, $raidBossName);
     }
 
     /**

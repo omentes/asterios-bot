@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace AsteriosBot\Bot;
 
-use AsteriosBot\Core\App;
-
-class Director
+class AnswerDTO
 {
     /**
      * @var int
@@ -16,25 +14,25 @@ class Director
     /**
      * @var string
      */
-    private string $raidBossName;
-
+    private string $serverName;
+    
     /**
      * @var string
      */
-    private string $serverName;
+    private string $type;
 
     /**
      * RaidDTO constructor.
      *
      * @param int    $serverId
      * @param string $serverName
-     * @param string $raidBossName
+     * @param string $type
      */
-    public function __construct(int $serverId, string $serverName, string $raidBossName)
+    public function __construct(int $serverId, string $serverName, string $type)
     {
         $this->serverId = $serverId;
         $this->serverName = $serverName;
-        $this->raidBossName = $raidBossName;
+        $this->type = $type;
     }
 
     /**
@@ -48,16 +46,16 @@ class Director
     /**
      * @return string
      */
-    public function getRaidBossName(): string
-    {
-        return $this->raidBossName;
-    }
-
-    /**
-     * @return string
-     */
     public function getServerName(): string
     {
         return $this->serverName;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getType(): string
+    {
+        return $this->type;
     }
 }

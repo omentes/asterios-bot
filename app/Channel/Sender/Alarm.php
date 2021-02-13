@@ -37,13 +37,13 @@ class Alarm extends Sender implements Notify
     {
         $message = 'Что-то пошло не так...';
         if ($mode === 1) {
-            $message = 'ALARM! Начался респаун ' . $name;
+            $message = 'Внимание! Начался респаун ' . $name;
         }
         if ($mode === 2) {
-            $message = 'ALARM! Осталось менее 3ч респауна ' . $name;
+            $message = 'Внимание! Осталось менее 3ч респауна ' . $name;
         }
         if ($mode === 3) {
-            $message = 'ALARM! Осталось менее 1,5ч респауна ' . $name;
+            $message = 'Внимание! Осталось менее 1,5ч респауна ' . $name;
         }
 
         return $message;
