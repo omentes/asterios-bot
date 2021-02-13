@@ -355,7 +355,7 @@ class Repository extends Database
         $selectStatement = $this->getConnection()->select(['server', 'type', 'enabled'])
             ->from('notification')
             ->where(new Conditional('chat_id', '=', $chatId))
-            ->orderBy('created', 'desc')
+            ->orderBy('type', 'asc')
         ;
         $stmt = $selectStatement->execute();
         return $stmt->fetchAll() ?? [];
