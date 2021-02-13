@@ -271,7 +271,7 @@ class Config
         $logPath = getenv('LOG_PATH');
         return $logPath !== false ? $logPath : './logs';
     }
-    
+
     /**
      * @return array
      */

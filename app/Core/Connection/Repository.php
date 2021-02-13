@@ -12,6 +12,7 @@ use FaaPz\PDO\Clause\Grouping;
 use FaaPz\PDO\Clause\Limit;
 use Feed;
 use FeedException;
+use PharIo\Version\Version;
 
 class Repository extends Database
 {
@@ -233,6 +234,7 @@ class Repository extends Database
      * @param string $title
      *
      * @return string
+     * @throws BadRaidException
      */
     public function getRaidNameByTitle(string $title): string
     {
@@ -243,5 +245,47 @@ class Repository extends Database
         }
 
         throw new BadRaidException('Raid name not found!');
+    }
+
+    /**
+     * @return array
+     */
+    public function getNewLatestVersion(): array
+    {
+        $selectStatement = $this->getConnection()->select(['id', 'version', 'description', 'created'])
+            ->from('version')
+            ->where(
+                new Conditional('used', '=', 0)
+            )
+            ->orderBy('created', 'desc')
+            ->limit(new Limit(1));
+        $stmt = $selectStatement->execute();
+        return $stmt->fetchAll()[0] ?? [];
+    }
+
+    /**
+     * @param int $userId
+     * @param int $versionId
+     */
+    public function saveVersionNotification(int $userId, int $versionId): void
+    {
+        $insertStatement = $this->getConnection()->insert(
+            [
+                'chat_id' => $userId,
+                'version_id' => $versionId,
+            ]
+        )->into('version_notification');
+        $insertStatement->execute();
+    }
+
+    /**
+     * @param int $versionId
+     */
+    public function applyVersion(int $versionId): void
+    {
+        $updateStatement = $this->getConnection()->update(['used' => 1])
+            ->table('version')
+            ->where(new Conditional('id', '=', $versionId));
+        $affectedRows = $updateStatement->execute();
     }
 }

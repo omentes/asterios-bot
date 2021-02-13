@@ -59,6 +59,10 @@ stop:
 psr:
 	 php vendor/bin/phpcbf --standard=psr12 app -n
 
+.PHONY: psalm
+psalm:
+	 php vendor/bin/psalm
+
 .PHONY: network
 network:
 	docker network create telegram-bots-network 2> /dev/null | true
