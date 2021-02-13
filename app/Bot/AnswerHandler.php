@@ -40,7 +40,8 @@ class AnswerHandler
             return $this->prepareText(
                 $raid,
                 $this->dto->getType(),
-                BotHelper::getFloor($this->dto->getType())
+                BotHelper::getFloor($this->dto->getType()),
+                $this->dto->getServerName()
             );
         }
         $result = '';
@@ -50,7 +51,8 @@ class AnswerHandler
             $result .= $this->prepareText(
                 $raid,
                 $name,
-                BotHelper::getFloor($name)
+                BotHelper::getFloor($name),
+                $this->dto->getServerName()
             );
         }
         return $result;
@@ -59,28 +61,29 @@ class AnswerHandler
     /**
      * @param array  $raid
      * @param string $name
-     * @param int $floor
+     * @param int    $floor
+     * @param string $serverName
      *
      * @return string
-     * @throws \Exception
      */
-    private function prepareText(array $raid, string $name, int $floor): string
+    private function prepareText(array $raid, string $name, int $floor, string $serverName): string
     {
         $raid['timestamp'] = intval($raid['timestamp']);
         if (empty($raid)) {
             return 'Что-то пошло не так...';
         }
         $floors = $floor > 0 ? " ({$floor} этаж)" : '';
+        $server = "\[$serverName]";
         if (time() - $raid['timestamp'] < Config::EIGHTEEN_HOURS) {
             $respawn = new DateTime();
             $respawn->setTimestamp(Config::EIGHTEEN_HOURS + $raid['timestamp']);
             $now = new DateTime();
             $now->setTimestamp(time());
             $interval = $respawn->diff($now);
-            return "{$name}{$floors}: респ начнется через " . $interval->format('%H:%I:%S') . "\n";
+            return "{$server} {$name}{$floors}: респ начнется через " . $interval->format('%H:%I:%S') . "\n";
         }
         if (time() - $raid['timestamp'] > Config::THIRTY_HOURS) {
-            return "{$name}{$floors}: уже должен стоять\n";
+            return "{$server} {$name}{$floors}: уже должен стоять\n";
         }
 
         $respawn = new DateTime();
@@ -88,6 +91,6 @@ class AnswerHandler
         $now = new DateTime();
         $now->setTimestamp(time());
         $interval = $now->diff($respawn);
-        return "{$name}{$floors}: респ идет уже " . $interval->format('%H:%I:%S') . "\n";
+        return "{$server} {$name}{$floors}: респ идет уже " . $interval->format('%H:%I:%S') . "\n";
     }
 }

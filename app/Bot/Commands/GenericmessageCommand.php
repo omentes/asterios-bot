@@ -8,12 +8,14 @@ use AsteriosBot\Bot\BotHelper;
 use AsteriosBot\Bot\AnswerDTO;
 use AsteriosBot\Bot\AnswerHandler;
 use AsteriosBot\Core\App;
+use AsteriosBot\Core\Connection\Metrics;
 use AsteriosBot\Core\Exception\BadServerException;
 use Longman\TelegramBot\Commands\SystemCommand;
 use Longman\TelegramBot\Entities\Keyboard;
 use Longman\TelegramBot\Entities\ServerResponse;
 use Longman\TelegramBot\Exception\TelegramException;
 use Longman\TelegramBot\Request;
+use Prometheus\Exception\MetricsRegistrationException;
 
 class GenericmessageCommand extends SystemCommand
 {
@@ -24,9 +26,11 @@ class GenericmessageCommand extends SystemCommand
     /**
      * @return ServerResponse
      * @throws TelegramException
+     * @throws MetricsRegistrationException
      */
     public function execute(): ServerResponse
     {
+        Metrics::getInstance()->increaseMetric('usage');
         $text = trim($this->getMessage()->getText(true));
         $chat_id = $this->getMessage()->getChat()->getId();
         try {

@@ -22,7 +22,7 @@ class AnswerDTO
     private string $type;
 
     /**
-     * RaidDTO constructor.
+     * AnswerDTO constructor.
      *
      * @param int    $serverId
      * @param string $serverName
