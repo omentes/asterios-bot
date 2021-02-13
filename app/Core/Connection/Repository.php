@@ -12,7 +12,6 @@ use FaaPz\PDO\Clause\Grouping;
 use FaaPz\PDO\Clause\Limit;
 use Feed;
 use FeedException;
-use PharIo\Version\Version;
 
 class Repository extends Database
 {
@@ -246,7 +245,19 @@ class Repository extends Database
 
         throw new BadRaidException('Raid name not found!');
     }
-
+    
+    /**
+     * @param string $title
+     *
+     * @return string
+     * @throws BadRaidException
+     */
+    public function getShortRaidName(string $title): string
+    {
+        $name = $this->getRaidNameByTitle($title);
+        return Config::SHORT_RAIDS_NAMES[$name];
+    }
+    
     /**
      * @return array
      */
@@ -287,5 +298,133 @@ class Repository extends Database
             ->table('version')
             ->where(new Conditional('id', '=', $versionId));
         $affectedRows = $updateStatement->execute();
+    }
+    
+    /**
+     * @param int    $chatId
+     * @param int    $serverId
+     * @param string $type
+     * @param bool   $enabled
+     */
+    public function createOrUpdateNotification(int $chatId, int $serverId, string $type, bool $enabled = true): void
+    {
+        $selectStatement = $this->getConnection()->select(['chat_id', 'server', 'type', 'created'])
+            ->from('notification')
+            ->where(
+                new Grouping(
+                    "AND",
+                    new Conditional('server', '=', $serverId),
+                    new Conditional('chat_id', '=', $chatId),
+                    new Conditional('type', '=', $type)
+                )
+            );
+        $stmt = $selectStatement->execute();
+        $result = $stmt->fetchAll()[0] ?? [];
+        if (!empty($result)) {
+            $updateStatement = $this->getConnection()->update(['enabled' => intval($enabled)])
+                ->table('notification')
+                ->where(
+                    new Grouping(
+                        "AND",
+                        new Conditional('server', '=', $serverId),
+                        new Conditional('chat_id', '=', $chatId),
+                        new Conditional('type', '=', $type)
+                    )
+                );
+            $affectedRows = $updateStatement->execute();
+        } else {
+            $insertStatement = $this->getConnection()->insert(
+                [
+                    'server' => $serverId,
+                    'chat_id' => $chatId,
+                    'type' => $type,
+                    'enabled' => intval($enabled),
+                ]
+            )->into('notification');
+            $insertStatement->execute();
+        }
+    }
+    
+    /**
+     * @param int $chatId
+     *
+     * @return array
+     */
+    public function getAllNotifications(int $chatId): array
+    {
+        $selectStatement = $this->getConnection()->select(['server', 'type', 'enabled'])
+            ->from('notification')
+            ->where(new Conditional('chat_id', '=', $chatId))
+            ->orderBy('created', 'desc')
+        ;
+        $stmt = $selectStatement->execute();
+        return $stmt->fetchAll() ?? [];
+    }
+    
+    /**
+     * @param int    $serverId
+     * @param string $type
+     *
+     * @return array
+     */
+    public function getChatsForEvent(int $serverId, string $type): array
+    {
+        $selectStatement = $this->getConnection()->select(['chat_id'])
+            ->from('notification')
+            ->where(
+                new Grouping(
+                    "AND",
+                    new Conditional('server', '=', $serverId),
+                    new Conditional('type', '=', $type),
+                    new Conditional('enabled', '=', 1)
+                )
+            );
+        $stmt = $selectStatement->execute();
+        return $stmt->fetchAll() ?? [];
+    }
+
+    /**
+     * @return array
+     */
+    public function getAllEvents(): array
+    {
+        $selectStatement = $this->getConnection()->select(['id','server', 'type', 'message'])
+            ->from('event')
+            ->where(new Conditional('used', '=', 0))
+            ->orderBy('created', 'desc')
+            ->limit(new Limit(10));
+        $stmt = $selectStatement->execute();
+        return $stmt->fetchAll() ?? [];
+    }
+    
+    /**
+     * @param int $id
+     */
+    public function updateEvents(int $id): void
+    {
+        $updateStatement = $this->getConnection()->update(['used' => 1, 'updated' => date('Y-m-d H:i:s')])
+            ->table('event')
+            ->where(
+                new Conditional('id', '=', $id)
+            );
+        $affectedRows = $updateStatement->execute();
+    }
+    
+    /**
+     * @param int    $server
+     * @param string $type
+     * @param string $message
+     */
+    public function createEvent(int $server, string $type, string $message): void
+    {
+        $insertStatement = $this->getConnection()->insert(
+            [
+                'server' => $server,
+                'type' => $type,
+                'message' => $message,
+                'used' => 0,
+            ]
+        )->into('event');
+        $insertStatement->execute();
     }
 }

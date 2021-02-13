@@ -19,16 +19,17 @@ class Death extends Sender implements Notify
         $date = $this->getDateTime((int)$raid['timestamp']);
         try {
             $this->repository->createRaidDeath($serverId, $raid);
+            $type = $this->repository->getShortRaidName($raid['title']);
+            $this->repository->createEvent($serverId, $type, $raid['title']);
             $channel = $this->repository->getChannel($raid, $serverId);
             [$timeUp, $timeDown] = $this->getTimeUpAndDown($raid);
             $rightNow = $this->getNowDateTime();
             $text = $this->getDeathRaidMessageText($raid['description'], $date, $timeUp, $timeDown, $rightNow);
-
-            $result = $this->sendMessage($text, $channel);
+            $this->sendMessage($text, $channel);
         } catch (\Throwable $e) {
             $result = $e->getMessage();
+            $this->logger->error($result);
         }
-        $this->logger->debug($result);
     }
 
     /**

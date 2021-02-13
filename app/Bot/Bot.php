@@ -12,7 +12,6 @@ use AsteriosBot\Core\Exception\EnvironmentException;
 use AsteriosBot\Core\Support\Singleton;
 use Longman\TelegramBot\Entities\Chat;
 use Longman\TelegramBot\Entities\Keyboard;
-use Longman\TelegramBot\Entities\User;
 use Longman\TelegramBot\Exception\TelegramException;
 use Longman\TelegramBot\Telegram;
 use Longman\TelegramBot\TelegramLog;
@@ -58,8 +57,10 @@ class Bot extends Singleton
      */
     public function run(): void
     {
+        $notify = new Notify();
         try {
             $this->telegram->handleGetUpdates();
+            $notify->handle();
             Metrics::getInstance()->increaseHealthCheck('bot');
         } catch (TelegramException $e) {
             Log::getInstance()->getLogger()->error($e->getMessage(), $e->getTrace());

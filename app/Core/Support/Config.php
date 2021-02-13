@@ -61,6 +61,13 @@ class Config
 
     ];
 
+    public const ID_TO_NAMES = [
+        self::X3 => self::X3_NAME,
+        self::X5 => self::X5_NAME,
+        self::X7 => self::X7_NAME,
+
+    ];
+
     public const EIGHTEEN_HOURS = 18 * 60 * 60;
     public const THIRTY_HOURS = 30 * 60 * 60;
     public const TWENTY_FOUR_HOURS = 24 * 60 * 60;
@@ -101,6 +108,12 @@ class Config
         'Varka\'s Hero Shadith',
 
     ];
+    const SHORT_RAIDS_NAMES = [
+        'Death Lord Hallate' => 'toi3',
+        'Kernon' => 'toi8',
+        'Longhorn Golkonda' => 'toi11',
+        'Shilen\'s Messenger Cabrio' => 'cabrio',
+    ];
 
     /**
      * @param string $serverName
@@ -115,6 +128,21 @@ class Config
         }
 
         return self::NAMES_TO_ID[$serverName];
+    }
+    
+    /**
+     * @param int $serverId
+     *
+     * @return string
+     * @throws BadServerException
+     */
+    public function getServerName(int $serverId): string
+    {
+        if (!array_key_exists($serverId, self::ID_TO_NAMES)) {
+            throw new BadServerException('Bad server id. Server not found!');
+        }
+
+        return self::ID_TO_NAMES[$serverId];
     }
 
     /**
@@ -279,5 +307,15 @@ class Config
     {
         $array = getenv("ENABLE_SERVERS") ?? 'x5';
         return explode(',', $array);
+    }
+    
+    /**
+     * @param string $name
+     *
+     * @return string
+     */
+    public function getShortRaidName(string $name): string
+    {
+        return Config::SHORT_RAIDS_NAMES[$name];
     }
 }
