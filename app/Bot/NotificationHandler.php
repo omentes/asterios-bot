@@ -59,11 +59,17 @@ class NotificationHandler
         $this->enabled = $enabled;
     }
 
+    /**
+     * @return string
+     */
     public function getMessage(): string
     {
         return $this->handle();
     }
 
+    /**
+     * @return string
+     */
     private function handle(): string
     {
         if ($this->serverId < 0 || empty($this->type)) {

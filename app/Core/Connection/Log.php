@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace AsteriosBot\Core\Connection;
 
 use AsteriosBot\Core\App;
-use AsteriosBot\Core\Support\Config;
 use AsteriosBot\Core\Support\Singleton;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;

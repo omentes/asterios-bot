@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Longman\TelegramBot\Commands\SystemCommand;
 
 use AsteriosBot\Bot\ListHandler;
-use AsteriosBot\Bot\NotificationHandler;
 use AsteriosBot\Core\Connection\Metrics;
 use Longman\TelegramBot\Commands\SystemCommand;
 use Longman\TelegramBot\Entities\ServerResponse;
