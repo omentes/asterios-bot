@@ -129,7 +129,7 @@ class Config
 
         return self::NAMES_TO_ID[$serverName];
     }
-    
+
     /**
      * @param int $serverId
      *
@@ -308,7 +308,7 @@ class Config
         $array = getenv("ENABLE_SERVERS") ?? 'x5';
         return explode(',', $array);
     }
-    
+
     /**
      * @param string $name
      *

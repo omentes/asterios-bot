@@ -57,7 +57,7 @@ class AnswerHandler
         }
         return $result;
     }
-    
+
     /**
      * @param array  $raid
      * @param string $name

@@ -34,7 +34,7 @@ class NotificationHandler
      * @var bool
      */
     private bool $enabled;
-    
+
     /**
      * NotificationDTO constructor.
      *
@@ -58,12 +58,12 @@ class NotificationHandler
         $this->repository = !is_null($repository) ? $repository : Repository::getInstance();
         $this->enabled = $enabled;
     }
-    
+
     public function getMessage(): string
     {
         return $this->handle();
     }
-    
+
     private function handle(): string
     {
         if ($this->serverId < 0 || empty($this->type)) {
@@ -77,7 +77,7 @@ class NotificationHandler
         $this->repository->createOrUpdateNotification($this->chatId, $this->serverId, $this->type, $this->enabled);
         return "Сохранено. Проверить подписки: /list";
     }
-    
+
     /**
      * @throws BadRaidException
      */

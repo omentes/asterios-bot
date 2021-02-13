@@ -22,7 +22,7 @@ class GenericmessageCommand extends SystemCommand
     protected $name = 'genericmessage';
     protected $description = 'Handle generic message';
     protected $version = '1.0.0';
-    
+
     /**
      * @return ServerResponse
      * @throws TelegramException

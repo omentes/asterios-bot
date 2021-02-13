@@ -19,7 +19,7 @@ class ListHandler
      * @var Repository
      */
     private $repository;
-    
+
     /**
      * ListHandler constructor.
      *
@@ -31,7 +31,7 @@ class ListHandler
         $this->chatId = $chatId;
         $this->repository = !is_null($repository) ? $repository : Repository::getInstance();
     }
-    
+
     /**
      * @return string
      * @throws BadServerException
@@ -40,7 +40,7 @@ class ListHandler
     {
         return $this->handle();
     }
-    
+
     /**
      * @return string
      * @throws BadServerException

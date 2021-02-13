@@ -39,7 +39,7 @@ class DelCommand extends SystemCommand
      * @var bool
      */
     protected $private_only = true;
-    
+
     /**
      * Command execute method
      *

@@ -245,7 +245,7 @@ class Repository extends Database
 
         throw new BadRaidException('Raid name not found!');
     }
-    
+
     /**
      * @param string $title
      *
@@ -257,7 +257,7 @@ class Repository extends Database
         $name = $this->getRaidNameByTitle($title);
         return Config::SHORT_RAIDS_NAMES[$name];
     }
-    
+
     /**
      * @return array
      */
@@ -299,7 +299,7 @@ class Repository extends Database
             ->where(new Conditional('id', '=', $versionId));
         $affectedRows = $updateStatement->execute();
     }
-    
+
     /**
      * @param int    $chatId
      * @param int    $serverId
@@ -344,7 +344,7 @@ class Repository extends Database
             $insertStatement->execute();
         }
     }
-    
+
     /**
      * @param int $chatId
      *
@@ -360,7 +360,7 @@ class Repository extends Database
         $stmt = $selectStatement->execute();
         return $stmt->fetchAll() ?? [];
     }
-    
+
     /**
      * @param int    $serverId
      * @param string $type
@@ -396,7 +396,7 @@ class Repository extends Database
         $stmt = $selectStatement->execute();
         return $stmt->fetchAll() ?? [];
     }
-    
+
     /**
      * @param int $id
      */
@@ -409,7 +409,7 @@ class Repository extends Database
             );
         $affectedRows = $updateStatement->execute();
     }
-    
+
     /**
      * @param int    $server
      * @param string $type

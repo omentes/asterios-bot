@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace AsteriosBot\Bot;
 
@@ -13,7 +14,7 @@ class Notify
      * @var Repository
      */
     private $repository;
-    
+
     /**
      * Notify constructor.
      *
@@ -23,7 +24,7 @@ class Notify
     {
         $this->repository = !is_null($repository) ? $repository : Repository::getInstance();
     }
-    
+
     /**
      *
      * @throws TelegramException
