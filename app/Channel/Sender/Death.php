@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AsteriosBot\Channel\Sender;
 
+use AsteriosBot\Core\App;
 use AsteriosBot\Core\Support\Config;
 use DateTime;
 
@@ -19,8 +20,10 @@ class Death extends Sender implements Notify
         $date = $this->getDateTime((int)$raid['timestamp']);
         try {
             $this->repository->createRaidDeath($serverId, $raid);
-            $type = $this->repository->getShortRaidName($raid['title']);
-            $this->repository->createEvent($serverId, $type, $raid['title']);
+            if ($this->repository->isSubclass($raid['name'])) {
+                $type = $this->repository->getShortRaidName($raid['title']);
+                $this->repository->createEvent($serverId, $type, $raid['title']);
+            }
             $channel = $this->repository->getChannel($raid, $serverId);
             [$timeUp, $timeDown] = $this->getTimeUpAndDown($raid);
             $rightNow = $this->getNowDateTime();
