@@ -321,8 +321,12 @@ class Repository extends Database
         $stmt = $selectStatement->execute();
         $result = $stmt->fetchAll()[0] ?? [];
         if (!empty($result)) {
-            $updateStatement = $this->getConnection()->update(['enabled' => intval($enabled)])
-                ->table('notification')
+            $updateStatement = $this->getConnection()->update(
+                [
+                    'enabled' => intval($enabled),
+                    'updated' => date('Y-m-d H:i:s')
+                ]
+            )->table('notification')
                 ->where(
                     new Grouping(
                         "AND",
