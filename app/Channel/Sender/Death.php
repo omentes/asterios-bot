@@ -20,7 +20,7 @@ class Death extends Sender implements Notify
         $date = $this->getDateTime((int)$raid['timestamp']);
         try {
             $this->repository->createRaidDeath($serverId, $raid);
-            if ($this->repository->isSubclass($raid['name'])) {
+            if ($this->repository->isSubclass($raid['title'])) {
                 $type = $this->repository->getShortRaidName($raid['title']);
                 $this->repository->createEvent($serverId, $type, $raid['title']);
             }
