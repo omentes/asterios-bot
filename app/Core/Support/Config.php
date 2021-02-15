@@ -242,7 +242,7 @@ class Config
      */
     public function isSilentMode(string $channel): bool
     {
-        $str = getenv("ENABLE_SERVERS") ?? 'x5';
+        $str = getenv("SILENT_MODE") ?? 'x5';
         $channels = explode(',', $str);
         return in_array($channel, $channels);
     }
