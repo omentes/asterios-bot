@@ -236,11 +236,15 @@ class Config
     }
 
     /**
+     * @param string $channel
+     *
      * @return bool
      */
-    public function isSilentMode(): bool
+    public function isSilentMode(string $channel): bool
     {
-        return getenv('SILENT_MODE') && 'true' === getenv('SILENT_MODE');
+        $str = getenv("ENABLE_SERVERS") ?? 'x5';
+        $channels = explode(',', $str);
+        return in_array($channel, $channels);
     }
 
     /**

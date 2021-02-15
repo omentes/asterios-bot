@@ -74,7 +74,7 @@ abstract class Sender
      */
     public function sendMessage(string $text, string $channel): string
     {
-        if ($this->config->isSilentMode()) {
+        if ($this->config->isSilentMode($channel)) {
             return 'silent mode on';
         }
         $data = [
