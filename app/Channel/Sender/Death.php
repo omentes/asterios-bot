@@ -100,6 +100,7 @@ class Death extends Sender implements Notify
         $text .= "\n\nВремя респа: C " . $timeUp->format('Y-m-d H:i:s') . ' до ' . $timeDown->format('Y-m-d H:i:s');
         $text .= "\n\nДонат: вкачать твина по рефералке на х5 https://bit.ly/asterios-invite-link";
         $text .= "\n\nВремя получения инфы о смерти с сайта Астериоса и публикации этого сообщения: " . $rightNow->format('Y-m-d H:i:s');
+        $text .= "\n\nПодписаться на отдельного РБ или посмотреть состояние респауна в данный момент @AsteriosRBBot";
 
         return $text;
     }
