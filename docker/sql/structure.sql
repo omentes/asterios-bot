@@ -342,7 +342,7 @@ CREATE TABLE `version` (
                            `version` varchar(12) NOT NULL,
                            `description` longtext,
                            `used` int(1) DEFAULT '0',
-                           `created` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+                           `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -354,7 +354,7 @@ CREATE TABLE `version` (
 CREATE TABLE `version_notification` (
                                         `chat_id` int(11) DEFAULT NULL,
                                         `version_id` int(11) DEFAULT NULL,
-                                        `created` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+                                        `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
