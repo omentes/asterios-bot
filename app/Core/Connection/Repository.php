@@ -263,12 +263,12 @@ class Repository extends Database
      */
     public function getNewLatestVersion(): array
     {
-        $selectStatement = $this->getConnection()->select(['id', 'version', 'description', 'created'])
+        $selectStatement = $this->getConnection()->select(['id', 'version', 'description', 'created_at'])
             ->from('version')
             ->where(
                 new Conditional('used', '=', 0)
             )
-            ->orderBy('created', 'desc')
+            ->orderBy('created_at', 'desc')
             ->limit(new Limit(1));
         $stmt = $selectStatement->execute();
         return $stmt->fetchAll()[0] ?? [];
@@ -308,7 +308,7 @@ class Repository extends Database
      */
     public function createOrUpdateNotification(int $chatId, int $serverId, string $type, bool $enabled = true): void
     {
-        $selectStatement = $this->getConnection()->select(['chat_id', 'server', 'type', 'created'])
+        $selectStatement = $this->getConnection()->select(['chat_id', 'server', 'type', 'created_at'])
             ->from('notification')
             ->where(
                 new Grouping(
@@ -324,7 +324,7 @@ class Repository extends Database
             $updateStatement = $this->getConnection()->update(
                 [
                     'enabled' => intval($enabled),
-                    'updated' => date('Y-m-d H:i:s')
+                    'updated_at' => date('Y-m-d H:i:s')
                 ]
             )->table('notification')
                 ->where(
@@ -395,7 +395,7 @@ class Repository extends Database
         $selectStatement = $this->getConnection()->select(['id','server', 'type', 'message'])
             ->from('event')
             ->where(new Conditional('used', '=', 0))
-            ->orderBy('created', 'desc')
+            ->orderBy('created_at', 'desc')
             ->limit(new Limit(10));
         $stmt = $selectStatement->execute();
         return $stmt->fetchAll() ?? [];
@@ -406,7 +406,7 @@ class Repository extends Database
      */
     public function updateEvents(int $id): void
     {
-        $updateStatement = $this->getConnection()->update(['used' => 1, 'updated' => date('Y-m-d H:i:s')])
+        $updateStatement = $this->getConnection()->update(['used' => 1, 'updated_at' => date('Y-m-d H:i:s')])
             ->table('event')
             ->where(
                 new Conditional('id', '=', $id)
