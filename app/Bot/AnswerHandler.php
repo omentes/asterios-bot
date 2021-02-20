@@ -56,7 +56,7 @@ class AnswerHandler
             );
         }
         $result .= "\nУчить английские слова @RepeatWordBot";
-        
+
         return $result;
     }
 
