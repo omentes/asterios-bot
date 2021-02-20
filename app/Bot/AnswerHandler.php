@@ -55,7 +55,7 @@ class AnswerHandler
                 $this->dto->getServerName()
             );
         }
-        $result .= "\n\nУчить английские слова @RepeatWordBot";
+        $result .= "\nУчить английские слова @RepeatWordBot";
         
         return $result;
     }
