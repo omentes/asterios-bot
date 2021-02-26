@@ -55,8 +55,9 @@ class AnswerHandler
                 $this->dto->getServerName()
             );
         }
-        $result .= "\nУчить английские слова @RepeatWordBot";
-
+        $result .= "\nУчить английские слова @RepeatWordBot\n\n";
+        $result .= "\n\nДонат: вкачать твина по рефералке на х5 https://bit.ly/asterios-invite-link или ";
+        $result .= "на х7 http://bit.ly/x7-11-gold\n\n";
         return $result;
     }
 
