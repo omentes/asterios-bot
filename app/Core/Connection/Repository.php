@@ -71,7 +71,7 @@ class Repository extends Database
         foreach ($raids as $raid) {
             if ($this->isAlliance($raid['title'])) {
             }
-            $raid['timestamp'] = time() - $raid['timestamp'];
+            $raid['timestamp'] = time() - intval($raid['timestamp']);
             $raid['name'] = $this->getRaidNameByTitle($raid['title']);
             $result[md5($raid['title'])] = $raid;
         }
