@@ -35,7 +35,6 @@ class ArrayHelper
      */
     public static function getFormattedRaidBosses(array $remoteBefore, int $limit): array
     {
-        var_export($remoteBefore);
         if (empty($remoteBefore)) {
             return [];
         }
