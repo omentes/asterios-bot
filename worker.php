@@ -12,22 +12,15 @@ $checker = new Checker();
 $parser = new Parser();
 $servers = $app->getConfig()->getEnableServers();
 $logger = Log::getInstance()->getLogger();
-$expectedTime = time() + 60; // +1 min in seconds
-$oneSecond = time();
 while (true) {
-    $now = time();
-    if ($now >= $oneSecond) {
-        $oneSecond = $now + 1;
-        try {
-            foreach ($servers as $server) {
-                $parser->execute($server);
-                $checker->execute($server);
-            }
-        } catch (\Throwable $e) {
-            $logger->error($e->getMessage(), $e->getTrace());
+    try {
+        foreach ($servers as $server) {
+            $parser->execute($server);
+            $checker->execute($server);
         }
+        sleep(1);
+    } catch (\Throwable $e) {
+        $logger->error($e->getMessage(), $e->getTrace());
     }
-    if ($expectedTime < $now) {
-        die(0);
-    }
+
 }
