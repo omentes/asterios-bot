@@ -39,6 +39,9 @@ class ArrayHelper
         if (empty($remoteBefore)) {
             return [];
         }
+        if (isset($remoteBefore['title'])) {
+            $remoteBefore = [$remoteBefore];
+        }
         return array_map(
             function ($record) {
                 return [
