@@ -16,7 +16,7 @@ if (isset($argv[1]) && validate($argv[1])) {
         try {
             $parser->execute($server);
             $checker->execute($server);
-            usleep(500000);
+            usleep(900000);
         } catch (\Throwable $e) {
             Log::getInstance()->getLogger()->error($e->getMessage(), $e->getTrace());
         }
