@@ -33,14 +33,8 @@ class Notify
     {
         $events = $this->repository->getAllEvents();
         foreach ($events as $event) {
-            echo "EVENT start\n";
-            var_export($event);
-            echo "EVENT end\n";
             $chats = $this->repository->getChatsForEvent($event['server'], $event['type']);
             foreach ($chats as $chat) {
-                echo "chat start\n";
-                var_export($chat);
-                echo "chat end\n";
                 $data = [
                     'chat_id' => $chat['chat_id'],
                     'text' => $event['message'],
