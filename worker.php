@@ -18,7 +18,7 @@ while (true) {
             $parser->execute($server);
             $checker->execute($server);
         }
-        sleep(1);
+        usleep(500000);
     } catch (\Throwable $e) {
         $logger->error($e->getMessage(), $e->getTrace());
     }
