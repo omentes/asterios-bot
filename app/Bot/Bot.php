@@ -78,7 +78,7 @@ class Bot extends Singleton
      */
     public function runHook(): void
     {
-        $this->register('asterios-bot-webhook');
+        $this->register('asterios-webhook');
         try {
             $this->telegram->handle();
             Metrics::getInstance()->increaseHealthCheck('bot_webhook');
@@ -133,7 +133,7 @@ class Bot extends Singleton
             $repository->applyVersion($version['id']);
         }
     }
-    
+
     private function getSetUpdateFilter(): void
     {
         $this->telegram->setUpdateFilter(static function (Update $array) {
@@ -159,8 +159,8 @@ class Bot extends Singleton
             return $flag;
         });
     }
-    
-    
+
+
     /**
      * @param string $prefix
      */
@@ -171,7 +171,7 @@ class Bot extends Singleton
         $key = $prefix . '_registered';
         if (!$cache->exists($key)) {
             try {
-                $hook_url = "https://metrics.webhook.pp.ua";
+                $hook_url = "https://asterios.webhook.pp.ua";
                 $result = $this->telegram->setWebhook($hook_url);
                 if ($result->isOk()) {
                     $cache->set($key, $result->getDescription());

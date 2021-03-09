@@ -31,7 +31,7 @@ class GenericmessageCommand extends SystemCommand
     public function execute(): ServerResponse
     {
         Metrics::getInstance()->increaseMetric('usage');
-        if($this->getMessage() === null) {
+        if ($this->getMessage() === null) {
             $data = [
                 'chat_id' => 281861745,
                 'text' => print_r($this, true),

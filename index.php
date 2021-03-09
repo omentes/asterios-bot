@@ -7,5 +7,5 @@ use AsteriosBot\Bot\Bot;
 $bot = Bot::getInstance();
 $bot->runHook();
 echo json_encode(
-    ["runHook" => "ok"]
+    ["asterios-bot" => "ok"]
 );
