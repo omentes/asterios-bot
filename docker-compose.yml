@@ -1,14 +1,14 @@
 version: '3'
 
 services:
-  metrics:
+  asterios-nginx:
     build:
       context: .
       dockerfile: docker/nginx/Dockerfile
-    container_name: 'asterios-bot-metrics'
+    container_name: 'asterios-bot-nginx'
     restart: always
     ports:
-      - "8080:80"
+      - "8880:80"
     volumes:
       - .:/app/
     networks:
