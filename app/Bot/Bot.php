@@ -66,7 +66,7 @@ class Bot extends Singleton
         try {
 //            $this->telegram->handleGetUpdates();
             $notify->handle();
-            Metrics::getInstance()->increaseHealthCheck('bot');
+            Metrics::getInstance()->increaseHealthCheck('bot_notify');
         } catch (TelegramException $e) {
             Log::getInstance()->getLogger()->error($e->getMessage(), $e->getTrace());
         }
