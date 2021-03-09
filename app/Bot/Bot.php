@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AsteriosBot\Bot;
 
 use AsteriosBot\Core\App;
+use AsteriosBot\Core\Connection\Cache;
 use AsteriosBot\Core\Connection\Log;
 use AsteriosBot\Core\Connection\Metrics;
 use AsteriosBot\Core\Connection\Repository;
@@ -12,9 +13,11 @@ use AsteriosBot\Core\Exception\EnvironmentException;
 use AsteriosBot\Core\Support\Singleton;
 use Longman\TelegramBot\Entities\Chat;
 use Longman\TelegramBot\Entities\Keyboard;
+use Longman\TelegramBot\Entities\Update;
 use Longman\TelegramBot\Exception\TelegramException;
 use Longman\TelegramBot\Telegram;
 use Longman\TelegramBot\TelegramLog;
+use Predis\Client;
 use Prometheus\Exception\MetricsRegistrationException;
 use Longman\TelegramBot\Request;
 use Longman\TelegramBot\Entities\Message;
@@ -46,6 +49,8 @@ class Bot extends Singleton
                 ]
             );
             $this->checkVersion();
+            $this->telegram->enableLimiter();
+//            $this->getSetUpdateFilter();
         } catch (EnvironmentException | TelegramException $e) {
             Log::getInstance()->getLogger()->error($e->getMessage(), $e->getTrace());
         }
@@ -59,9 +64,24 @@ class Bot extends Singleton
     {
         $notify = new Notify();
         try {
-            $this->telegram->handleGetUpdates();
+//            $this->telegram->handleGetUpdates();
             $notify->handle();
             Metrics::getInstance()->increaseHealthCheck('bot');
+        } catch (TelegramException $e) {
+            Log::getInstance()->getLogger()->error($e->getMessage(), $e->getTrace());
+        }
+    }
+
+    /**
+     *
+     * @throws MetricsRegistrationException
+     */
+    public function runHook(): void
+    {
+        $this->register('asterios-bot');
+        try {
+            $this->telegram->handle();
+            Metrics::getInstance()->increaseHealthCheck('bot_webhook');
         } catch (TelegramException $e) {
             Log::getInstance()->getLogger()->error($e->getMessage(), $e->getTrace());
         }
@@ -111,6 +131,54 @@ class Bot extends Singleton
                 }
             }
             $repository->applyVersion($version['id']);
+        }
+    }
+    
+    private function getSetUpdateFilter(): void
+    {
+        $this->telegram->setUpdateFilter(static function (Update $array) {
+            $bannedIds = ['1239727062'];
+            $text = '';
+            $flag = true;
+            if ($array->getMessage()) {
+                if (in_array($array->getMessage()->getFrom()->getId(), $bannedIds)) {
+                    $text = 'getMessage';
+                    $flag = false;
+                }
+            }
+            if ($flag === false) {
+                $data = [
+                    'chat_id' => 1239727062,
+                    'text' => 'Permanently banned',
+                    'parse_mode' => 'markdown',
+                    'disable_web_page_preview' => true,
+                    'disable_notification' => 1,
+                ];
+                Request::sendMessage($data);
+            }
+            return $flag;
+        });
+    }
+    
+    
+    /**
+     * @param string $prefix
+     */
+    private function register(string $prefix): void
+    {
+        /** @var Client $cache */
+        $cache = Cache::getInstance()->getConnection();
+        $key = $prefix . '_registered';
+        if (!$cache->exists($key)) {
+            try {
+                $hook_url = "https://metrics.webhook.pp.ua/bots";
+                $result = $this->telegram->setWebhook($hook_url);
+                if ($result->isOk()) {
+                    $cache->set($key, $result->getDescription());
+                }
+            } catch (TelegramException $e) {
+                Log::getInstance()->getLogger()->error('Registered failed', ['error' => $e->getMessage()]);
+            }
         }
     }
 }
