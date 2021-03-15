@@ -183,22 +183,20 @@ class BotHelper
     {
         return self::FLOORS[$message];
     }
-
-
-
+    
+    
     /**
      * @param array  $raid
      * @param string $name
      * @param int    $floor
-     * @param string $serverName
      *
-     * @return string
+     * @return string[]
      */
     public static function prepareTextForExport(array $raid, string $name, int $floor): array
     {
         $raid['timestamp'] = intval($raid['timestamp']);
         if (empty($raid)) {
-            return 'Что-то пошло не так...';
+            return [];
         }
         $floors = $floor > 0 ? " ({$floor} этаж)" : '';
         if (time() - $raid['timestamp'] < Config::EIGHTEEN_HOURS) {
