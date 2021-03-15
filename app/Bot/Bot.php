@@ -87,6 +87,10 @@ class Bot extends Singleton
         }
     }
 
+    public function createSvg(): void
+    {
+    }
+
     /**
      * @throws TelegramException
      */

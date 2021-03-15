@@ -62,6 +62,35 @@ class AnswerHandler
     }
 
     /**
+     * @return string
+     * @throws \Exception
+     */
+    public function getSvg(): string
+    {
+        $result = [];
+        $names = BotHelper::RAID_NAMES;
+        foreach ($names as $name) {
+            $raid = $this->repository->getLastRaidLikeName($name, $this->dto->getServerId());
+            $result = array_merge($result, BotHelper::prepareTextForExport(
+                $raid,
+                $name,
+                BotHelper::getFloor($name)
+            ));
+        }
+        $svg = BotHelper::getSVGStart();
+        foreach ($result as $raid => $info) {
+            $svg .= strtr(BotHelper::getSVGContent(), [
+                ':raid' => $raid,
+                ':resp' => $info
+            ]);
+        }
+        $svg .= BotHelper::getSVGEnd();
+        return strtr($svg, [
+            ':server' => $this->dto->getServerName()
+        ]);
+    }
+
+    /**
      * @param array  $raid
      * @param string $name
      * @param int    $floor
