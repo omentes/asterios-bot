@@ -183,8 +183,8 @@ class BotHelper
     {
         return self::FLOORS[$message];
     }
-    
-    
+
+
     /**
      * @param array  $raid
      * @param string $name
