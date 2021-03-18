@@ -60,12 +60,13 @@ class AnswerHandler
         $result .= "или на х7 http://bit.ly/x7-11-gold";
         return $result;
     }
-
+    
     /**
+     * @param bool $dark
+     *
      * @return string
-     * @throws \Exception
      */
-    public function getSvg(): string
+    public function getSvg(bool $dark = false): string
     {
         $result = [];
         $names = BotHelper::RAID_NAMES;
@@ -77,17 +78,8 @@ class AnswerHandler
                 BotHelper::getFloor($name)
             ));
         }
-        $svg = BotHelper::getSVGStart();
-        foreach ($result as $raid => $info) {
-            $svg .= strtr(BotHelper::getSVGContent(), [
-                ':raid' => $raid,
-                ':resp' => $info
-            ]);
-        }
-        $svg .= BotHelper::getSVGEnd();
-        return strtr($svg, [
-            ':server' => $this->dto->getServerName()
-        ]);
+    
+        return $this->getSvgContent($result, $dark);
     }
 
     /**
@@ -124,5 +116,47 @@ class AnswerHandler
         $now->setTimestamp(time());
         $interval = $now->diff($respawn);
         return "{$server} {$name}{$floors}: респ идет уже " . $interval->format('%H:%I:%S') . "\n";
+    }
+    
+    /**
+     * @param array $result
+     * @param bool  $dark
+     *
+     * @return string
+     */
+    private function getSvgContent(array $result, bool $dark = false): string
+    {
+        if (false === $dark) {
+            $svg = BotHelper::getWhiteSVGStart();
+        } else {
+            $svg = BotHelper::getDarkSVGStart();
+        }
+        foreach ($result as $raid => $info) {
+            $svg .= strtr(BotHelper::getSVGContent(), [
+                ':raid' => $raid,
+                ':resp' => $info
+            ]);
+        }
+        $svg .= BotHelper::getSVGEnd();
+        
+        return strtr($svg, [
+            ':server' => $this->dto->getServerName()
+        ]);
+    }
+    
+    private function getDarkSvg(array $result)
+    {
+        $svg = BotHelper::getWhiteSVGStart();
+        foreach ($result as $raid => $info) {
+            $svg .= strtr(BotHelper::getSVGContent(), [
+                ':raid' => $raid,
+                ':resp' => $info
+            ]);
+        }
+        $svg .= BotHelper::getSVGEnd();
+    
+        return strtr($svg, [
+            ':server' => $this->dto->getServerName()
+        ]);
     }
 }

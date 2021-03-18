@@ -219,7 +219,7 @@ class BotHelper
         return ["{$name}{$floors}" => "Респ идет уже " . $interval->format('%H:%I:%S')];
     }
 
-    public static function getSVGStart(): string
+    public static function getWhiteSVGStart(): string
     {
         return <<<SVG
 <svg width="420" height="160" xmlns="http://www.w3.org/2000/svg">
@@ -348,6 +348,95 @@ SVG;
     </g>
 </svg>
 
+SVG;
+    }
+    
+    public static function getDarkSVGStart()
+    {
+        return <<<SVG
+<svg width="420" height="160" xmlns="http://www.w3.org/2000/svg">
+    <style>
+svg {
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
+  font-size: 14px;
+  line-height: 21px;
+}
+
+#background {
+  width: calc(100% - 10px);
+  height: calc(100% - 10px);
+  fill: #22272e;
+  stroke: rgb(151,154,157);
+  stroke-width: 1px;
+  rx: 6px;
+  ry: 6px;
+}
+
+foreignObject {
+  width: calc(100% - 10px - 32px);
+  height: calc(100% - 10px - 32px);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+th {
+  padding: 0.5em;
+  padding-top: 0;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(112,169,234);
+}
+th a {
+  color: rgb(112,169,234);
+  text-decoration: none;
+}
+
+td {
+  margin-bottom: 16px;
+  margin-top: 8px;
+  padding: 0.25em;
+  font-size: 12px;
+  line-height: 18px;
+  color: rgb(181,191,203);
+}
+
+tr {
+  transform: translateX(-200%);
+  animation-duration: 1s;
+  animation-name: slideIn;
+  animation-function: ease-in-out;
+  animation-fill-mode: forwards;
+}
+
+.octicon {
+  fill: rgb(181,191,203);
+  margin-right: 1ch;
+  vertical-align: top;
+}
+
+@keyframes slideIn {
+  to {
+    transform: translateX(0);
+  }
+}
+    </style>
+    <g>
+        <rect x="5" y="5" id="background" />
+        <g>
+            <foreignObject x="21" y="21" width="318" height="168">
+                <div xmlns="http://www.w3.org/1999/xhtml">
+
+                    <table>
+                        <thead><tr style="transform: translateX(0);">
+                            <th colspan="2">Subclass Raids Info [:server] from <a
+                            href="https://t.me/AsteriosRBbot">@AsteriosRBBot</a></th>
+                        </tr></thead>
+                        <tbody>
 SVG;
     }
 }

@@ -12,10 +12,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $bot->runHook();
 } elseif (isset($_GET["server"]) && in_array($_GET["server"], ['x3','x5', 'x7'])) {
     $server = htmlspecialchars($_GET["server"]);
+    $dark = isset( $_GET["color"]) && 'dark' === $_GET["color"];
+    header('Log: ' . intval($dark));
     Metrics::getInstance()->increaseMetric('usage_image');
     $dto = BotHelper::parseText("[$server]");
     header('Content-type: image/svg+xml');
-    echo (new AnswerHandler($dto))->getSvg();
+    echo (new AnswerHandler($dto))->getSvg($dark);
 } else {
     echo json_encode(
         ["asterios-bot" => "ok"]
