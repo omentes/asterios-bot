@@ -31,8 +31,7 @@ class Alarm extends Sender implements Notify
         $this->repository->updateAlarm($raid['id'], $mode);
         $channel = $this->repository->getChannel($result, $serverId);
         $answer = $this->sendMessage($message, $channel);
-
-        $this->logger->debug($answer);
+        $this->logger->warning($answer);
     }
 
     /**

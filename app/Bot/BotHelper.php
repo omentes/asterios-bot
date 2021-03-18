@@ -259,6 +259,10 @@ th {
   font-weight: 600;
   color: rgb(3, 102, 214);
 }
+th a {
+  color: rgb(3, 102, 214);
+  text-decoration: none;
+}
 
 td {
   margin-bottom: 16px;
@@ -271,7 +275,7 @@ td {
 
 tr {
   transform: translateX(-200%);
-  animation-duration: 2s;
+  animation-duration: 1s;
   animation-name: slideIn;
   animation-function: ease-in-out;
   animation-fill-mode: forwards;
@@ -297,7 +301,8 @@ tr {
 
                     <table>
                         <thead><tr style="transform: translateX(0);">
-                            <th colspan="2">Subclass Raids Info [:server] from @AsteriosRBBot</th>
+                            <th colspan="2">Subclass Raids Info [:server] from <a
+                            href="https://t.me/AsteriosRBbot">@AsteriosRBBot</a></th>
                         </tr></thead>
                         <tbody>
 SVG;

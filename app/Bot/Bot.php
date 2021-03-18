@@ -60,11 +60,10 @@ class Bot extends Singleton
      *
      * @throws MetricsRegistrationException
      */
-    public function run(): void
+    public function notify(): void
     {
         $notify = new Notify();
         try {
-//            $this->telegram->handleGetUpdates();
             $notify->handle();
             Metrics::getInstance()->increaseHealthCheck('bot_notify');
         } catch (TelegramException $e) {

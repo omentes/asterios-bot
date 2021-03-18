@@ -6,6 +6,6 @@ use AsteriosBot\Bot\Bot;
 
 $bot = Bot::getInstance();
 while (true) {
-    $bot->run();
+    $bot->notify();
     usleep(500000);
 }

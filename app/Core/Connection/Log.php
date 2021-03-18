@@ -26,7 +26,7 @@ class Log extends Singleton
         $this->logger = new Logger('app');
         $logPath = $config->getLogPath();
         try {
-            $this->logger->pushHandler(new StreamHandler($logPath . 'app.log', Logger::ERROR));
+            $this->logger->pushHandler(new StreamHandler($logPath . 'app.log', Logger::WARNING));
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
             return;

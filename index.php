@@ -8,8 +8,9 @@ use AsteriosBot\Bot\BotHelper;
 use AsteriosBot\Core\Connection\Metrics;
 
 $bot = Bot::getInstance();
-$bot->runHook();
-if (isset($_GET["server"]) && in_array($_GET["server"], ['x3','x5', 'x7'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $bot->runHook();
+} elseif (isset($_GET["server"]) && in_array($_GET["server"], ['x3','x5', 'x7'])) {
     $server = htmlspecialchars($_GET["server"]);
     Metrics::getInstance()->increaseMetric('usage_image');
     $dto = BotHelper::parseText("[$server]");

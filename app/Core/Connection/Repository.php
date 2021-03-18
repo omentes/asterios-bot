@@ -12,6 +12,7 @@ use FaaPz\PDO\Clause\Grouping;
 use FaaPz\PDO\Clause\Limit;
 use Feed;
 use FeedException;
+use Monolog\Logger;
 
 class Repository extends Database
 {
@@ -171,7 +172,7 @@ class Repository extends Database
      *
      * @return array
      */
-    public function getRSSFeedByUrl(string $url, int $limit = 20): array
+    public function getRSSFeedByUrl(string $url, int $limit = 20, Logger $logger = null): array
     {
         if ($this->config->isFillerMode()) {
             $limit = 100;
@@ -186,6 +187,9 @@ class Repository extends Database
 
         $remoteBefore = $newData['item'] ?? [];
 
+        if ([] === $remoteBefore && null !== $logger) {
+            $logger->warning('Empty response!', $newData);
+        }
         return ArrayHelper::getFormattedRaidBosses($remoteBefore, $limit);
     }
 

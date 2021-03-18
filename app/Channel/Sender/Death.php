@@ -28,7 +28,8 @@ class Death extends Sender implements Notify
             [$timeUp, $timeDown] = $this->getTimeUpAndDown($raid);
             $rightNow = $this->getNowDateTime();
             $text = $this->getDeathRaidMessageText($raid['description'], $date, $timeUp, $timeDown, $rightNow);
-            $this->sendMessage($text, $channel);
+            $answer = $this->sendMessage($text, $channel);
+            $this->logger->warning($answer);
         } catch (\Throwable $e) {
             $result = $e->getMessage();
             $this->logger->error($result);
