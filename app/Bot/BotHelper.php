@@ -448,12 +448,14 @@ SVG;
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
+
 #background {
 
   background-color: #22272e;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
   font-size: 14px;
   line-height: 21px;
+  margin-top: 30px;
 }
 
 @media (max-width: 419px) {
@@ -481,14 +483,8 @@ SVG;
     }
 }
 
-
-
-foreignObject {
-  width: calc(100% - 10px - 32px);
-  height: calc(100% - 10px - 32px);
-}
-
 table {
+margin-top: 20px;
   width: 100%;
   border-collapse: collapse;
   table-layout: auto;
@@ -496,6 +492,7 @@ table {
 
 th {
   padding: 0.5em;
+  margin:5px;
   padding-top: 0;
   font-size: 12px;
   font-weight: 600;
@@ -509,15 +506,17 @@ th a {
 td {
   margin-bottom: 16px;
   margin-top: 8px;
-  padding: 0.25em;
+  padding-left: 10px;
+  padding-top: 10px;
   font-size: 12px;
   line-height: 18px;
   color: rgb(181,191,203);
+  text-align: left;
 }
 
 tr {
   transform: translateX(-200%);
-  animation-duration: 1s;
+  animation-duration: 100ms;
   animation-name: slideIn;
   animation-function: ease-in-out;
   animation-fill-mode: forwards;
