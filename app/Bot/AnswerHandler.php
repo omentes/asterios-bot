@@ -144,18 +144,29 @@ class AnswerHandler
         ]);
     }
     
-    private function getDarkSvg(array $result)
+    public function getHtml(): string
     {
-        $svg = BotHelper::getWhiteSVGStart();
+        $result = [];
+        $names = BotHelper::RAID_NAMES;
+        foreach ($names as $name) {
+            $raid = $this->repository->getLastRaidLikeName($name, $this->dto->getServerId());
+            $result = array_merge($result, BotHelper::prepareTextForExport(
+                $raid,
+                $name,
+                BotHelper::getFloor($name)
+            ));
+        }
+        
+        $html = BotHelper::getHtmlStart();
         foreach ($result as $raid => $info) {
-            $svg .= strtr(BotHelper::getSVGContent(), [
+            $html .= strtr(BotHelper::getHtmlContent(), [
                 ':raid' => $raid,
                 ':resp' => $info
             ]);
         }
-        $svg .= BotHelper::getSVGEnd();
+        $html .= BotHelper::getHtmlEnd();
     
-        return strtr($svg, [
+        return strtr($html, [
             ':server' => $this->dto->getServerName()
         ]);
     }

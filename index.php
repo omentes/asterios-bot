@@ -10,6 +10,11 @@ use AsteriosBot\Core\Connection\Metrics;
 $bot = Bot::getInstance();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $bot->runHook();
+} elseif (isset($_GET["server"]) && in_array($_GET["server"], ['x3','x5', 'x7']) && isset($_GET["html"])) {
+    $server = htmlspecialchars($_GET["server"]);
+    Metrics::getInstance()->increaseMetric('usage_html');
+    $dto = BotHelper::parseText("[$server]");
+    echo (new AnswerHandler($dto))->getHtml();
 } elseif (isset($_GET["server"]) && in_array($_GET["server"], ['x3','x5', 'x7'])) {
     $server = htmlspecialchars($_GET["server"]);
     $dark = isset( $_GET["color"]) && 'dark' === $_GET["color"];
