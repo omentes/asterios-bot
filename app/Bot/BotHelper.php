@@ -301,8 +301,8 @@ tr {
 
                     <table>
                         <thead><tr style="transform: translateX(0);">
-                            <th colspan="2">Subclass Raids Info [:server] from <a
-                            href="https://t.me/AsteriosRBbot">@AsteriosRBBot</a></th>
+                            <th colspan="2">[:server] <a href="https://t.me/AsteriosRBbot">AsteriosRBBot</a>
+                            Обновлено :datetime </th>
                         </tr></thead>
                         <tbody>
 SVG;
@@ -433,8 +433,8 @@ tr {
 
                     <table>
                         <thead><tr style="transform: translateX(0);">
-                            <th colspan="2">Subclass Raids Info [:server] from <a
-                            href="https://t.me/AsteriosRBbot">@AsteriosRBBot</a></th>
+                            <th colspan="2">[:server] <a href="https://t.me/AsteriosRBbot">AsteriosRBBot</a>
+                            Обновлено :datetime </th>
                         </tr></thead>
                         <tbody>
 SVG;
@@ -456,38 +456,7 @@ SVG;
   font-size: 14px;
   line-height: 21px;
   margin-top: 30px;
-}
-
-@media (max-width: 419px) {
-    .block {
-        text-align: center;
-        align-items: center;
-        width: 320px;
-        margin-left: auto;
-        margin-right: auto;
-        stroke-width: 1px;
-        border: 2px solid rgb(151,154,157);
-        border-radius: 6px;
-    }
-}
-@media (min-width: 420px) {
-    .block {
-        text-align: center;
-        align-items: center;
-        width: 420px;
-        margin-left: auto;
-        margin-right: auto;
-        stroke-width: 1px;
-        border: 2px solid rgb(151,154,157);
-        border-radius: 6px;
-    }
-}
-
-table {
-margin-top: 20px;
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: auto;
+  width: 100%
 }
 
 th {
@@ -498,21 +467,113 @@ th {
   font-weight: 600;
   color: rgb(112,169,234);
 }
+table {
+    margin-top: 20px;
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+    margin-left: 10px;
+    /*margin-right: auto;*/
+    /*text-align: center;*/
+    /*align-items: center;*/
+}
+
+@media (min-width: 420px) {
+    .block {
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+        align-items: center;
+        width: 420px;
+        stroke-width: 1px;
+        border: 2px solid rgb(151,154,157);
+        border-radius: 6px;
+    }
+    td {
+        margin-bottom: 16px;
+        margin-top: 8px;
+        padding-left: 4px;
+        padding-top: 4px;
+        font-size: 12px;
+        line-height: 18px;
+        color: rgb(181,191,203);
+        text-align: left;
+    }
+    table {
+    margin-top: 20px;
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+    /*margin-left: 2px;*/
+    /*margin-right: auto;*/
+    /*text-align: center;*/
+    /*align-items: center;*/
+}
+}
+
+@media (max-width: 419px) {
+    .block {
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+        align-items: center;
+        width: 90%;
+        stroke-width: 1px;
+        table-layout: inherit;
+        border: 2px solid rgb(151,154,157);
+        border-radius: 6px;
+    }
+    td {
+        margin-bottom: 16px;
+        margin-top: 8px;
+        padding-left: 4px;
+        padding-top: 4px;
+        font-size: 10px;
+        line-height: 18px;
+        color: rgb(181,191,203);
+        text-align: left;
+    }
+}
+@media (max-width: 359px) {
+    .block {
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+        align-items: center;
+        width: 95%;
+        stroke-width: 1px;
+        table-layout: inherit;
+        border: 2px solid rgb(151,154,157);
+        border-radius: 6px;
+    }
+    td {
+        margin-bottom: 16px;
+        margin-top: 8px;
+        padding-left: 4px;
+        padding-top: 4px;
+        font-size: 9px;
+        line-height: 13px;
+        color: rgb(181,191,203);
+        text-align: left;
+    }
+    th {
+        font-size: 10px;
+          padding: 0.5em;
+  margin:5px;
+  padding-top: 0;
+  font-weight: 600;
+  color: rgb(112,169,234);
+    }
+}
+
+
+
 th a {
   color: rgb(112,169,234);
   text-decoration: none;
 }
 
-td {
-  margin-bottom: 16px;
-  margin-top: 8px;
-  padding-left: 10px;
-  padding-top: 10px;
-  font-size: 12px;
-  line-height: 18px;
-  color: rgb(181,191,203);
-  text-align: left;
-}
+
 
 tr {
   transform: translateX(-200%);
@@ -553,7 +614,8 @@ button {
         <table>
             <thead>
                 <tr style="transform: translateX(0);">
-                    <th colspan="2">Subclass Raids Info [:server] from <a href="https://t.me/AsteriosRBbot">@AsteriosRBBot</a></th>
+                    <th colspan="2">[:server] <a href="https://t.me/AsteriosRBbot">AsteriosRBBot</a> Обновлено
+                    :datetime</th>
                 </tr>
             </thead>
             <tbody>

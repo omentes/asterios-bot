@@ -134,13 +134,14 @@ class AnswerHandler
         foreach ($result as $raid => $info) {
             $svg .= strtr(BotHelper::getSVGContent(), [
                 ':raid' => $raid,
-                ':resp' => $info
+                ':resp' => $info,
             ]);
         }
         $svg .= BotHelper::getSVGEnd();
         
         return strtr($svg, [
-            ':server' => $this->dto->getServerName()
+            ':server' => $this->dto->getServerName(),
+            ':datetime' => date("Y-m-d H:i:s"),
         ]);
     }
     
@@ -161,13 +162,14 @@ class AnswerHandler
         foreach ($result as $raid => $info) {
             $html .= strtr(BotHelper::getHtmlContent(), [
                 ':raid' => $raid,
-                ':resp' => $info
+                ':resp' => $info,
             ]);
         }
         $html .= BotHelper::getHtmlEnd();
     
         return strtr($html, [
-            ':server' => $this->dto->getServerName()
+            ':server' => $this->dto->getServerName(),
+            ':datetime' => date("Y-m-d H:i:s"),
         ]);
     }
 }

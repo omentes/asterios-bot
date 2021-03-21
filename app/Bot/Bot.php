@@ -48,7 +48,6 @@ class Bot extends Singleton
                 'database' => $dto->getName(),
                 ]
             );
-            $this->checkVersion();
             $this->telegram->enableLimiter();
 //            $this->getSetUpdateFilter();
         } catch (EnvironmentException | TelegramException $e) {
@@ -62,9 +61,9 @@ class Bot extends Singleton
      */
     public function notify(): void
     {
-        $notify = new Notify();
+        $this->checkVersion();
         try {
-            $notify->handle();
+            (new Notify())->handle();
             Metrics::getInstance()->increaseHealthCheck('bot_notify');
         } catch (TelegramException $e) {
             Log::getInstance()->getLogger()->error($e->getMessage(), $e->getTrace());
