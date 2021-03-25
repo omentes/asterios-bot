@@ -63,13 +63,17 @@ class InfoCommand extends SystemCommand
         ];
         return Request::sendMessage($data);
     }
-    
+
     private function getText(): string
     {
         return "Если у ваших друзей нет телеграма и вы хотите поделиться информацией с этого бота, просто отправьте"
             . "им ссылку https://asterios.webhook.pp.ua/?server=x5&html x5 Можно заменить на x3/x7.\n\nЭта html "
             . "страничка адаптирована к мобильным устройствам.\n\nТак же есть изоброжание по ссылкке "
             . " https://asterios.webhook.pp.ua/?server=x5 или https://asterios.webhook.pp.ua/?server=x5&color=dark "
-            . " и тут так-же можно заменить сервер прямо в ссылке на x3/x7";
+            . " и тут так-же можно заменить сервер прямо в ссылке на x3/x7\n\n"
+            . "А так же каналы:\n"
+            . "для сервера x3\n@asteriosx3rb - сабовые, Кабрио и ТоИ\n@asteriosX3keyRB - все остальные с фида\n"
+            . "для сервера x5:\n@asteriosx5rb - сабовые, Кабрио и ТоИ\n@asteriosX5keyRB - все остальные с фида\n"
+            . "для сервера x7:\n@asteriosx7rb  - сабовые, Кабрио и ТоИ\n@asteriosX7keyRB- все остальные с фида\n";
     }
 }

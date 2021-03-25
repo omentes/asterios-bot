@@ -60,7 +60,7 @@ class AnswerHandler
         $result .= "или на х7 http://bit.ly/x7-11-gold";
         return $result;
     }
-    
+
     /**
      * @param bool $dark
      *
@@ -78,7 +78,7 @@ class AnswerHandler
                 BotHelper::getFloor($name)
             ));
         }
-    
+
         return $this->getSvgContent($result, $dark);
     }
 
@@ -117,7 +117,7 @@ class AnswerHandler
         $interval = $now->diff($respawn);
         return "{$server} {$name}{$floors}: респ идет уже " . $interval->format('%H:%I:%S') . "\n";
     }
-    
+
     /**
      * @param array $result
      * @param bool  $dark
@@ -138,13 +138,13 @@ class AnswerHandler
             ]);
         }
         $svg .= BotHelper::getSVGEnd();
-        
+
         return strtr($svg, [
             ':server' => $this->dto->getServerName(),
             ':datetime' => date("Y-m-d H:i:s"),
         ]);
     }
-    
+
     public function getHtml(): string
     {
         $result = [];
@@ -157,7 +157,7 @@ class AnswerHandler
                 BotHelper::getFloor($name)
             ));
         }
-        
+
         $html = BotHelper::getHtmlStart();
         foreach ($result as $raid => $info) {
             $html .= strtr(BotHelper::getHtmlContent(), [
@@ -166,7 +166,7 @@ class AnswerHandler
             ]);
         }
         $html .= BotHelper::getHtmlEnd();
-    
+
         return strtr($html, [
             ':server' => $this->dto->getServerName(),
             ':datetime' => date("Y-m-d H:i:s"),
