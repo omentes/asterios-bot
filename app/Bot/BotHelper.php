@@ -74,6 +74,7 @@ class BotHelper
 
     public const INPUT_TO_SERVER = [
         'Другой сервер' => 'servers',
+        'Назад' => 'servers',
         '[x3]' => 'x3',
         '[x3] Cabrio' => 'x3',
         '[x3] ToI 3 Hallate' => 'x3',
@@ -100,6 +101,17 @@ class BotHelper
             ['[x3] Cabrio', '[x3] ToI 3 Hallate', '[x5] Cabrio', '[x5] ToI 3 Hallate',],
             ['[x3] ToI 8 Kernon', '[x3] ToI 11 Golkonda', '[x5] ToI 8 Kernon', '[x5] ToI 11 Golkonda',],
             ['[x3] Все РБ', '[x5] Все РБ'],
+        ];
+    }
+
+    public static function getKeyboardDonate(): array
+    {
+        return [
+            ['Назад',],
+            ['Купить админу кофе (1 EUR)'],
+            ['Оплатить месяц для сервера (10 EUR)'],
+            ['Оплатить полгода для сервера (60 EUR)'],
+            ['Оплатить год для сервера (120 EUR)'],
         ];
     }
 

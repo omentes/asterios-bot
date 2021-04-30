@@ -23,6 +23,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $dto = BotHelper::parseText("[$server]");
     header('Content-type: image/svg+xml');
     echo (new AnswerHandler($dto))->getSvg($dark);
+} elseif (isset($_GET["terms"])) {
+    include('terms.html');
 } else {
     echo json_encode(
         ["asterios-bot" => "ok"]

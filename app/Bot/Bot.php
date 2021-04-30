@@ -49,6 +49,7 @@ class Bot extends Singleton
                 ]
             );
             $this->telegram->enableLimiter();
+            $this->telegram->setCommandConfig('payment', ['payment_provider_token' => '632593626:TEST:sandbox_i4694747138']);
 //            $this->getSetUpdateFilter();
         } catch (EnvironmentException | TelegramException $e) {
             Log::getInstance()->getLogger()->error($e->getMessage(), $e->getTrace());

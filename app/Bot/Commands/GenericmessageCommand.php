@@ -8,9 +8,11 @@ use AsteriosBot\Bot\BotHelper;
 use AsteriosBot\Bot\AnswerDTO;
 use AsteriosBot\Bot\AnswerHandler;
 use AsteriosBot\Core\App;
+use AsteriosBot\Core\Connection\Cache;
 use AsteriosBot\Core\Connection\Metrics;
 use AsteriosBot\Core\Exception\BadServerException;
 use Longman\TelegramBot\Commands\SystemCommand;
+use Longman\TelegramBot\Commands\SystemCommand\PaymentCommand;
 use Longman\TelegramBot\Entities\Keyboard;
 use Longman\TelegramBot\Entities\ServerResponse;
 use Longman\TelegramBot\Exception\TelegramException;
@@ -33,6 +35,26 @@ class GenericmessageCommand extends SystemCommand
         Metrics::getInstance()->increaseMetric('usage');
         $text = trim($this->getMessage()->getText(true));
         $chat_id = $this->getMessage()->getChat()->getId();
+
+        // Handle successful payment
+        if ($this->getMessage()->getSuccessfulPayment()) {
+            return Request::sendMessage([
+                'chat_id' => $chat_id,
+                'text'    => 'Спасибо!',
+            ]);
+        }
+        $donations = [
+            'Купить админу кофе (1 EUR)' => 100,
+            'Оплатить месяц для сервера (10 EUR)' => 1000,
+            'Оплатить полгода для сервера (60 EUR)' => 6000,
+            'Оплатить год для сервера (120 EUR)' => 12000,
+        ];
+        if (in_array($text, array_keys($donations), true)) {
+            $cache = Cache::getInstance()->getConnection();
+            $cache->set($chat_id . '_arb_donate', $donations[$text]);
+            return $this->telegram->executeCommand('payment');
+        }
+
         try {
             $dto = $this->parseText($text);
             $keyboard = $this->getKeyboard($dto->getServerName());

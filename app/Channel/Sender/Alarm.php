@@ -25,7 +25,7 @@ class Alarm extends Sender implements Notify
             $type = App::getInstance()->getConfig()->getShortRaidName($raid['name']);
             $this->repository->createEvent($serverId, $type, $message);
         }
-        $message .= "\n\nДонат: вкачать твина по рефералке на х5 https://bit.ly/asterios-invite-link или " ;
+        $message .= "\n\nДонат: вкачать твина по рефералке на х5 https://bit.ly/asterios-invites или " ;
         $message .= "на х7 http://bit.ly/x7-11-gold\n\nПосмотреть респ @AsteriosRBBot\n\n";
         $message .= "Учить английские слова @RepeatWordBot";
         $this->repository->updateAlarm($raid['id'], $mode);
