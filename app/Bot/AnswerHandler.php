@@ -56,16 +56,17 @@ class AnswerHandler
             );
         }
         $result .= "\nУчить английские слова @RepeatWordBot\n\nДонат: ";
-        $result .= "вкачать твина по рефералке на х5 https://bit.ly/asterios-invite-link ";
+        $result .= "вкачать твина по рефералке на х5 https://bit.ly/asterios-invites ";
         $result .= "или на х7 http://bit.ly/x7-11-gold";
         return $result;
     }
-
+    
     /**
+     * @param bool $dark
+     *
      * @return string
-     * @throws \Exception
      */
-    public function getSvg(): string
+    public function getSvg(bool $dark = false): string
     {
         $result = [];
         $names = BotHelper::RAID_NAMES;
@@ -77,17 +78,8 @@ class AnswerHandler
                 BotHelper::getFloor($name)
             ));
         }
-        $svg = BotHelper::getSVGStart();
-        foreach ($result as $raid => $info) {
-            $svg .= strtr(BotHelper::getSVGContent(), [
-                ':raid' => $raid,
-                ':resp' => $info
-            ]);
-        }
-        $svg .= BotHelper::getSVGEnd();
-        return strtr($svg, [
-            ':server' => $this->dto->getServerName()
-        ]);
+    
+        return $this->getSvgContent($result, $dark);
     }
 
     /**
@@ -124,5 +116,60 @@ class AnswerHandler
         $now->setTimestamp(time());
         $interval = $now->diff($respawn);
         return "{$server} {$name}{$floors}: респ идет уже " . $interval->format('%H:%I:%S') . "\n";
+    }
+    
+    /**
+     * @param array $result
+     * @param bool  $dark
+     *
+     * @return string
+     */
+    private function getSvgContent(array $result, bool $dark = false): string
+    {
+        if (false === $dark) {
+            $svg = BotHelper::getWhiteSVGStart();
+        } else {
+            $svg = BotHelper::getDarkSVGStart();
+        }
+        foreach ($result as $raid => $info) {
+            $svg .= strtr(BotHelper::getSVGContent(), [
+                ':raid' => $raid,
+                ':resp' => $info,
+            ]);
+        }
+        $svg .= BotHelper::getSVGEnd();
+        
+        return strtr($svg, [
+            ':server' => $this->dto->getServerName(),
+            ':datetime' => date("Y-m-d H:i:s"),
+        ]);
+    }
+    
+    public function getHtml(): string
+    {
+        $result = [];
+        $names = BotHelper::RAID_NAMES;
+        foreach ($names as $name) {
+            $raid = $this->repository->getLastRaidLikeName($name, $this->dto->getServerId());
+            $result = array_merge($result, BotHelper::prepareTextForExport(
+                $raid,
+                $name,
+                BotHelper::getFloor($name)
+            ));
+        }
+        
+        $html = BotHelper::getHtmlStart();
+        foreach ($result as $raid => $info) {
+            $html .= strtr(BotHelper::getHtmlContent(), [
+                ':raid' => $raid,
+                ':resp' => $info,
+            ]);
+        }
+        $html .= BotHelper::getHtmlEnd();
+    
+        return strtr($html, [
+            ':server' => $this->dto->getServerName(),
+            ':datetime' => date("Y-m-d H:i:s"),
+        ]);
     }
 }

@@ -8,9 +8,11 @@ use AsteriosBot\Bot\BotHelper;
 use AsteriosBot\Bot\AnswerDTO;
 use AsteriosBot\Bot\AnswerHandler;
 use AsteriosBot\Core\App;
+use AsteriosBot\Core\Connection\Cache;
 use AsteriosBot\Core\Connection\Metrics;
 use AsteriosBot\Core\Exception\BadServerException;
 use Longman\TelegramBot\Commands\SystemCommand;
+use Longman\TelegramBot\Commands\SystemCommand\PaymentCommand;
 use Longman\TelegramBot\Entities\Keyboard;
 use Longman\TelegramBot\Entities\ServerResponse;
 use Longman\TelegramBot\Exception\TelegramException;
@@ -31,20 +33,28 @@ class GenericmessageCommand extends SystemCommand
     public function execute(): ServerResponse
     {
         Metrics::getInstance()->increaseMetric('usage');
-        if ($this->getMessage() === null) {
-            $data = [
-                'chat_id' => 281861745,
-                'text' => print_r($this, true),
-                'parse_mode' => 'markdown',
-                'disable_web_page_preview' => true,
-                'disable_notification' => 1,
-            ];
-//            var_export($this);
-            return Request::emptyResponse();
-        };
-
         $text = trim($this->getMessage()->getText(true));
         $chat_id = $this->getMessage()->getChat()->getId();
+
+        // Handle successful payment
+        if ($this->getMessage()->getSuccessfulPayment()) {
+            return Request::sendMessage([
+                'chat_id' => $chat_id,
+                'text'    => 'Спасибо!',
+            ]);
+        }
+        $donations = [
+            'Купить админу кофе (1 EUR)' => 3400,
+            'Оплатить месяц для сервера (10 EUR)' => 34000,
+            'Оплатить полгода для сервера (60 EUR)' => 200000,
+            'Оплатить год для сервера (120 EUR)' => 400000,
+        ];
+        if (in_array($text, array_keys($donations), true)) {
+            $cache = Cache::getInstance()->getConnection();
+            $cache->set($chat_id . '_arb_donate', $donations[$text]);
+            return $this->telegram->executeCommand('payment');
+        }
+
         try {
             $dto = $this->parseText($text);
             $keyboard = $this->getKeyboard($dto->getServerName());

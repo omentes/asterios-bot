@@ -74,6 +74,7 @@ class BotHelper
 
     public const INPUT_TO_SERVER = [
         'Другой сервер' => 'servers',
+        'Назад' => 'servers',
         '[x3]' => 'x3',
         '[x3] Cabrio' => 'x3',
         '[x3] ToI 3 Hallate' => 'x3',
@@ -100,6 +101,17 @@ class BotHelper
             ['[x3] Cabrio', '[x3] ToI 3 Hallate', '[x5] Cabrio', '[x5] ToI 3 Hallate',],
             ['[x3] ToI 8 Kernon', '[x3] ToI 11 Golkonda', '[x5] ToI 8 Kernon', '[x5] ToI 11 Golkonda',],
             ['[x3] Все РБ', '[x5] Все РБ'],
+        ];
+    }
+
+    public static function getKeyboardDonate(): array
+    {
+        return [
+            ['Назад',],
+            ['Купить админу кофе (1 EUR)'],
+            ['Оплатить месяц для сервера (10 EUR)'],
+            ['Оплатить полгода для сервера (60 EUR)'],
+            ['Оплатить год для сервера (120 EUR)'],
         ];
     }
 
@@ -219,7 +231,7 @@ class BotHelper
         return ["{$name}{$floors}" => "Респ идет уже " . $interval->format('%H:%I:%S')];
     }
 
-    public static function getSVGStart(): string
+    public static function getWhiteSVGStart(): string
     {
         return <<<SVG
 <svg width="420" height="160" xmlns="http://www.w3.org/2000/svg">
@@ -301,8 +313,8 @@ tr {
 
                     <table>
                         <thead><tr style="transform: translateX(0);">
-                            <th colspan="2">Subclass Raids Info [:server] from <a
-                            href="https://t.me/AsteriosRBbot">@AsteriosRBBot</a></th>
+                            <th colspan="2">[:server] <a href="https://t.me/AsteriosRBbot">AsteriosRBBot</a>
+                            Обновлено :datetime </th>
                         </tr></thead>
                         <tbody>
 SVG;
@@ -348,6 +360,296 @@ SVG;
     </g>
 </svg>
 
+SVG;
+    }
+
+    public static function getDarkSVGStart()
+    {
+        return <<<SVG
+<svg width="420" height="160" xmlns="http://www.w3.org/2000/svg">
+    <style>
+svg {
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
+  font-size: 14px;
+  line-height: 21px;
+}
+
+#background {
+  width: calc(100% - 10px);
+  height: calc(100% - 10px);
+  fill: #22272e;
+  stroke: rgb(151,154,157);
+  stroke-width: 1px;
+  rx: 6px;
+  ry: 6px;
+}
+
+foreignObject {
+  width: calc(100% - 10px - 32px);
+  height: calc(100% - 10px - 32px);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+th {
+  padding: 0.5em;
+  padding-top: 0;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(112,169,234);
+}
+th a {
+  color: rgb(112,169,234);
+  text-decoration: none;
+}
+
+td {
+  margin-bottom: 16px;
+  margin-top: 8px;
+  padding: 0.25em;
+  font-size: 12px;
+  line-height: 18px;
+  color: rgb(181,191,203);
+}
+
+tr {
+  transform: translateX(-200%);
+  animation-duration: 1s;
+  animation-name: slideIn;
+  animation-function: ease-in-out;
+  animation-fill-mode: forwards;
+}
+
+.octicon {
+  fill: rgb(181,191,203);
+  margin-right: 1ch;
+  vertical-align: top;
+}
+
+@keyframes slideIn {
+  to {
+    transform: translateX(0);
+  }
+}
+    </style>
+    <g>
+        <rect x="5" y="5" id="background" />
+        <g>
+            <foreignObject x="21" y="21" width="318" height="168">
+                <div xmlns="http://www.w3.org/1999/xhtml">
+
+                    <table>
+                        <thead><tr style="transform: translateX(0);">
+                            <th colspan="2">[:server] <a href="https://t.me/AsteriosRBbot">AsteriosRBBot</a>
+                            Обновлено :datetime </th>
+                        </tr></thead>
+                        <tbody>
+SVG;
+    }
+
+    public static function getHtmlStart(): string
+    {
+        return <<<HTML
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+
+#background {
+
+  background-color: #22272e;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
+  font-size: 14px;
+  line-height: 21px;
+  margin-top: 30px;
+  width: 100%
+}
+
+th {
+  padding: 0.5em;
+  margin:5px;
+  padding-top: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgb(112,169,234);
+}
+table {
+    margin-top: 20px;
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+    margin-left: 10px;
+    /*margin-right: auto;*/
+    /*text-align: center;*/
+    /*align-items: center;*/
+}
+
+@media (min-width: 420px) {
+    .block {
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+        align-items: center;
+        width: 420px;
+        stroke-width: 1px;
+        border: 2px solid rgb(151,154,157);
+        border-radius: 6px;
+    }
+    td {
+        margin-bottom: 16px;
+        margin-top: 8px;
+        padding-left: 4px;
+        padding-top: 4px;
+        font-size: 12px;
+        line-height: 18px;
+        color: rgb(181,191,203);
+        text-align: left;
+    }
+    table {
+    margin-top: 20px;
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+    /*margin-left: 2px;*/
+    /*margin-right: auto;*/
+    /*text-align: center;*/
+    /*align-items: center;*/
+}
+}
+
+@media (max-width: 419px) {
+    .block {
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+        align-items: center;
+        width: 90%;
+        stroke-width: 1px;
+        table-layout: inherit;
+        border: 2px solid rgb(151,154,157);
+        border-radius: 6px;
+    }
+    td {
+        margin-bottom: 16px;
+        margin-top: 8px;
+        padding-left: 4px;
+        padding-top: 4px;
+        font-size: 10px;
+        line-height: 18px;
+        color: rgb(181,191,203);
+        text-align: left;
+    }
+}
+@media (max-width: 359px) {
+    .block {
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+        align-items: center;
+        width: 95%;
+        stroke-width: 1px;
+        table-layout: inherit;
+        border: 2px solid rgb(151,154,157);
+        border-radius: 6px;
+    }
+    td {
+        margin-bottom: 16px;
+        margin-top: 8px;
+        padding-left: 4px;
+        padding-top: 4px;
+        font-size: 9px;
+        line-height: 13px;
+        color: rgb(181,191,203);
+        text-align: left;
+    }
+    th {
+        font-size: 10px;
+          padding: 0.5em;
+  margin:5px;
+  padding-top: 0;
+  font-weight: 600;
+  color: rgb(112,169,234);
+    }
+}
+
+
+
+th a {
+  color: rgb(112,169,234);
+  text-decoration: none;
+}
+
+
+
+tr {
+  transform: translateX(-200%);
+  animation-duration: 100ms;
+  animation-name: slideIn;
+  animation-function: ease-in-out;
+  animation-fill-mode: forwards;
+}
+
+.octicon {
+  fill: rgb(181,191,203);
+  margin-right: 1ch;
+  vertical-align: top;
+}
+
+@keyframes slideIn {
+  to {
+    transform: translateX(0);
+  }
+}
+
+button {
+  background-color: rgb(112,169,234); /* Green */
+  border: none;
+  color: rgb(255,255,255);
+  padding: 5px 32px;
+  margin: 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+}
+
+</style>
+</head>
+<body id="background">
+    <div class="block">
+        <table>
+            <thead>
+                <tr style="transform: translateX(0);">
+                    <th colspan="2">[:server] <a href="https://t.me/AsteriosRBbot">AsteriosRBBot</a> Обновлено
+                    :datetime</th>
+                </tr>
+            </thead>
+            <tbody>
+HTML;
+    }
+
+    public static function getHtmlContent(): string
+    {
+        return <<<HTML
+<tr><td><svg class="octicon" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" version="1.1" width="16" height="16"><path fill-rule="evenodd" d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25zm0 2.445L6.615 5.5a.75.75 0 01-.564.41l-3.097.45 2.24 2.184a.75.75 0 01.216.664l-.528 3.084 2.769-1.456a.75.75 0 01.698 0l2.77 1.456-.53-3.084a.75.75 0 01.216-.664l2.24-2.183-3.096-.45a.75.75 0 01-.564-.41L8 2.694v.001z"></path></svg>:raid</td><td>:resp</td></tr>
+HTML;
+    }
+
+    public static function getHtmlEnd()
+    {
+        return <<<SVG
+            </tbody>
+        </table>
+        <button onClick="window.location.reload();">Refresh Page</button>
+    </div>
+</body>
+</html>
 SVG;
     }
 }

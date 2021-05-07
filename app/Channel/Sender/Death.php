@@ -99,7 +99,7 @@ class Death extends Sender implements Notify
     ): string {
         $text = $date->format('Y-m-d H:i:s') . ' ' . $description;
         $text .= "\n\nВремя респа: C " . $timeUp->format('Y-m-d H:i:s') . ' до ' . $timeDown->format('Y-m-d H:i:s');
-        $text .= "\n\nДонат: вкачать твина по рефералке на х5 https://bit.ly/asterios-invite-link или на х7 http://bit.ly/x7-11-gold";
+        $text .= "\n\nДонат: вкачать твина по рефералке на х5 https://bit.ly/asterios-invites или на х7 http://bit.ly/x7-11-gold";
         $text .= "\n\nВремя получения инфы о смерти с сайта Астериоса и публикации этого сообщения: " . $rightNow->format('Y-m-d H:i:s');
         $text .= "\n\nПосмотреть респ @AsteriosRBBot\n\nУчить английские слова @RepeatWordBot";
 
