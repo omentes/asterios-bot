@@ -19,6 +19,15 @@
 - https://t.me/asteriosx3rb  - x3 сабовые, Кабрио и ТоИ
 - https://t.me/asteriosX3keyRB - x3 все остальные с фида
 
+### Ссылки на html (без телеграма) и svg (версия для подписи на форумах)
+
+- https://asterios.webhook.pp.ua/?html&server=x3 - html для x3 сабовые, Кабрио и ТоИ
+- https://asterios.webhook.pp.ua/?html&server=x5 - html для x5 сабовые, Кабрио и ТоИ
+- https://asterios.webhook.pp.ua/?html&server=x7 - html для x7 сабовые, Кабрио и ТоИ
+- https://asterios.webhook.pp.ua/?color=dark&server=x3 - svg (темный фон) для x3 сабовые, Кабрио и ТоИ
+- https://asterios.webhook.pp.ua/?color=dark&server=x5 - svg (темный фон) для x5 сабовые, Кабрио и ТоИ
+- https://asterios.webhook.pp.ua/?color=dark&server=x7 - svg (темный фон) для x7 сабовые, Кабрио и ТоИ
+
 ## Техническая документация
 
 Данный проект работает в `docker` и имеет быстрый набор команд в `Makefile`. Этот проект не может работать самостоятельно, так требует окружения в виде MySQL, Redis, Prometheus, Grafana. Если вы хотите поднять проект самостоятельно, вам требуется следующие шаги:
