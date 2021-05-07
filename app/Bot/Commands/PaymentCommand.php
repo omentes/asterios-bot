@@ -47,7 +47,7 @@ class PaymentCommand extends SystemCommand
     public function execute(): ServerResponse
     {
         $chat_id = $this->getMessage()->getFrom()->getId();
-        $currency = 'EUR';
+        $currency = 'UAH';
         $cache = Cache::getInstance()->getConnection();
         $price = $cache->get($chat_id . '_arb_donate');
         $cache->del($chat_id . '_arb_donate');

@@ -44,10 +44,10 @@ class GenericmessageCommand extends SystemCommand
             ]);
         }
         $donations = [
-            'Купить админу кофе (1 EUR)' => 100,
-            'Оплатить месяц для сервера (10 EUR)' => 1000,
-            'Оплатить полгода для сервера (60 EUR)' => 6000,
-            'Оплатить год для сервера (120 EUR)' => 12000,
+            'Купить админу кофе (1 EUR)' => 3400,
+            'Оплатить месяц для сервера (10 EUR)' => 34000,
+            'Оплатить полгода для сервера (60 EUR)' => 200000,
+            'Оплатить год для сервера (120 EUR)' => 400000,
         ];
         if (in_array($text, array_keys($donations), true)) {
             $cache = Cache::getInstance()->getConnection();

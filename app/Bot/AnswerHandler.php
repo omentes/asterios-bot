@@ -56,11 +56,11 @@ class AnswerHandler
             );
         }
         $result .= "\nУчить английские слова @RepeatWordBot\n\nДонат: ";
-        $result .= "вкачать твина по рефералке на х5 https://bit.ly/asterios-invite-link ";
+        $result .= "вкачать твина по рефералке на х5 https://bit.ly/asterios-invites ";
         $result .= "или на х7 http://bit.ly/x7-11-gold";
         return $result;
     }
-
+    
     /**
      * @param bool $dark
      *
@@ -78,7 +78,6 @@ class AnswerHandler
                 BotHelper::getFloor($name)
             ));
         }
-
         return $this->getSvgContent($result, $dark);
     }
 
