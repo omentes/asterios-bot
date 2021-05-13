@@ -322,4 +322,9 @@ class Config
     {
         return Config::SHORT_RAIDS_NAMES[$name];
     }
+
+    public function getPaymentToken()
+    {
+        return getenv('PAYMENT_TOKEN', '632593626:TEST:sandbox_i4694747138');
+    }
 }
